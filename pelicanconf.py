@@ -5,6 +5,10 @@ from __future__ import unicode_literals
 AUTHOR = 'guchio3'
 SITENAME = 'guchiBLO'
 SITEURL = ''
+THEME = './themes/pelican-themes/Flex'
+SITELOGO = SITEURL + '/images/siteBaseImages/profile.png'
+
+COPYRIGHT_YEAR = 2017
 
 PATH = 'content'
 OUTPUT_PATH = 'docs'
@@ -24,14 +28,17 @@ AUTHOR_FEED_RSS = None
 LOAD_CONTENT_CACHE = False
 
 # Blogroll
-LINKS = (('Pelican', 'http://getpelican.com/'),
-         ('Python.org', 'http://python.org/'),
-         ('Jinja2', 'http://jinja.pocoo.org/'),
-         ('You can modify those links in your config file', '#'),)
+LINKS = (
+         ('youtube', 'youtube.com'),
+         )
 
 # Social widget
-SOCIAL = (('You can add links in your config file', '#'),
-          ('Another social link', '#'),)
+SOCIAL = (
+         ('twitter', 'https://twitter.com/ihcgT_Ykchi'),
+#         ('facebook', 'https://www.facebook.com/taguchi.naoya?ref=bookmarks'),
+         ('github', 'https://github.com/guchio3'),
+#         ('linkedin', 'https://www.linkedin.com/in/taguchi-naoya-545403121/'),
+        )
 
 DEFAULT_PAGINATION = 10
 
