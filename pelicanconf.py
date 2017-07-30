@@ -6,7 +6,7 @@ AUTHOR = 'guchio3'
 SITENAME = 'guchiBLO'
 SITEURL = ''
 THEME = 'Flex'
-SITELOGO = SITEURL + '/images/siteBaseImages/profile.png'
+SITELOGO = '/images/siteBaseImages/profile.png'
 
 COPYRIGHT_YEAR = 2017
 
