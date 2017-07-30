@@ -1,11 +1,9 @@
-Title: ABOUT THE AUTHOR
-Date: 2017-07-29 16:00
-Modified: 2017-07-29 16:00
-Category: Author
-Tags: Self-introduction
-Slug: 20170729
+Title: ABOUT
+Tags: About
+Slug: ABOUT
 Authors: guchio3
 Summary: Explanation about the author and the contents of this blog
+
 
 # AUTHOR INFORMATION
 ## ID
