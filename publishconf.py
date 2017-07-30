@@ -11,7 +11,7 @@ sys.path.append(os.curdir)
 from pelicanconf import *
 
 SITEURL = 'https://guchio3.github.io/guchiBLO'
-SITELOGO = SITEURL + '/images/profile.png'
+SITELOGO = 'https://github.com/guchio3/guchiBLO/blob/master/content/images/siteBaseImages/profile.png'
 RELATIVE_URLS = False
 
 FEED_ALL_ATOM = 'feeds/all.atom.xml'
