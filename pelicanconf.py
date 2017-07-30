@@ -4,11 +4,13 @@ from __future__ import unicode_literals
 
 AUTHOR = 'guchio3'
 SITENAME = 'guchiBLO'
-SITEURL = 'https://guchio3.github.io/guchiBLO'
+SITEURL = ''
 
 PATH = 'content'
+OUTPUT_PATH = 'docs'
 
 TIMEZONE = 'Asia/Tokyo'
+DEFAULT_DATE = 'fs'
 
 DEFAULT_LANG = 'ja'
 
@@ -18,6 +20,8 @@ CATEGORY_FEED_ATOM = None
 TRANSLATION_FEED_ATOM = None
 AUTHOR_FEED_ATOM = None
 AUTHOR_FEED_RSS = None
+
+LOAD_CONTENT_CACHE = False
 
 # Blogroll
 LINKS = (('Pelican', 'http://getpelican.com/'),
