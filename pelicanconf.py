@@ -4,7 +4,8 @@ from __future__ import unicode_literals
 
 AUTHOR = 'guchio3'
 SITENAME = 'guchiBLO'
-SITEURL = ''
+# SITEURL = ''
+SITEURL = 'https://guchio3.github.io/guchiBLO'
 THEME = './themes/pelican-themes/Flex'
 SITELOGO = SITEURL + '/images/siteBaseImages/profile.png'
 
