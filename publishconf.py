@@ -10,44 +10,13 @@ import sys
 sys.path.append(os.curdir)
 from pelicanconf import *
 
-RELATIVE_URLS = False
-
-
-AUTHOR = 'guchio3'
-SITENAME = 'guchiBLO'
 SITEURL = 'https://guchio3.github.io/guchiBLO'
-THEME = '.docs/theme'
-#SITELOGO = SITEURL + '/docs/theme/img/profile.png'
-SITELOGO = './docs/theme/img/profile.png'
-
-COPYRIGHT_YEAR = 2017
-
-PATH = 'content'
-OUTPUT_PATH = 'docs'
-
-TIMEZONE = 'Asia/Tokyo'
-DEFAULT_DATE = 'fs'
-
-DEFAULT_LANG = 'ja'
-
+RELATIVE_URLS = False
 
 FEED_ALL_ATOM = 'feeds/all.atom.xml'
 CATEGORY_FEED_ATOM = 'feeds/%s.atom.xml'
 
 DELETE_OUTPUT_DIRECTORY = True
-
-# Blogroll
-LINKS = (
-         ('youtube', 'youtube.com'),
-         )
-
-# Social widget
-SOCIAL = (
-         ('twitter', 'https://twitter.com/ihcgT_Ykchi'),
-#         ('facebook', 'https://www.facebook.com/taguchi.naoya?ref=bookmarks'),
-         ('github', 'https://github.com/guchio3'),
-#         ('linkedin', 'https://www.linkedin.com/in/taguchi-naoya-545403121/'),
-        )
 
 # Following items are often useful when publishing
 
