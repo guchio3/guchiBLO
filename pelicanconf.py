@@ -4,9 +4,10 @@ from __future__ import unicode_literals
 
 AUTHOR = 'guchio3'
 SITENAME = 'guchiBLO'
-SITEURL = 'https://guchio3.github.io/guchiBLO'
+SITEURL = ''
 
 PATH = 'content'
+OUTPUT_PATH = 'docs'
 
 TIMEZONE = 'Asia/Tokyo'
 
