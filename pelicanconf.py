@@ -7,7 +7,8 @@ SITENAME = 'guchiBLO'
 # SITEURL = ''
 SITEURL = 'https://guchio3.github.io/guchiBLO'
 THEME = './themes/pelican-themes/Flex'
-SITELOGO = SITEURL + '/images/siteBaseImages/profile.png'
+# SITELOGO = SITEURL + '/images/siteBaseImages/profile.png'
+SITELOGO = '/images/siteBaseImages/profile.png'
 
 COPYRIGHT_YEAR = 2017
 
