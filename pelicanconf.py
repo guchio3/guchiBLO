@@ -7,6 +7,7 @@ SITENAME = 'guchiBLO'
 SITEURL = ''
 THEME = 'Flex'
 SITELOGO = '/images/siteBaseImages/profile.png'
+FAVICON = SITEURL + '/images/favicon.ico'
 
 COPYRIGHT_YEAR = 2017
 
