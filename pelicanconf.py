@@ -7,7 +7,7 @@ SITENAME = 'guchiBLO'
 SITEURL = ''
 THEME = 'Flex'
 SITELOGO = '/images/siteBaseImages/profile.png'
-FAVICON = SITEURL + '/images/favicon.ico'
+FAVICON = SITEURL + '/images/siteBaseImages/favicon.ico'
 
 COPYRIGHT_YEAR = 2017
 
@@ -30,7 +30,7 @@ LOAD_CONTENT_CACHE = False
 
 # Blogroll
 LINKS = (
-         ('youtube', 'youtube.com'),
+#         ('youtube', 'youtube.com'),
          )
 
 # Social widget

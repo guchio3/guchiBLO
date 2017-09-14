@@ -7,25 +7,27 @@ Slug: ABOUT
 Authors: guchio3
 Summary: Explanation about the author and the contents of this blog
 
-
-# AUTHOR INFORMATION
-## ID
+___
+## **AUTHOR INFORMATION**
+### ID
 guchio3
-## Background
+### Background
 A student in the degree of Master of Engineering, majoring in Machine Learning
-## Place
+### Place
 Tokyo
-## Hobbies
+### Hobbies
 American Dramas, Programmings, Foreign travels, etc...
  
 
 ___
-# WHAT'RE IN THIS BLOG (CATEGORIES AND THE CONTENTS OF THEM)
-## [Author]({tag}About)
+## **CATEGORIES AND THE CONTENTS OF THEM)**
+### [Author (JP/EN)]({category}Author)
 About Personal things, Everyday life, etc...
-## Research
+### [Research (JP/EN)]({category}Research)
 About research (Machine Learning, Natural Language Processing, Database, etc...)
-## [Programming]({category}Programming)
+### [Programming (JP/EN)]({category}Programming)
 About programming (Linux, Python, C++, etc...)
-## Cooking
+### [Cooking (EN)]({category}Cooking)
 About cooking (Japanese food, Chinese food, Italian food, etc...)
+### [English Learning (JP)]({category}English Learning)
+About English learning

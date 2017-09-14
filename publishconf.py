@@ -13,7 +13,7 @@ from pelicanconf import *
 SITEURL = 'https://guchio3.github.io/guchiBLO'
 # SITELOGO = '/images/siteBaseImages/profile.png'
 SITELOGO = SITEURL + '/images/siteBaseImages/profile.png'
-FAVICON = SITEURL + '/images/favicon.ico'
+FAVICON = SITEURL + '/images/siteBaseImages/favicon.ico'
 RELATIVE_URLS = False
 
 FEED_ALL_ATOM = 'feeds/all.atom.xml'
