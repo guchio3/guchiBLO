@@ -66,7 +66,7 @@ SOCIAL = (
 DEFAULT_PAGINATION = 10
 
 # Settings only for pelican-twitchy
-HIDE_SITENAME = False
+HIDE_SITENAME = True
 
 
 # Uncomment following line if you want document-relative URLs when developing
