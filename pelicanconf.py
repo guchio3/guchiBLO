@@ -27,6 +27,7 @@ DEFAULT_LANG = 'ja'
 
 # theme
 THEME = 'pelican-twitchy' 
+THEME = 'Flex' 
 #BOOTSTRAP_THEME = 'sandstone'
 #PYGMENTS_STYLE = 'colorful'
 
