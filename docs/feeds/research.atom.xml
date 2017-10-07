@@ -41,18 +41,7 @@
 &lt;p&gt;上記の内容から、この提案手法が Prefix や Suffix といった形態素情報を加味した分散表現が可能であり、また各 n-gram の分散表現学習さえ行えてしまえば未知語への対応も可能なことがわかる。&lt;/p&gt;
 &lt;hr&gt;
 &lt;h1&gt;Discussion&lt;/h1&gt;
-&lt;p&gt;初記事です！文章が拙いのは今後改善されていくはずなのでご容赦を...&lt;/p&gt;
-&lt;p&gt;Character n-gram ベースで分散表現をするだけという非常にシンプルなアイデアですが、モチベーションはしっかりしていて結果も伴っているのでその点すごいという印象。論文もきれいに書いていて見習いたいと思いました。&lt;br&gt;
-ただアイデア自体は何度か見かけたことのあるものなので ACL に通るほどのものかという点には若干疑問も...&lt;/p&gt;
-&lt;p&gt;分散表現系の研究は人間の直感を１つの指標として研究が行われる点が私には面白く感じられます。
-以前インターンシップで扱ったのですが、当時機械学習を始めたばかりの私にとっては Skip-gram で最終的に利用するのがネットワークの一部のみという点が非常にトリッキーに感じました... (あまり周囲で同様の感想は聞かないですが :P)&lt;/p&gt;
 &lt;p&gt;また面白いネタを見つけ次第随時更新していきます！&lt;/p&gt;
-&lt;h3&gt;todo&lt;/h3&gt;
-&lt;ul&gt;
-&lt;li&gt;tex 対応&lt;/li&gt;
-&lt;li&gt;ロゴ対応&lt;/li&gt;
-&lt;li&gt;bibtex 対応&lt;/li&gt;
-&lt;/ul&gt;
 &lt;hr&gt;
 &lt;h1&gt;References&lt;/h1&gt;
 &lt;p&gt;&lt;a href="https://pdfs.semanticscholar.org/e2db/a792360873aef125572812f3673b1a85d850.pdf"&gt;Original Paper&lt;/a&gt;&lt;/p&gt;
