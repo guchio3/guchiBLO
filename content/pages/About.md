@@ -1,8 +1,8 @@
-Title: About
-Tags: About
+Title: ABOUT
+Tags: ABOUT
 Date: 2017-07-29 16:00
 Modified: 2017-07-29 16:00
-Slug: About
+Slug: ABOUT
 Authors: guchio3
 Summary: Explanation about the author and the contents of this blog
 
