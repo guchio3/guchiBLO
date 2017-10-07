@@ -2,96 +2,278 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-  <link href='//fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700,400italic' rel='stylesheet' type='text/css'>
-
-    <link rel="stylesheet" type="text/css" href="https://guchio3.github.io/guchiBLO/theme/stylesheet/style.min.css">
-
-  <link rel="stylesheet" type="text/css" href="https://guchio3.github.io/guchiBLO/theme/pygments/github.min.css">
-  <link rel="stylesheet" type="text/css" href="https://guchio3.github.io/guchiBLO/theme/font-awesome/css/font-awesome.min.css">
-
-
-    <link href="https://guchio3.github.io/guchiBLO/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="guchiBLO Atom">
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="author" content="guchio3" />
+        <meta name="description" content="A JAPANESE BLOG by GUCHIO (&lt;a href=&#34;/pages/About.html&#34;&gt;about&lt;/a&gt;)" />
 
 
-    <link rel="shortcut icon" href="https://guchio3.github.io/guchiBLO/images/favicon.ico" type="image/x-icon">
-    <link rel="icon" href="https://guchio3.github.io/guchiBLO/images/favicon.ico" type="image/x-icon">
+    <title>guchiBLO</title>
 
-  <meta charset="utf-8" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <meta name="HandheldFriendly" content="True" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="robots" content="" />
+        <link rel="stylesheet" href="/theme/css/bootstrap.min.css" type="text/css" />
 
+    <link href="/theme/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="/theme/css/pygments/native.css" rel="stylesheet" />
+    
+    <link href="/theme/css/pelican-twitchy.min.css" rel="stylesheet" />
 
-    <meta name="author" content="guchio3" />
-    <meta name="description" content="" />
-<meta property="og:site_name" content="guchiBLO"/>
-<meta property="og:type" content="blog"/>
-<meta property="og:title" content="guchiBLO"/>
-<meta property="og:description" content=""/>
-<meta property="og:locale" content="en_US"/>
-<meta property="og:url" content="https://guchio3.github.io/guchiBLO"/>
-<meta property="og:image" content="https://guchio3.github.io/guchiBLO/images/siteBaseImages/profile.png">
-
-  <title>guchiBLO</title>
-
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    
+    <!-- Feeds -->
 </head>
-<body>
-  <aside>
-    <div>
-      <a href="https://guchio3.github.io/guchiBLO">
-        <img src="https://guchio3.github.io/guchiBLO/images/siteBaseImages/profile.png" alt="" title="">
-      </a>
-      <h1><a href="https://guchio3.github.io/guchiBLO"></a></h1>
+<body data-spy="scroll" data-target="#scrollspy">
+    <div id="wrapper">
+        <!-- Sidebar -->
+        <div id="sidebar-wrapper-small" class="twitchy-background">
+            <ul id="accordion-small" class="sidebar-nav sidebar-nav-small">
+                <li>
+        <a href="" title="guchiBLO" class="collapsed">
+            <span class="glyphicon glyphicon-home"></span>
+        </a>
+    </li>
+                <li class="nav-divider"></li>
+                <li>
+        <a href="/archives.html" title="Recent Articles" class="collapsed">
+            <span class="glyphicon glyphicon-th-list"></span>
+        </a>
+    </li>
+                
+                <li class="nav-divider"></li>
+                <li>
+                    <a data-toggle="collapse" data-parent="#accordion-small" href="#collapse-social-small" title="Social" class="collapsed">
+                        <i class="fa fa-users padding-small"></i>
+                    </a>
+                </li>
+                <li class="panel anti-panel"><ul id="collapse-social-small" class="collapse ">
+                    <li>
+                        <a href="https://github.com/guchio3" title="github"><i class="fa fa-github-square fa-lg padding-small"></i></a>
+                    </li>
+                    <li>
+                        <a href="https://www.linkedin.com/in/taguchi-naoya-545403121/" title="linkedin"><i class="fa fa-linkedin-square fa-lg padding-small"></i></a>
+                    </li>
+                    <li>
+                        <a href="https://twitter.com/ihcgT_Ykchi" title="twitter"><i class="fa fa-twitter-square fa-lg padding-small"></i></a>
+                    </li>
+                </ul></li>
+                <li class="nav-divider"></li>
+                <li>
+        <a href="#" title="Back to top" class="collapsed">
+            <span class="fa fa-arrow-up"></span>
+        </a>
+    </li>
+            </ul>
+        </div>
+        <div id="sidebar-wrapper" class="twitchy-background">
+            <ul id="accordion" class="sidebar-nav">
+                <li class="sidebar-brand">
+                    <a href="/">
+<img src="//images/siteBaseImages/guchiBLO.png" width="200" alt="Sitelogo"/>                             <span class="glyphicon glyphicon-home padding-small"></span>
+                            guchiBLO
+                    </a>
+                </li>
+                    <li>
+                        <a href="/archives.html">
+                            <span class="glyphicon glyphicon-th-list padding-small"></span>
+                            Recent Articles
+                        </a>
+                    </li>
+                <li class="nav-divider"></li>
+                <li>
+                    <a data-toggle="collapse" data-parent="#accordion" href="#collapse-social">
+                        <i class="fa fa-users padding-small"></i>
+                        Contact
+                    </a>
+                </li>
+                <li class="panel anti-panel"><ul id="collapse-social" class="sidebar_submenu collapse ">
+                    <li>
+                        <a href="https://github.com/guchio3" title="github">
+                            <i class="fa fa-github-square fa-lg padding-small"></i>
+                            github
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.linkedin.com/in/taguchi-naoya-545403121/" title="linkedin">
+                            <i class="fa fa-linkedin-square fa-lg padding-small"></i>
+                            linkedin
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://twitter.com/ihcgT_Ykchi" title="twitter">
+                            <i class="fa fa-twitter-square fa-lg padding-small"></i>
+                            twitter
+                        </a>
+                    </li>
+                </ul></li>
+                
+                <li class="nav-divider"></li>
+                <li>
+                    <a data-toggle="collapse" data-parent="#accordion" href="#collapse-pages">
+                        <i class="fa fa-folder-open padding-small"></i>
+                        Pages
+                    </a>
+                </li>
+                <li class="panel anti-panel"><ul id="collapse-pages" class="sidebar_submenu collapse ">
+                    <li>
+                        <a href="/pages/About.html">
+                            <i class="fa fa-file-text padding-small"></i>
+                            About
+                        </a>
+                    </li>
+                </ul></li>
+                
+                <li class="nav-divider"></li>
+                <li>
+                    <a data-toggle="collapse" data-parent="#accordion" href="#collapse-categories">
+                        <i class="fa fa-folder-open padding-small"></i>
+                        Categories
+                    </a>
+                </li>
+                <li class="panel anti-panel"><ul id="collapse-categories" class="sidebar_submenu collapse ">
+                    <li >
+                        <a href="/category/programming.html">
+                            <i class="fa fa-folder-open padding-small"></i>
+                            Programming
+                            <span class="badge pull-right categorybadge">1</span>
+                        </a>
+                    </li>
+                    <li >
+                        <a href="/category/research.html">
+                            <i class="fa fa-folder-open padding-small"></i>
+                            Research
+                            <span class="badge pull-right categorybadge">1</span>
+                        </a>
+                    </li>
+                </ul></li>
+                
+            </ul>
+        </div>
+        <!-- /#sidebar-wrapper -->
+        <!-- open/close sidebar -->
+        <a href="#menu-toggle" class="btn btn-default" id="menu-toggle">
+            <span id="right-arrow" class="glyphicon glyphicon-chevron-right"  title="expand sidebar"></span>
+            <span id="left-arrow" class="glyphicon glyphicon-chevron-left" title="minimize sidebar"></span>
+        </a>
+       <!-- /open/close sidebar -->
 
-
-      <nav>
-        <ul class="list">
-          <li><a href="https://guchio3.github.io/guchiBLO/pages/ABOUT.html#ABOUT">ABOUT</a></li>
-
-          <li><a href="youtube.com" target="_blank">youtube</a></li>
-        </ul>
-      </nav>
-
-      <ul class="social">
-        <li><a class="sc-twitter" href="https://twitter.com/ihcgT_Ykchi" target="_blank"><i class="fa fa-twitter"></i></a></li>
-        <li><a class="sc-github" href="https://github.com/guchio3" target="_blank"><i class="fa fa-github"></i></a></li>
-      </ul>
+        <!-- Page Content -->
+        <div id="page-content-wrapper">
+            <div class="container-fluid">
+<section id="content" class="body">
+    <div class="row">
+        <div class="col-lg-9">
+            <div class="jumbotron">  
+                <div class="row">
+                    <div class="col-lg-12">
+                        <h1>guchiBLO</h1>
+                        <p>A JAPANESE BLOG by GUCHIO (<a href="/pages/About.html">about</a>)</p>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
+    <div class="row">
+        <div class="col-lg-9">
+            <h2>Recent Articles:</h2>
+        </div>
+    </div>
+</section>
+<div class="row">
+    <div class="col-lg-9">
+            <article>
+                <h2>
+                    <a href="/2017/10/08/Indexing_Theano_Tensor/">Indexing Theano Tensor</a>
+<div class="post-info">
+    <div class="publish-info-block">
+        <small>
+            <span class="published">
+                <i class="fa fa-calendar padding-small"></i><time datetime="2017-10-08T00:00:00+09:00"> 2017-10-08</time>
+            </span>
+            <span class="category">
+                <i class="fa fa-folder-open padding-small"></i><a href="/category/programming.html">Programming</a>
+            </span>
+            <span class="tags">
+                <i class="fa fa-tags padding-small"></i>
+                <a href="/tag/theano.html">Theano</a> /                 <a href="/tag/machine-learning.html">Machine Learning</a> /                 <a href="/tag/distributed-representation.html">Distributed Representation</a>            </span>
+        </small>
+    </div>
+</div><!-- /.post-info -->                </h2>
+                <div class="summary">
+                    <p>Theano tensor を条件に基いて indexing する方法</p>
+                </div>
+            </article>
+            <hr/>
+            <article>
+                <h2>
+                    <a href="/2017/09/24/Enriching_Word_Vectors_with_Subword_Information/">Enriching Word Vectors with Subword Information</a>
+<div class="post-info">
+    <div class="publish-info-block">
+        <small>
+            <span class="published">
+                <i class="fa fa-calendar padding-small"></i><time datetime="2017-09-24T10:00:00+09:00"> 2017-09-24</time>
+            </span>
+            <span class="category">
+                <i class="fa fa-folder-open padding-small"></i><a href="/category/research.html">Research</a>
+            </span>
+            <span class="tags">
+                <i class="fa fa-tags padding-small"></i>
+                <a href="/tag/papers.html">Papers</a> /                 <a href="/tag/machine-learning.html">Machine Learning</a> /                 <a href="/tag/distributed-representation.html">Distributed Representation</a>            </span>
+        </small>
+    </div>
+</div><!-- /.post-info -->                </h2>
+                <div class="summary">
+                    <p>構成文字を考慮した新しい単語の分散表現生成手法</p>
+                </div>
+            </article>
+        <div class="btn-more text-right">
+            <a class="btn btn-default btn-xs twitchy-background" href="/archives.html">
+                View all Articles ...
+            </a>
+        </div>
+    </div>
+</div>
+<footer>
+    <hr>
+    <div class="row">
+        <div class="col-lg-9 text-center">
+            <p><small>
+                Built by <a href="http://docs.getpelican.com/en/latest">Pelican</a> / <a href="https://github.com/ingwinlu/pelican-twitchy">pelican-twitchy</a>
+                &middot;                    &copy; 2017 guchio3
+            </small></p>
+        </div>
+    </div>
+</footer>            </div>
+        </div>
+        <!-- /#page-content-wrapper -->
+    </div>
+    <!-- /#wrapper -->
+    <!-- jQuery Version 1.11.2 -->
+    <script src="/theme/js/jquery-1.11.2.min.js"></script>
+    <!-- Bootstrap Core JavaScript -->
+    <script src="/theme/js/bootstrap.min.js"></script>
+    <!-- twitchy Script -->
+    <script src="/theme/js/pelican_twitchy.min.js"></script>
+<script>
+    function FadeInOnScroll(ObjectList){
+        ObjectList.each(function(i) {
+            var bottom_of_object = $(this).position().top + $(this).outerHeight();
+            var bottom_of_window = $(window).scrollTop() + $(window).height();
 
-
-  </aside>
-  <main>
-
-
-
-
-
-  <div class="pagination">
-  </div>
-
-
-
-
-    <footer>
-<p>&copy; guchio3 2017</p>
-<p>    Powered by <a href="http://getpelican.com" target="_blank">Pelican</a> - <a href="https://github.com/alexandrevicenzi/flex" target="_blank">Flex</a> theme by <a href="http://alexandrevicenzi.com" target="_blank">Alexandre Vicenzi</a>
-</p>    </footer>
-  </main>
-
-
-
-
-
-<script type="application/ld+json">
-{
-  "@context" : "http://schema.org",
-  "@type" : "Blog",
-  "name": " guchiBLO ",
-  "url" : "https://guchio3.github.io/guchiBLO",
-  "image": "https://guchio3.github.io/guchiBLO/images/siteBaseImages/profile.png",
-  "description": ""
-}
+            if( bottom_of_window > bottom_of_object ){
+                $(this).fadeTo(750,1);
+            }
+        });
+    }
+    articles = $("article").fadeTo(0, 0.05);
+    FadeInOnScroll(articles)
+    $(window).scroll(function() {
+        FadeInOnScroll(articles)
+    });
 </script>
 </body>
 </html>
