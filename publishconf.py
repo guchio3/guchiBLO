@@ -29,9 +29,9 @@ DELETE_OUTPUT_DIRECTORY = True
 #PYGMENTS_STYLE = 'colorful'
 
 # dateformat
-DEFAULT_DATE_FORMAT = '%Y-%m-%d'
-DEFAULT_DATE = 'fs'
+#DEFAULT_DATE_FORMAT = '%Y-%m-%d'
+#DEFAULT_DATE = 'fs'
 
 #PAGE_SAVE_AS = ''
-ARTICLE_URL = '{date:%Y}/{date:%m}/{date:%d}/{slug}/'
-ARTICLE_SAVE_AS = '{date:%Y}/{date:%m}/{date:%d}/{slug}/index.html'
+#ARTICLE_URL = '{date:%Y}/{date:%m}/{date:%d}/{slug}/'
+#ARTICLE_SAVE_AS = '{date:%Y}/{date:%m}/{date:%d}/{slug}/index.html'
