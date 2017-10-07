@@ -27,7 +27,6 @@ DEFAULT_LANG = 'ja'
 
 # theme
 THEME = 'pelican-twitchy' 
-STATIC_PATHS = ['static']
 #BOOTSTRAP_THEME = 'sandstone'
 #PYGMENTS_STYLE = 'colorful'
 
