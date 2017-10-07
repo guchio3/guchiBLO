@@ -1,4 +1,4 @@
 *.pyc
+__pycache__
 .*.un~
-output/
 ./docs/Enriching_Word_Vectors_with_Subword_Information.html
