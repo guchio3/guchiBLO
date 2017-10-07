@@ -26,3 +26,12 @@ DELETE_OUTPUT_DIRECTORY = True
 
 #DISQUS_SITENAME = ""
 #GOOGLE_ANALYTICS = ""
+#PYGMENTS_STYLE = 'colorful'
+
+# dateformat
+DEFAULT_DATE_FORMAT = '%Y-%m-%d'
+DEFAULT_DATE = 'fs'
+
+#PAGE_SAVE_AS = ''
+ARTICLE_URL = '{date:%Y}/{date:%m}/{date:%d}/{slug}/'
+ARTICLE_SAVE_AS = '{date:%Y}/{date:%m}/{date:%d}/{slug}/index.html'
