@@ -11,8 +11,8 @@ HOME_PATH = os.environ['HOME']
 PLUGIN_PATHS = [HOME_PATH+'/workspace/blog/pelican-plugins']
 PLUGINS = ['render_math']
 
-#SITELOGO = '/images/siteBaseImages/guchiBLO.png'
-#SITELOGO_SIZE = '200'
+SITELOGO = '/images/siteBaseImages/guchiBLO_temp.png'
+SITELOGO_SIZE = '200'
 SITESUBTITLE = 'A JAPANESE BLOG by GUCHIO (<a href="/pages/About.html">about</a>)'
 FAVICON = SITEURL + '/images/siteBaseImages/favicon.ico'
 
