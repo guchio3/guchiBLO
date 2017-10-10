@@ -1,0 +1,484 @@
+
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="author" content="guchio3" />
+        <meta name="keywords" content="Theano,Machine Learning" />
+        <meta name="description" content="Theano の速度を改良した際のメモ" />
+
+
+    <title>Speeding Up Theano - guchiBLO</title>
+
+        <link rel="stylesheet" href="/theme/css/bootstrap.min.css" type="text/css" />
+
+    <link href="/theme/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="/theme/css/pygments/native.css" rel="stylesheet" />
+    
+    <link href="/theme/css/pelican-twitchy.min.css" rel="stylesheet" />
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    
+    <!-- Feeds -->
+</head>
+<body data-spy="scroll" data-target="#scrollspy">
+    <div id="wrapper">
+        <!-- Sidebar -->
+        <div id="sidebar-wrapper-small" class="twitchy-background">
+            <ul id="accordion-small" class="sidebar-nav sidebar-nav-small">
+                <li>
+        <a href="" title="guchiBLO" class="collapsed">
+            <span class="glyphicon glyphicon-home"></span>
+        </a>
+    </li>
+                <li class="nav-divider"></li>
+                <li>
+        <a href="/archives.html" title="Recent Articles" class="collapsed">
+            <span class="glyphicon glyphicon-th-list"></span>
+        </a>
+    </li>
+                
+                <li class="nav-divider"></li>
+                <li>
+                    <a data-toggle="collapse" data-parent="#accordion-small" href="#collapse-social-small" title="Social" class="collapsed">
+                        <i class="fa fa-users padding-small"></i>
+                    </a>
+                </li>
+                <li class="panel anti-panel"><ul id="collapse-social-small" class="collapse ">
+                    <li>
+                        <a href="https://github.com/guchio3" title="github"><i class="fa fa-github-square fa-lg padding-small"></i></a>
+                    </li>
+                    <li>
+                        <a href="https://twitter.com/ihcgT_Ykchi" title="twitter"><i class="fa fa-twitter-square fa-lg padding-small"></i></a>
+                    </li>
+                </ul></li>
+                <li class="nav-divider"></li>
+                <li>
+        <a href="#" title="Back to top" class="collapsed">
+            <span class="fa fa-arrow-up"></span>
+        </a>
+    </li>
+            </ul>
+        </div>
+        <div id="sidebar-wrapper" class="twitchy-background">
+            <ul id="accordion" class="sidebar-nav">
+                <li class="sidebar-brand">
+                    <a href="/">
+                            <span class="glyphicon glyphicon-home padding-small"></span>
+                            guchiBLO
+                    </a>
+                </li>
+                    <li>
+                        <a href="/archives.html">
+                            <span class="glyphicon glyphicon-th-list padding-small"></span>
+                            Recent Articles
+                        </a>
+                    </li>
+                <li class="nav-divider"></li>
+                <li>
+                    <a data-toggle="collapse" data-parent="#accordion" href="#collapse-social">
+                        <i class="fa fa-users padding-small"></i>
+                        Contact
+                    </a>
+                </li>
+                <li class="panel anti-panel"><ul id="collapse-social" class="sidebar_submenu collapse ">
+                    <li>
+                        <a href="https://github.com/guchio3" title="github">
+                            <i class="fa fa-github-square fa-lg padding-small"></i>
+                            github
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://twitter.com/ihcgT_Ykchi" title="twitter">
+                            <i class="fa fa-twitter-square fa-lg padding-small"></i>
+                            twitter
+                        </a>
+                    </li>
+                </ul></li>
+                
+                <li class="nav-divider"></li>
+                <li>
+                    <a data-toggle="collapse" data-parent="#accordion" href="#collapse-pages">
+                        <i class="fa fa-folder-open padding-small"></i>
+                        Pages
+                    </a>
+                </li>
+                <li class="panel anti-panel"><ul id="collapse-pages" class="sidebar_submenu collapse ">
+                    <li>
+                        <a href="/pages/ABOUT.html">
+                            <i class="fa fa-file-text padding-small"></i>
+                            ABOUT
+                        </a>
+                    </li>
+                </ul></li>
+                
+                <li class="nav-divider"></li>
+                <li>
+                    <a data-toggle="collapse" data-parent="#accordion" href="#collapse-categories">
+                        <i class="fa fa-folder-open padding-small"></i>
+                        Categories
+                    </a>
+                </li>
+                <li class="panel anti-panel"><ul id="collapse-categories" class="sidebar_submenu collapse ">
+                    <li class="active">
+                        <a href="/category/programming.html">
+                            <i class="fa fa-folder-open padding-small"></i>
+                            Programming
+                            <span class="badge pull-right categorybadge">2</span>
+                        </a>
+                    </li>
+                </ul></li>
+                
+            </ul>
+        </div>
+        <!-- /#sidebar-wrapper -->
+        <!-- open/close sidebar -->
+        <a href="#menu-toggle" class="btn btn-default" id="menu-toggle">
+            <span id="right-arrow" class="glyphicon glyphicon-chevron-right"  title="expand sidebar"></span>
+            <span id="left-arrow" class="glyphicon glyphicon-chevron-left" title="minimize sidebar"></span>
+        </a>
+       <!-- /open/close sidebar -->
+
+        <!-- Page Content -->
+        <div id="page-content-wrapper">
+            <div class="container-fluid">
+<section id="content">
+    <article>
+        <div class="row">
+            <div class="col-lg-9">
+                <header class="page-header">
+                    <h1>
+                        <a href="/Speeding_Up_Theano.html"
+                           rel="bookmark"
+                           title="Permalink to Speeding Up Theano">
+                            Speeding Up Theano
+                        </a>
+                        <small>
+<div class="post-info">
+    <div class="publish-info-block">
+        <small>
+            <span class="published">
+                <i class="fa fa-calendar padding-small"></i><time datetime="2017-10-09T00:00:00+09:00"> 月 09 10月 2017</time>
+            </span>
+            <span class="category">
+                <i class="fa fa-folder-open padding-small"></i><a href="/category/programming.html">Programming</a>
+            </span>
+            <span class="tags">
+                <i class="fa fa-tags padding-small"></i>
+                <a href="/tag/theano.html">Theano</a> /                 <a href="/tag/machine-learning.html">Machine Learning</a>            </span>
+        </small>
+    </div>
+</div><!-- /.post-info -->                        </small>
+                    </h1>
+                </header>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-9">
+                <div class="entry-content">
+                    <h1>Outline</h1>
+<p>Theano の速度向上のため行ったことをメモ。</p>
+<p>なお、使用した Theano のバージョンは 0.8.2 であり、os 情報は以下の通り。</p>
+<div class="highlight"><pre><span class="code-line"><span></span>$ cat /proc/version</span>
+<span class="code-line">Linux version <span class="m">4</span>.4.0-93-generic <span class="o">(</span>buildd@lgw01-03<span class="o">)</span> <span class="o">(</span>gcc version <span class="m">5</span>.4.0 <span class="m">20160609</span> <span class="o">(</span>Ubuntu <span class="m">5</span>.4.0-6ubuntu1~16.04.4<span class="o">)</span> <span class="o">)</span> <span class="c1">#116-Ubuntu SMP Fri Aug 11 21:17:51 UTC 2017</span></span>
+</pre></div>
+
+
+<hr>
+<h1>Profile the program</h1>
+<p>Theano には <a href="http://deeplearning.net/software/theano_versions/0.8.X/tutorial/profiling.html">profile 機能</a>があり、どの部分が速度上 (他メモリ使用量なども確認できる) のボトルネックかを簡単に確認できる。<br>
+目的によって様々な利用法があるが、私は以下のように利用した。</p>
+<p>まず、プログラム内で </p>
+<div class="highlight"><pre><span class="code-line"><span></span><span class="n">theano</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">profile</span> <span class="o">=</span> <span class="bp">True</span></span>
+</pre></div>
+
+
+<p>とする。これにより theano.config が設定できる。<a href="http://deeplearning.net/software/theano_versions/0.8.X/library/config.html?highlight=profile#config.profile">なお theano.config の状態は以下のコマンドで確認すれば良い。</a></p>
+<div class="highlight"><pre><span class="code-line"><span></span>$ python -c <span class="s1">&#39;import theano; print(theano.config)&#39;</span> <span class="p">|</span> less</span>
+</pre></div>
+
+
+<p>私の場合、<strong>系列データを扱う Neural Network </strong>を実装しており、これの学習を扱う theano.function である train_fn が計算量のボトルネックなことが明らかだったため、<a href="http://deeplearning.net/software/theano_versions/0.8.X/tutorial/profiling.html">Profiling Theano function</a> を参考に theano.function の profile.print_summary() を利用して以下のように profiling を行った。</p>
+<div class="highlight"><pre><span class="code-line"><span></span><span class="k">print</span><span class="p">(</span><span class="n">train_fn</span><span class="o">.</span><span class="n">profile</span><span class="o">.</span><span class="n">print_summary</span><span class="p">())</span></span>
+</pre></div>
+
+
+<p>以下が結果の一部。</p>
+<div class="highlight"><pre><span class="code-line"><span></span>.</span>
+<span class="code-line">.</span>
+<span class="code-line">.</span>
+</pre></div>
+
+
+<p>この結果より、私のプログラムの速度が遅い一番の原因は系列データを扱う際に利用している scan_fn 内において grad を計算する部分だと言うことが分かる。profile には grad_of_scan_fn の詳細も記載されており、私の場合以下のようになっていた。</p>
+<div class="highlight"><pre><span class="code-line"><span></span>Scan Op profiling <span class="o">(</span> grad_of_scan_fn<span class="p">&amp;</span>grad_of_scan_fn <span class="o">)</span></span>
+<span class="code-line"><span class="o">==================</span></span>
+<span class="code-line">  Message: None</span>
+<span class="code-line">  Time in <span class="m">100</span> calls of the op <span class="o">(</span><span class="k">for</span> a total of <span class="m">8674</span> steps<span class="o">)</span> <span class="m">2</span>.897580e+01s</span>
+<span class="code-line"></span>
+<span class="code-line">  Total <span class="nb">time</span> spent in calling the VM <span class="m">2</span>.775752e+01s <span class="o">(</span><span class="m">95</span>.796%<span class="o">)</span></span>
+<span class="code-line">  Total overhead <span class="o">(</span>computing slices..<span class="o">)</span> <span class="m">1</span>.218287e+00s <span class="o">(</span><span class="m">4</span>.204%<span class="o">)</span></span>
+<span class="code-line"></span>
+<span class="code-line">Class</span>
+<span class="code-line">---</span>
+<span class="code-line">&lt;% time&gt; &lt;sum %&gt; &lt;apply time&gt; &lt;<span class="nb">time</span> per call&gt; &lt;type&gt; &lt;<span class="c1">#call&gt; &lt;#apply&gt; &lt;Class name&gt;</span></span>
+<span class="code-line">  <span class="m">18</span>.4%    <span class="m">18</span>.4%       <span class="m">4</span>.680s       <span class="m">5</span>.40e-05s     C    <span class="m">86740</span>      <span class="m">10</span>   theano.tensor.nnet.conv.ConvOp</span>
+<span class="code-line">  <span class="m">17</span>.2%    <span class="m">35</span>.7%       <span class="m">4</span>.375s       <span class="m">1</span>.26e-06s     C   <span class="m">3478274</span>     <span class="m">401</span>   theano.tensor.elemwise.Elemwise</span>
+<span class="code-line">  <span class="m">14</span>.1%    <span class="m">49</span>.8%       <span class="m">3</span>.580s       <span class="m">2</span>.58e-05s     Py  <span class="m">138784</span>      <span class="m">16</span>   theano.tensor.basic.Split</span>
+<span class="code-line">  <span class="m">10</span>.2%    <span class="m">60</span>.0%       <span class="m">2</span>.597s       <span class="m">5</span>.99e-06s     Py  <span class="m">433700</span>      <span class="m">50</span>   theano.tensor.blas.Dot22</span>
+<span class="code-line">   <span class="m">8</span>.0%    <span class="m">68</span>.0%       <span class="m">2</span>.026s       <span class="m">1</span>.56e-05s     Py  <span class="m">130110</span>      <span class="m">15</span>   theano.tensor.blas.BatchedDot</span>
+<span class="code-line">   <span class="m">5</span>.1%    <span class="m">73</span>.1%       <span class="m">1</span>.282s       <span class="m">1</span>.85e-05s     Py   <span class="m">69392</span>       <span class="m">8</span>   theano.tensor.blas.Gemv</span>
+<span class="code-line">   <span class="m">3</span>.6%    <span class="m">76</span>.7%       <span class="m">0</span>.911s       <span class="m">1</span>.64e-06s     C   <span class="m">555136</span>      <span class="m">64</span>   theano.tensor.elemwise.Sum</span>
+<span class="code-line">   <span class="m">3</span>.2%    <span class="m">79</span>.8%       <span class="m">0</span>.811s       <span class="m">2</span>.34e-05s     Py   <span class="m">34696</span>       <span class="m">4</span>   theano.tensor.subtensor.AdvancedIncSubtensor</span>
+<span class="code-line">   <span class="m">2</span>.8%    <span class="m">82</span>.6%       <span class="m">0</span>.703s       <span class="m">2</span>.03e-05s     C    <span class="m">34696</span>       <span class="m">4</span>   theano.tensor.nnet.nnet.Softmax</span>
+<span class="code-line">   <span class="m">2</span>.5%    <span class="m">85</span>.2%       <span class="m">0</span>.643s       <span class="m">1</span>.24e-05s     Py   <span class="m">52044</span>       <span class="m">6</span>   theano.tensor.blas.Gemm</span>
+<span class="code-line">   <span class="m">2</span>.5%    <span class="m">87</span>.7%       <span class="m">0</span>.634s       <span class="m">5</span>.22e-07s     C   <span class="m">1214360</span>     <span class="m">140</span>   theano.tensor.elemwise.DimShuffle</span>
+<span class="code-line">   <span class="m">2</span>.2%    <span class="m">89</span>.8%       <span class="m">0</span>.551s       <span class="m">7</span>.94e-06s     Py   <span class="m">69392</span>       <span class="m">8</span>   theano.tensor.blas.Dot22Scalar</span>
+<span class="code-line">   <span class="m">2</span>.1%    <span class="m">91</span>.9%       <span class="m">0</span>.528s       <span class="m">5</span>.39e-07s     C   <span class="m">980162</span>     <span class="m">113</span>   theano.tensor.basic.Reshape</span>
+<span class="code-line">   <span class="m">1</span>.4%    <span class="m">93</span>.3%       <span class="m">0</span>.351s       <span class="m">5</span>.47e-07s     C   <span class="m">641876</span>      <span class="m">74</span>   theano.tensor.subtensor.Subtensor</span>
+<span class="code-line">   <span class="m">1</span>.3%    <span class="m">94</span>.6%       <span class="m">0</span>.339s       <span class="m">1</span>.95e-05s     Py   <span class="m">17348</span>       <span class="m">2</span>   theano.tensor.subtensor.AdvancedSubtensor</span>
+<span class="code-line">   <span class="m">1</span>.1%    <span class="m">95</span>.7%       <span class="m">0</span>.271s       <span class="m">2</span>.08e-06s     C   <span class="m">130110</span>      <span class="m">15</span>   theano.tensor.basic.Join</span>
+<span class="code-line">   <span class="m">1</span>.0%    <span class="m">96</span>.7%       <span class="m">0</span>.249s       <span class="m">7</span>.18e-06s     C    <span class="m">34696</span>       <span class="m">4</span>   theano.tensor.subtensor.IncSubtensor</span>
+<span class="code-line">   <span class="m">0</span>.5%    <span class="m">97</span>.2%       <span class="m">0</span>.135s       <span class="m">7</span>.81e-06s     Py   <span class="m">17348</span>       <span class="m">2</span>   theano.tensor.basic.ARange</span>
+<span class="code-line">   <span class="m">0</span>.5%    <span class="m">97</span>.7%       <span class="m">0</span>.131s       <span class="m">7</span>.55e-06s     C    <span class="m">17348</span>       <span class="m">2</span>   theano.tensor.elemwise.ProdWithoutZeros</span>
+<span class="code-line">   <span class="m">0</span>.4%    <span class="m">98</span>.2%       <span class="m">0</span>.111s       <span class="m">3</span>.45e-07s     C   <span class="m">320938</span>      <span class="m">37</span>   theano.tensor.opt.MakeVector</span>
+<span class="code-line">   ... <span class="o">(</span>remaining <span class="m">8</span> Classes account <span class="k">for</span>   <span class="m">1</span>.84%<span class="o">(</span><span class="m">0</span>.47s<span class="o">)</span> of the runtime<span class="o">)</span></span>
+<span class="code-line"></span>
+<span class="code-line">Ops</span>
+<span class="code-line">---</span>
+<span class="code-line">&lt;% time&gt; &lt;sum %&gt; &lt;apply time&gt; &lt;<span class="nb">time</span> per call&gt; &lt;type&gt; &lt;<span class="c1">#call&gt; &lt;#apply&gt; &lt;Op name&gt;</span></span>
+<span class="code-line">  <span class="m">10</span>.2%    <span class="m">10</span>.2%       <span class="m">2</span>.597s       <span class="m">5</span>.99e-06s     Py    <span class="m">433700</span>       <span class="m">50</span>   Dot22</span>
+<span class="code-line">   <span class="m">8</span>.5%    <span class="m">18</span>.8%       <span class="m">2</span>.162s       <span class="m">2</span>.49e-05s     Py    <span class="m">86740</span>       <span class="m">10</span>   Split<span class="o">{</span><span class="m">4</span><span class="o">}</span></span>
+<span class="code-line">   <span class="m">8</span>.0%    <span class="m">26</span>.7%       <span class="m">2</span>.026s       <span class="m">1</span>.56e-05s     Py    <span class="m">130110</span>       <span class="m">15</span>   BatchedDot</span>
+<span class="code-line">   <span class="m">7</span>.0%    <span class="m">33</span>.7%       <span class="m">1</span>.777s       <span class="m">1</span>.02e-04s     C     <span class="m">17348</span>        <span class="m">2</span>   ConvOp<span class="o">{(</span><span class="s1">&#39;imshp&#39;</span>, <span class="o">(</span><span class="m">4</span>, <span class="m">1</span>, <span class="m">128</span><span class="o">))</span>,<span class="o">(</span><span class="s1">&#39;kshp&#39;</span>, <span class="o">(</span><span class="m">1</span>, <span class="m">128</span><span class="o">))</span>,<span class="o">(</span><span class="s1">&#39;nkern&#39;</span>, <span class="m">1</span><span class="o">)</span>,<span class="o">(</span><span class="s1">&#39;bsize&#39;</span>, <span class="m">4</span><span class="o">)</span>,<span class="o">(</span><span class="s1">&#39;dx&#39;</span>, <span class="m">1</span><span class="o">)</span>,<span class="o">(</span><span class="s1">&#39;dy&#39;</span>, <span class="m">1</span><span class="o">)</span>,<span class="o">(</span><span class="s1">&#39;out_mode&#39;</span>, <span class="s1">&#39;full&#39;</span><span class="o">)</span>,<span class="o">(</span><span class="s1">&#39;unroll_batch&#39;</span>, <span class="m">4</span><span class="o">)</span>,<span class="o">(</span><span class="s1">&#39;unroll_kern&#39;</span>, <span class="m">1</span><span class="o">)</span>,<span class="o">(</span><span class="s1">&#39;unroll_patch&#39;</span>, False<span class="o">)</span>,<span class="o">(</span><span class="s1">&#39;imshp_logical&#39;</span>, <span class="o">(</span><span class="m">4</span>, <span class="m">1</span>, <span class="m">128</span><span class="o">))</span>,<span class="o">(</span><span class="s1">&#39;kshp_logical&#39;</span>, <span class="o">(</span><span class="m">1</span>, <span class="m">128</span><span class="o">))</span>,<span class="o">(</span><span class="s1">&#39;kshp_logical_top_aligned&#39;</span>, True<span class="o">)}</span></span>
+<span class="code-line">   <span class="m">7</span>.0%    <span class="m">40</span>.7%       <span class="m">1</span>.771s       <span class="m">1</span>.02e-04s     C     <span class="m">17348</span>        <span class="m">2</span>   ConvOp<span class="o">{(</span><span class="s1">&#39;imshp&#39;</span>, <span class="o">(</span><span class="m">4</span>, <span class="m">1</span>, <span class="m">255</span><span class="o">))</span>,<span class="o">(</span><span class="s1">&#39;kshp&#39;</span>, <span class="o">(</span><span class="m">1</span>, <span class="m">128</span><span class="o">))</span>,<span class="o">(</span><span class="s1">&#39;nkern&#39;</span>, <span class="m">4</span><span class="o">)</span>,<span class="o">(</span><span class="s1">&#39;bsize&#39;</span>, <span class="m">1</span><span class="o">)</span>,<span class="o">(</span><span class="s1">&#39;dx&#39;</span>, <span class="m">1</span><span class="o">)</span>,<span class="o">(</span><span class="s1">&#39;dy&#39;</span>, <span class="m">1</span><span class="o">)</span>,<span class="o">(</span><span class="s1">&#39;out_mode&#39;</span>, <span class="s1">&#39;valid&#39;</span><span class="o">)</span>,<span class="o">(</span><span class="s1">&#39;unroll_batch&#39;</span>, None<span class="o">)</span>,<span class="o">(</span><span class="s1">&#39;unroll_kern&#39;</span>, None<span class="o">)</span>,<span class="o">(</span><span class="s1">&#39;unroll_patch&#39;</span>, True<span class="o">)</span>,<span class="o">(</span><span class="s1">&#39;imshp_logical&#39;</span>, <span class="o">(</span><span class="m">4</span>, <span class="m">1</span>, <span class="m">255</span><span class="o">))</span>,<span class="o">(</span><span class="s1">&#39;kshp_logical&#39;</span>, <span class="o">(</span><span class="m">1</span>, <span class="m">128</span><span class="o">))</span>,<span class="o">(</span><span class="s1">&#39;kshp_logical_top_aligned&#39;</span>, False<span class="o">)}</span></span>
+<span class="code-line">   <span class="m">5</span>.6%    <span class="m">46</span>.3%       <span class="m">1</span>.419s       <span class="m">2</span>.73e-05s     Py    <span class="m">52044</span>        <span class="m">6</span>   Split<span class="o">{</span><span class="m">2</span><span class="o">}</span></span>
+<span class="code-line">   <span class="m">3</span>.8%    <span class="m">50</span>.1%       <span class="m">0</span>.971s       <span class="m">2</span>.24e-05s     Py    <span class="m">43370</span>        <span class="m">5</span>   Gemv<span class="o">{</span>no_inplace<span class="o">}</span></span>
+<span class="code-line">   <span class="m">3</span>.4%    <span class="m">53</span>.6%       <span class="m">0</span>.872s       <span class="m">1</span>.08e-06s     C     <span class="m">806682</span>       <span class="m">93</span>   Elemwise<span class="o">{</span>add,no_inplace<span class="o">}</span></span>
+<span class="code-line">   <span class="m">3</span>.4%    <span class="m">56</span>.9%       <span class="m">0</span>.852s       <span class="m">1</span>.20e-06s     C     <span class="m">711268</span>       <span class="m">82</span>   Elemwise<span class="o">{</span>mul,no_inplace<span class="o">}</span></span>
+<span class="code-line">   <span class="m">3</span>.2%    <span class="m">60</span>.1%       <span class="m">0</span>.811s       <span class="m">2</span>.34e-05s     Py    <span class="m">34696</span>        <span class="m">4</span>   AdvancedIncSubtensor<span class="o">{</span><span class="nv">inplace</span><span class="o">=</span>False,  <span class="nv">set_instead_of_inc</span><span class="o">=</span>False<span class="o">}</span></span>
+<span class="code-line">   <span class="m">2</span>.8%    <span class="m">62</span>.9%       <span class="m">0</span>.703s       <span class="m">2</span>.03e-05s     C     <span class="m">34696</span>        <span class="m">4</span>   Softmax</span>
+<span class="code-line">   <span class="m">2</span>.5%    <span class="m">65</span>.4%       <span class="m">0</span>.643s       <span class="m">1</span>.24e-05s     Py    <span class="m">52044</span>        <span class="m">6</span>   Gemm<span class="o">{</span>inplace<span class="o">}</span></span>
+<span class="code-line">   <span class="m">2</span>.2%    <span class="m">67</span>.6%       <span class="m">0</span>.556s       <span class="m">6</span>.41e-05s     C     <span class="m">8674</span>        <span class="m">1</span>   ConvOp<span class="o">{(</span><span class="s1">&#39;imshp&#39;</span>, <span class="o">(</span><span class="m">1</span>, <span class="m">1</span>, <span class="m">255</span><span class="o">))</span>,<span class="o">(</span><span class="s1">&#39;kshp&#39;</span>, <span class="o">(</span><span class="m">1</span>, <span class="m">128</span><span class="o">))</span>,<span class="o">(</span><span class="s1">&#39;nkern&#39;</span>, <span class="m">4</span><span class="o">)</span>,<span class="o">(</span><span class="s1">&#39;bsize&#39;</span>, <span class="m">4</span><span class="o">)</span>,<span class="o">(</span><span class="s1">&#39;dx&#39;</span>, <span class="m">1</span><span class="o">)</span>,<span class="o">(</span><span class="s1">&#39;dy&#39;</span>, <span class="m">1</span><span class="o">)</span>,<span class="o">(</span><span class="s1">&#39;out_mode&#39;</span>, <span class="s1">&#39;valid&#39;</span><span class="o">)</span>,<span class="o">(</span><span class="s1">&#39;unroll_batch&#39;</span>, <span class="m">4</span><span class="o">)</span>,<span class="o">(</span><span class="s1">&#39;unroll_kern&#39;</span>, <span class="m">2</span><span class="o">)</span>,<span class="o">(</span><span class="s1">&#39;unroll_patch&#39;</span>, False<span class="o">)</span>,<span class="o">(</span><span class="s1">&#39;imshp_logical&#39;</span>, <span class="o">(</span><span class="m">1</span>, <span class="m">1</span>, <span class="m">255</span><span class="o">))</span>,<span class="o">(</span><span class="s1">&#39;kshp_logical&#39;</span>, <span class="o">(</span><span class="m">1</span>, <span class="m">128</span><span class="o">))</span>,<span class="o">(</span><span class="s1">&#39;kshp_logical_top_aligned&#39;</span>, True<span class="o">)}</span></span>
+<span class="code-line">   <span class="m">2</span>.2%    <span class="m">69</span>.8%       <span class="m">0</span>.551s       <span class="m">7</span>.94e-06s     Py    <span class="m">69392</span>        <span class="m">8</span>   Dot22Scalar</span>
+<span class="code-line">   <span class="m">1</span>.7%    <span class="m">71</span>.4%       <span class="m">0</span>.419s       <span class="m">1</span>.46e-06s     C     <span class="m">286242</span>       <span class="m">33</span>   Sum<span class="o">{</span><span class="nv">axis</span><span class="o">=[</span><span class="m">2</span><span class="o">]</span>, <span class="nv">acc_dtype</span><span class="o">=</span>float64<span class="o">}</span></span>
+<span class="code-line">   <span class="m">1</span>.4%    <span class="m">72</span>.9%       <span class="m">0</span>.357s       <span class="m">2</span>.06e-05s     C     <span class="m">17348</span>        <span class="m">2</span>   ConvOp<span class="o">{(</span><span class="s1">&#39;imshp&#39;</span>, <span class="o">(</span><span class="m">1</span>, <span class="m">1</span>, <span class="m">128</span><span class="o">))</span>,<span class="o">(</span><span class="s1">&#39;kshp&#39;</span>, <span class="o">(</span><span class="m">1</span>, <span class="m">128</span><span class="o">))</span>,<span class="o">(</span><span class="s1">&#39;nkern&#39;</span>, <span class="m">1</span><span class="o">)</span>,<span class="o">(</span><span class="s1">&#39;bsize&#39;</span>, <span class="m">1</span><span class="o">)</span>,<span class="o">(</span><span class="s1">&#39;dx&#39;</span>, <span class="m">1</span><span class="o">)</span>,<span class="o">(</span><span class="s1">&#39;dy&#39;</span>, <span class="m">1</span><span class="o">)</span>,<span class="o">(</span><span class="s1">&#39;out_mode&#39;</span>, <span class="s1">&#39;full&#39;</span><span class="o">)</span>,<span class="o">(</span><span class="s1">&#39;unroll_batch&#39;</span>, None<span class="o">)</span>,<span class="o">(</span><span class="s1">&#39;unroll_kern&#39;</span>, None<span class="o">)</span>,<span class="o">(</span><span class="s1">&#39;unroll_patch&#39;</span>, True<span class="o">)</span>,<span class="o">(</span><span class="s1">&#39;imshp_logical&#39;</span>, <span class="o">(</span><span class="m">1</span>, <span class="m">1</span>, <span class="m">128</span><span class="o">))</span>,<span class="o">(</span><span class="s1">&#39;kshp_logical&#39;</span>, <span class="o">(</span><span class="m">1</span>, <span class="m">128</span><span class="o">))</span>,<span class="o">(</span><span class="s1">&#39;kshp_logical_top_aligned&#39;</span>, True<span class="o">)}</span></span>
+<span class="code-line">   <span class="m">1</span>.3%    <span class="m">74</span>.2%       <span class="m">0</span>.339s       <span class="m">1</span>.95e-05s     Py    <span class="m">17348</span>        <span class="m">2</span>   AdvancedSubtensor</span>
+<span class="code-line">   <span class="m">1</span>.3%    <span class="m">75</span>.5%       <span class="m">0</span>.322s       <span class="m">1</span>.24e-05s     C     <span class="m">26022</span>        <span class="m">3</span>   Elemwise<span class="o">{</span>pow<span class="o">}</span></span>
+<span class="code-line">   <span class="m">1</span>.2%    <span class="m">76</span>.7%       <span class="m">0</span>.311s       <span class="m">1</span>.20e-05s     Py    <span class="m">26022</span>        <span class="m">3</span>   Gemv<span class="o">{</span>inplace<span class="o">}</span></span>
+<span class="code-line">   <span class="m">1</span>.2%    <span class="m">77</span>.8%       <span class="m">0</span>.294s       <span class="m">4</span>.77e-07s     C     <span class="m">615854</span>       <span class="m">71</span>   Reshape<span class="o">{</span><span class="m">2</span><span class="o">}</span></span>
+<span class="code-line">   ... <span class="o">(</span>remaining <span class="m">112</span> Ops account <span class="k">for</span>  <span class="m">22</span>.16%<span class="o">(</span><span class="m">5</span>.62s<span class="o">)</span> of the runtime<span class="o">)</span></span>
+<span class="code-line"></span>
+<span class="code-line">Apply</span>
+<span class="code-line">------</span>
+<span class="code-line">&lt;% time&gt; &lt;sum %&gt; &lt;apply time&gt; &lt;<span class="nb">time</span> per call&gt; &lt;<span class="c1">#call&gt; &lt;id&gt; &lt;Apply name&gt;</span></span>
+<span class="code-line">   <span class="m">3</span>.5%     <span class="m">3</span>.5%       <span class="m">0</span>.889s       <span class="m">1</span>.02e-04s   <span class="m">8674</span>   <span class="m">521</span>   ConvOp<span class="o">{(</span><span class="s1">&#39;imshp&#39;</span>, <span class="o">(</span><span class="m">4</span>, <span class="m">1</span>, <span class="m">128</span><span class="o">))</span>,<span class="o">(</span><span class="s1">&#39;kshp&#39;</span>, <span class="o">(</span><span class="m">1</span>, <span class="m">128</span><span class="o">))</span>,<span class="o">(</span><span class="s1">&#39;nkern&#39;</span>, <span class="m">1</span><span class="o">)</span>,<span class="o">(</span><span class="s1">&#39;bsize&#39;</span>, <span class="m">4</span><span class="o">)</span>,<span class="o">(</span><span class="s1">&#39;dx&#39;</span>, <span class="m">1</span><span class="o">)</span>,<span class="o">(</span><span class="s1">&#39;dy&#39;</span>, <span class="m">1</span><span class="o">)</span>,<span class="o">(</span><span class="s1">&#39;out_mode&#39;</span>, <span class="s1">&#39;full&#39;</span><span class="o">)</span>,<span class="o">(</span><span class="s1">&#39;unroll_batch&#39;</span>, <span class="m">4</span><span class="o">)</span>,<span class="o">(</span><span class="s1">&#39;unroll_kern&#39;</span>, <span class="m">1</span><span class="o">)</span>,<span class="o">(</span><span class="s1">&#39;unroll_patch&#39;</span>, False<span class="o">)</span>,<span class="o">(</span><span class="s1">&#39;imshp_logical&#39;</span>, <span class="o">(</span><span class="m">4</span>, <span class="m">1</span>, <span class="m">128</span><span class="o">))</span>,<span class="o">(</span><span class="s1">&#39;kshp_logical&#39;</span>, <span class="o">(</span><span class="m">1</span>, <span class="m">128</span><span class="o">))</span>,<span class="o">(</span><span class="s1">&#39;kshp_logical_top_aligned&#39;</span>, True<span class="o">)}(</span>AdvancedIncSubtensor<span class="o">{</span><span class="nv">inplace</span><span class="o">=</span>False,  <span class="nv">set_instead_of_inc</span><span class="o">=</span>False<span class="o">}</span>.0, Subtensor<span class="o">{</span>::, ::, ::int64, ::int64<span class="o">}</span>.0<span class="o">)</span></span>
+<span class="code-line">   <span class="m">3</span>.5%     <span class="m">7</span>.0%       <span class="m">0</span>.888s       <span class="m">1</span>.02e-04s   <span class="m">8674</span>   <span class="m">519</span>   ConvOp<span class="o">{(</span><span class="s1">&#39;imshp&#39;</span>, <span class="o">(</span><span class="m">4</span>, <span class="m">1</span>, <span class="m">128</span><span class="o">))</span>,<span class="o">(</span><span class="s1">&#39;kshp&#39;</span>, <span class="o">(</span><span class="m">1</span>, <span class="m">128</span><span class="o">))</span>,<span class="o">(</span><span class="s1">&#39;nkern&#39;</span>, <span class="m">1</span><span class="o">)</span>,<span class="o">(</span><span class="s1">&#39;bsize&#39;</span>, <span class="m">4</span><span class="o">)</span>,<span class="o">(</span><span class="s1">&#39;dx&#39;</span>, <span class="m">1</span><span class="o">)</span>,<span class="o">(</span><span class="s1">&#39;dy&#39;</span>, <span class="m">1</span><span class="o">)</span>,<span class="o">(</span><span class="s1">&#39;out_mode&#39;</span>, <span class="s1">&#39;full&#39;</span><span class="o">)</span>,<span class="o">(</span><span class="s1">&#39;unroll_batch&#39;</span>, <span class="m">4</span><span class="o">)</span>,<span class="o">(</span><span class="s1">&#39;unroll_kern&#39;</span>, <span class="m">1</span><span class="o">)</span>,<span class="o">(</span><span class="s1">&#39;unroll_patch&#39;</span>, False<span class="o">)</span>,<span class="o">(</span><span class="s1">&#39;imshp_logical&#39;</span>, <span class="o">(</span><span class="m">4</span>, <span class="m">1</span>, <span class="m">128</span><span class="o">))</span>,<span class="o">(</span><span class="s1">&#39;kshp_logical&#39;</span>, <span class="o">(</span><span class="m">1</span>, <span class="m">128</span><span class="o">))</span>,<span class="o">(</span><span class="s1">&#39;kshp_logical_top_aligned&#39;</span>, True<span class="o">)}(</span>AdvancedIncSubtensor<span class="o">{</span><span class="nv">inplace</span><span class="o">=</span>False,  <span class="nv">set_instead_of_inc</span><span class="o">=</span>False<span class="o">}</span>.0, Subtensor<span class="o">{</span>::, ::, ::int64, ::int64<span class="o">}</span>.0<span class="o">)</span></span>
+<span class="code-line">   <span class="m">3</span>.5%    <span class="m">10</span>.5%       <span class="m">0</span>.886s       <span class="m">1</span>.02e-04s   <span class="m">8674</span>   <span class="m">543</span>   ConvOp<span class="o">{(</span><span class="s1">&#39;imshp&#39;</span>, <span class="o">(</span><span class="m">4</span>, <span class="m">1</span>, <span class="m">255</span><span class="o">))</span>,<span class="o">(</span><span class="s1">&#39;kshp&#39;</span>, <span class="o">(</span><span class="m">1</span>, <span class="m">128</span><span class="o">))</span>,<span class="o">(</span><span class="s1">&#39;nkern&#39;</span>, <span class="m">4</span><span class="o">)</span>,<span class="o">(</span><span class="s1">&#39;bsize&#39;</span>, <span class="m">1</span><span class="o">)</span>,<span class="o">(</span><span class="s1">&#39;dx&#39;</span>, <span class="m">1</span><span class="o">)</span>,<span class="o">(</span><span class="s1">&#39;dy&#39;</span>, <span class="m">1</span><span class="o">)</span>,<span class="o">(</span><span class="s1">&#39;out_mode&#39;</span>, <span class="s1">&#39;valid&#39;</span><span class="o">)</span>,<span class="o">(</span><span class="s1">&#39;unroll_batch&#39;</span>, None<span class="o">)</span>,<span class="o">(</span><span class="s1">&#39;unroll_kern&#39;</span>, None<span class="o">)</span>,<span class="o">(</span><span class="s1">&#39;unroll_patch&#39;</span>, True<span class="o">)</span>,<span class="o">(</span><span class="s1">&#39;imshp_logical&#39;</span>, <span class="o">(</span><span class="m">4</span>, <span class="m">1</span>, <span class="m">255</span><span class="o">))</span>,<span class="o">(</span><span class="s1">&#39;kshp_logical&#39;</span>, <span class="o">(</span><span class="m">1</span>, <span class="m">128</span><span class="o">))</span>,<span class="o">(</span><span class="s1">&#39;kshp_logical_top_aligned&#39;</span>, False<span class="o">)}(</span>InplaceDimShuffle<span class="o">{</span><span class="m">1</span>,0,2,3<span class="o">}</span>.0, Subtensor<span class="o">{</span>::, ::, ::int64, ::int64<span class="o">}</span>.0<span class="o">)</span></span>
+<span class="code-line">   <span class="m">3</span>.5%    <span class="m">14</span>.0%       <span class="m">0</span>.885s       <span class="m">1</span>.02e-04s   <span class="m">8674</span>   <span class="m">545</span>   ConvOp<span class="o">{(</span><span class="s1">&#39;imshp&#39;</span>, <span class="o">(</span><span class="m">4</span>, <span class="m">1</span>, <span class="m">255</span><span class="o">))</span>,<span class="o">(</span><span class="s1">&#39;kshp&#39;</span>, <span class="o">(</span><span class="m">1</span>, <span class="m">128</span><span class="o">))</span>,<span class="o">(</span><span class="s1">&#39;nkern&#39;</span>, <span class="m">4</span><span class="o">)</span>,<span class="o">(</span><span class="s1">&#39;bsize&#39;</span>, <span class="m">1</span><span class="o">)</span>,<span class="o">(</span><span class="s1">&#39;dx&#39;</span>, <span class="m">1</span><span class="o">)</span>,<span class="o">(</span><span class="s1">&#39;dy&#39;</span>, <span class="m">1</span><span class="o">)</span>,<span class="o">(</span><span class="s1">&#39;out_mode&#39;</span>, <span class="s1">&#39;valid&#39;</span><span class="o">)</span>,<span class="o">(</span><span class="s1">&#39;unroll_batch&#39;</span>, None<span class="o">)</span>,<span class="o">(</span><span class="s1">&#39;unroll_kern&#39;</span>, None<span class="o">)</span>,<span class="o">(</span><span class="s1">&#39;unroll_patch&#39;</span>, True<span class="o">)</span>,<span class="o">(</span><span class="s1">&#39;imshp_logical&#39;</span>, <span class="o">(</span><span class="m">4</span>, <span class="m">1</span>, <span class="m">255</span><span class="o">))</span>,<span class="o">(</span><span class="s1">&#39;kshp_logical&#39;</span>, <span class="o">(</span><span class="m">1</span>, <span class="m">128</span><span class="o">))</span>,<span class="o">(</span><span class="s1">&#39;kshp_logical_top_aligned&#39;</span>, False<span class="o">)}(</span>InplaceDimShuffle<span class="o">{</span><span class="m">1</span>,0,2,3<span class="o">}</span>.0, Subtensor<span class="o">{</span>::, ::, ::int64, ::int64<span class="o">}</span>.0<span class="o">)</span></span>
+<span class="code-line">   <span class="m">2</span>.2%    <span class="m">16</span>.2%       <span class="m">0</span>.556s       <span class="m">6</span>.41e-05s   <span class="m">8674</span>   <span class="m">441</span>   ConvOp<span class="o">{(</span><span class="s1">&#39;imshp&#39;</span>, <span class="o">(</span><span class="m">1</span>, <span class="m">1</span>, <span class="m">255</span><span class="o">))</span>,<span class="o">(</span><span class="s1">&#39;kshp&#39;</span>, <span class="o">(</span><span class="m">1</span>, <span class="m">128</span><span class="o">))</span>,<span class="o">(</span><span class="s1">&#39;nkern&#39;</span>, <span class="m">4</span><span class="o">)</span>,<span class="o">(</span><span class="s1">&#39;bsize&#39;</span>, <span class="m">4</span><span class="o">)</span>,<span class="o">(</span><span class="s1">&#39;dx&#39;</span>, <span class="m">1</span><span class="o">)</span>,<span class="o">(</span><span class="s1">&#39;dy&#39;</span>, <span class="m">1</span><span class="o">)</span>,<span class="o">(</span><span class="s1">&#39;out_mode&#39;</span>, <span class="s1">&#39;valid&#39;</span><span class="o">)</span>,<span class="o">(</span><span class="s1">&#39;unroll_batch&#39;</span>, <span class="m">4</span><span class="o">)</span>,<span class="o">(</span><span class="s1">&#39;unroll_kern&#39;</span>, <span class="m">2</span><span class="o">)</span>,<span class="o">(</span><span class="s1">&#39;unroll_patch&#39;</span>, False<span class="o">)</span>,<span class="o">(</span><span class="s1">&#39;imshp_logical&#39;</span>, <span class="o">(</span><span class="m">1</span>, <span class="m">1</span>, <span class="m">255</span><span class="o">))</span>,<span class="o">(</span><span class="s1">&#39;kshp_logical&#39;</span>, <span class="o">(</span><span class="m">1</span>, <span class="m">128</span><span class="o">))</span>,<span class="o">(</span><span class="s1">&#39;kshp_logical_top_aligned&#39;</span>, True<span class="o">)}(</span>Subtensor<span class="o">{</span>::, ::, ::, :int64:<span class="o">}</span>.0, Elemwise<span class="o">{</span>mul,no_inplace<span class="o">}</span>.0<span class="o">)</span></span>
+<span class="code-line">   <span class="m">1</span>.6%    <span class="m">17</span>.8%       <span class="m">0</span>.405s       <span class="m">4</span>.67e-05s   <span class="m">8674</span>   <span class="m">738</span>   Dot22<span class="o">(</span>InplaceDimShuffle<span class="o">{</span><span class="m">1</span>,0<span class="o">}</span>.0, Reshape<span class="o">{</span><span class="m">2</span><span class="o">}</span>.0<span class="o">)</span></span>
+<span class="code-line">   <span class="m">1</span>.6%    <span class="m">19</span>.4%       <span class="m">0</span>.404s       <span class="m">4</span>.65e-05s   <span class="m">8674</span>   <span class="m">824</span>   Split<span class="o">{</span><span class="m">4</span><span class="o">}(</span>InplaceDimShuffle<span class="o">{</span><span class="m">1</span>,0,2<span class="o">}</span>.0, TensorConstant<span class="o">{</span><span class="m">0</span><span class="o">}</span>, &lt;TensorType<span class="o">(</span>int64, vector<span class="o">)</span>&gt;<span class="o">)</span></span>
+<span class="code-line">   <span class="m">1</span>.3%    <span class="m">20</span>.7%       <span class="m">0</span>.334s       <span class="m">3</span>.86e-05s   <span class="m">8674</span>   <span class="m">428</span>   Softmax<span class="o">(</span>Reshape<span class="o">{</span><span class="m">2</span><span class="o">}</span>.0<span class="o">)</span></span>
+<span class="code-line">   <span class="m">1</span>.0%    <span class="m">21</span>.7%       <span class="m">0</span>.264s       <span class="m">3</span>.04e-05s   <span class="m">8674</span>   <span class="m">903</span>   Split<span class="o">{</span><span class="m">4</span><span class="o">}(</span>InplaceDimShuffle<span class="o">{</span><span class="m">1</span>,0,2<span class="o">}</span>.0, TensorConstant<span class="o">{</span><span class="m">0</span><span class="o">}</span>, &lt;TensorType<span class="o">(</span>int64, vector<span class="o">)</span>&gt;<span class="o">)</span></span>
+<span class="code-line">   <span class="m">1</span>.0%    <span class="m">22</span>.7%       <span class="m">0</span>.259s       <span class="m">2</span>.98e-05s   <span class="m">8674</span>   <span class="m">854</span>   Split<span class="o">{</span><span class="m">4</span><span class="o">}(</span>InplaceDimShuffle<span class="o">{</span><span class="m">1</span>,0,2<span class="o">}</span>.0, TensorConstant<span class="o">{</span><span class="m">0</span><span class="o">}</span>, &lt;TensorType<span class="o">(</span>int64, vector<span class="o">)</span>&gt;<span class="o">)</span></span>
+<span class="code-line">   <span class="m">1</span>.0%    <span class="m">23</span>.8%       <span class="m">0</span>.258s       <span class="m">2</span>.98e-05s   <span class="m">8674</span>   <span class="m">573</span>   Split<span class="o">{</span><span class="m">2</span><span class="o">}(</span>IncSubtensor<span class="o">{</span>Inc<span class="p">;</span>::, ::, ::, :int64:<span class="o">}</span>.0, TensorConstant<span class="o">{</span><span class="m">3</span><span class="o">}</span>, TensorConstant<span class="o">{(</span><span class="m">2</span>,<span class="o">)</span> of <span class="m">128</span><span class="o">})</span></span>
+<span class="code-line">   <span class="m">1</span>.0%    <span class="m">24</span>.7%       <span class="m">0</span>.245s       <span class="m">2</span>.82e-05s   <span class="m">8674</span>   <span class="m">224</span>   Gemv<span class="o">{</span>no_inplace<span class="o">}(</span>InplaceDimShuffle<span class="o">{</span><span class="m">1</span><span class="o">}</span>.0, TensorConstant<span class="o">{</span><span class="m">1</span>.0<span class="o">}</span>, controller.W_in_and_reads_to_o_copy01.T, InplaceDimShuffle<span class="o">{</span><span class="m">1</span><span class="o">}</span>.0, TensorConstant<span class="o">{</span><span class="m">1</span>.0<span class="o">})</span></span>
+<span class="code-line">   <span class="m">0</span>.9%    <span class="m">25</span>.7%       <span class="m">0</span>.240s       <span class="m">2</span>.77e-05s   <span class="m">8674</span>   <span class="m">602</span>   Split<span class="o">{</span><span class="m">2</span><span class="o">}(</span>IncSubtensor<span class="o">{</span>Inc<span class="p">;</span>::, ::, ::, :int64:<span class="o">}</span>.0, TensorConstant<span class="o">{</span><span class="m">3</span><span class="o">}</span>, TensorConstant<span class="o">{(</span><span class="m">2</span>,<span class="o">)</span> of <span class="m">128</span><span class="o">})</span></span>
+<span class="code-line">   <span class="m">0</span>.9%    <span class="m">26</span>.6%       <span class="m">0</span>.236s       <span class="m">2</span>.72e-05s   <span class="m">8674</span>   <span class="m">427</span>   Softmax<span class="o">(</span>Reshape<span class="o">{</span><span class="m">2</span><span class="o">}</span>.0<span class="o">)</span></span>
+<span class="code-line">   <span class="m">0</span>.9%    <span class="m">27</span>.5%       <span class="m">0</span>.235s       <span class="m">2</span>.71e-05s   <span class="m">8674</span>   <span class="m">577</span>   Split<span class="o">{</span><span class="m">2</span><span class="o">}(</span>IncSubtensor<span class="o">{</span>InplaceInc<span class="p">;</span>::, ::, ::, :int64:<span class="o">}</span>.0, TensorConstant<span class="o">{</span><span class="m">3</span><span class="o">}</span>, TensorConstant<span class="o">{(</span><span class="m">2</span>,<span class="o">)</span> of <span class="m">128</span><span class="o">})</span></span>
+<span class="code-line">   <span class="m">0</span>.9%    <span class="m">28</span>.4%       <span class="m">0</span>.231s       <span class="m">2</span>.67e-05s   <span class="m">8674</span>   <span class="m">1002</span>   Split<span class="o">{</span><span class="m">2</span><span class="o">}(</span>Elemwise<span class="o">{</span>add,no_inplace<span class="o">}</span>.0, TensorConstant<span class="o">{</span><span class="m">1</span><span class="o">}</span>, MakeVector<span class="o">{</span><span class="nv">dtype</span><span class="o">=</span><span class="s1">&#39;int64&#39;</span><span class="o">}</span>.0<span class="o">)</span></span>
+<span class="code-line">   <span class="m">0</span>.9%    <span class="m">29</span>.3%       <span class="m">0</span>.230s       <span class="m">2</span>.65e-05s   <span class="m">8674</span>   <span class="m">1001</span>   Split<span class="o">{</span><span class="m">2</span><span class="o">}(</span>Elemwise<span class="o">{</span>add,no_inplace<span class="o">}</span>.0, TensorConstant<span class="o">{</span><span class="m">1</span><span class="o">}</span>, MakeVector<span class="o">{</span><span class="nv">dtype</span><span class="o">=</span><span class="s1">&#39;int64&#39;</span><span class="o">}</span>.0<span class="o">)</span></span>
+<span class="code-line">   <span class="m">0</span>.9%    <span class="m">30</span>.2%       <span class="m">0</span>.226s       <span class="m">2</span>.61e-05s   <span class="m">8674</span>   <span class="m">512</span>   AdvancedIncSubtensor<span class="o">{</span><span class="nv">inplace</span><span class="o">=</span>False,  <span class="nv">set_instead_of_inc</span><span class="o">=</span>False<span class="o">}(</span>TensorConstant<span class="o">{(</span><span class="m">4</span>, <span class="m">4</span>, <span class="m">1</span>, ..28<span class="o">)</span> of <span class="m">0</span>.0<span class="o">}</span>, Reshape<span class="o">{</span><span class="m">2</span><span class="o">}</span>.0, ARange<span class="o">{</span><span class="nv">dtype</span><span class="o">=</span><span class="s1">&#39;int64&#39;</span><span class="o">}</span>.0, ARange<span class="o">{</span><span class="nv">dtype</span><span class="o">=</span><span class="s1">&#39;int64&#39;</span><span class="o">}</span>.0, TensorConstant<span class="o">{</span><span class="m">0</span><span class="o">}</span>, SliceConstant<span class="o">{</span>None, None, None<span class="o">})</span></span>
+<span class="code-line">   <span class="m">0</span>.9%    <span class="m">31</span>.1%       <span class="m">0</span>.224s       <span class="m">2</span>.59e-05s   <span class="m">8674</span>   <span class="m">609</span>   Split<span class="o">{</span><span class="m">2</span><span class="o">}(</span>IncSubtensor<span class="o">{</span>InplaceInc<span class="p">;</span>::, ::, ::, :int64:<span class="o">}</span>.0, TensorConstant<span class="o">{</span><span class="m">3</span><span class="o">}</span>, TensorConstant<span class="o">{(</span><span class="m">2</span>,<span class="o">)</span> of <span class="m">128</span><span class="o">})</span></span>
+<span class="code-line">   <span class="m">0</span>.9%    <span class="m">32</span>.0%       <span class="m">0</span>.218s       <span class="m">2</span>.51e-05s   <span class="m">8674</span>   <span class="m">511</span>   AdvancedIncSubtensor<span class="o">{</span><span class="nv">inplace</span><span class="o">=</span>False,  <span class="nv">set_instead_of_inc</span><span class="o">=</span>False<span class="o">}(</span>TensorConstant<span class="o">{(</span><span class="m">4</span>, <span class="m">4</span>, <span class="m">1</span>, ..28<span class="o">)</span> of <span class="m">0</span>.0<span class="o">}</span>, Reshape<span class="o">{</span><span class="m">2</span><span class="o">}</span>.0, ARange<span class="o">{</span><span class="nv">dtype</span><span class="o">=</span><span class="s1">&#39;int64&#39;</span><span class="o">}</span>.0, ARange<span class="o">{</span><span class="nv">dtype</span><span class="o">=</span><span class="s1">&#39;int64&#39;</span><span class="o">}</span>.0, TensorConstant<span class="o">{</span><span class="m">0</span><span class="o">}</span>, SliceConstant<span class="o">{</span>None, None, None<span class="o">})</span></span>
+<span class="code-line">   ... <span class="o">(</span>remaining <span class="m">1079</span> Apply instances account <span class="k">for</span> <span class="m">68</span>.03%<span class="o">(</span><span class="m">17</span>.26s<span class="o">)</span> of the runtime<span class="o">)</span></span>
+<span class="code-line"></span>
+<span class="code-line">Here are tips to potentially make your code run faster</span>
+<span class="code-line">                 <span class="o">(</span><span class="k">if</span> you think of new ones, suggest them on the mailing list<span class="o">)</span>.</span>
+<span class="code-line">                 Test them first, as they are not guaranteed to always provide a speedup.</span>
+<span class="code-line">  - Try installing amdlibm and <span class="nb">set</span> the Theano flag lib.amdlibm<span class="o">=</span>True. This speeds up only some Elemwise operation.</span>
+</pre></div>
+
+
+<p>以上の結果から、プログラムの速度を向上を図るために以下の２つの試みを行ってみた。</p>
+<ol>
+<li>Theano の blas 環境整備<ul>
+<li>theano.tensor.blas.~ 系が <type> Py となっており、これは numpy を介して openblas を使用している？ようなのでこれの改良が可能？</li>
+</ul>
+</li>
+<li>amdlibm (?) のインストール<ul>
+<li>上記の profile の最後にかかれているように、これにより Elemwise operation (17.2% とボトルネックの一つになっている) を改善できそう。</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h1>blas environment setting</h1>
+<h3>motivation</h3>
+<p>上記の通り、theano.tensor.blas.~ 系が <type> Py となっている。<a href="https://groups.google.com/forum/#!searchin/theano-users/Gemv%7Csort:date/theano-users/UfPNnTI1pI4/2w48Gid_BwAJ">環境によっては同様の演算が <type> C で行われるらしく</a>、ググったところ<a href="https://groups.google.com/forum/#!topic/theano-users/9JdhCfp4YFM">これは theano の BLAS の設定に起因していそう</a>。  </p>
+<p>そこで設定を以下のコマンドにより確認したところの出力が None だった (何も出力されない) ため、theano.config.blas.ldflags が設定されていないことがわかる。</p>
+<div class="highlight"><pre><span class="code-line"><span></span>$ python -c <span class="s2">&quot;import theano; print(theano.config.blas.ldflags)&quot;</span></span>
+</pre></div>
+
+
+<p><a href="http://deeplearning.net/software/theano_versions/0.8.X/install_ubuntu.html">公式ドキュメント</a>によると (Speed test Theano/BLAS 参照) Theano は theano.config.blas.ldflags が未設定の場合 Numpy/Scipy を介して BLAS を利用するが、これにより生じるオーバーヘッドが今回の profile でボトルネックの１つとなっている theano.tensor.blas.Gemm や theano.tensor.blas.Dot において重要らしい。</p>
+<p>ちなみに、使用している Numpy の blas は以下のように openblas だった。</p>
+<div class="highlight"><pre><span class="code-line"><span></span>$ python -c <span class="s2">&quot;import numpy as np; print(np.__config__.show())&quot;</span></span>
+<span class="code-line">lapack_opt_info:</span>
+<span class="code-line">    <span class="nv">libraries</span> <span class="o">=</span> <span class="o">[</span><span class="s1">&#39;openblas&#39;</span>, <span class="s1">&#39;openblas&#39;</span><span class="o">]</span></span>
+<span class="code-line">    <span class="nv">library_dirs</span> <span class="o">=</span> <span class="o">[</span><span class="s1">&#39;/usr/local/lib&#39;</span><span class="o">]</span></span>
+<span class="code-line">    <span class="nv">define_macros</span> <span class="o">=</span> <span class="o">[(</span><span class="s1">&#39;HAVE_CBLAS&#39;</span>, None<span class="o">)]</span></span>
+<span class="code-line">    <span class="nv">language</span> <span class="o">=</span> c</span>
+<span class="code-line">blas_opt_info:</span>
+<span class="code-line">    <span class="nv">libraries</span> <span class="o">=</span> <span class="o">[</span><span class="s1">&#39;openblas&#39;</span>, <span class="s1">&#39;openblas&#39;</span><span class="o">]</span></span>
+<span class="code-line">    <span class="nv">library_dirs</span> <span class="o">=</span> <span class="o">[</span><span class="s1">&#39;/usr/local/lib&#39;</span><span class="o">]</span></span>
+<span class="code-line">    <span class="nv">define_macros</span> <span class="o">=</span> <span class="o">[(</span><span class="s1">&#39;HAVE_CBLAS&#39;</span>, None<span class="o">)]</span></span>
+<span class="code-line">    <span class="nv">language</span> <span class="o">=</span> c</span>
+<span class="code-line">openblas_info:</span>
+<span class="code-line">    <span class="nv">libraries</span> <span class="o">=</span> <span class="o">[</span><span class="s1">&#39;openblas&#39;</span>, <span class="s1">&#39;openblas&#39;</span><span class="o">]</span></span>
+<span class="code-line">    <span class="nv">library_dirs</span> <span class="o">=</span> <span class="o">[</span><span class="s1">&#39;/usr/local/lib&#39;</span><span class="o">]</span></span>
+<span class="code-line">    <span class="nv">define_macros</span> <span class="o">=</span> <span class="o">[(</span><span class="s1">&#39;HAVE_CBLAS&#39;</span>, None<span class="o">)]</span></span>
+<span class="code-line">    <span class="nv">language</span> <span class="o">=</span> c</span>
+<span class="code-line">blis_info:</span>
+<span class="code-line">  NOT AVAILABLE</span>
+<span class="code-line">openblas_lapack_info:</span>
+<span class="code-line">    <span class="nv">libraries</span> <span class="o">=</span> <span class="o">[</span><span class="s1">&#39;openblas&#39;</span>, <span class="s1">&#39;openblas&#39;</span><span class="o">]</span></span>
+<span class="code-line">    <span class="nv">library_dirs</span> <span class="o">=</span> <span class="o">[</span><span class="s1">&#39;/usr/local/lib&#39;</span><span class="o">]</span></span>
+<span class="code-line">    <span class="nv">define_macros</span> <span class="o">=</span> <span class="o">[(</span><span class="s1">&#39;HAVE_CBLAS&#39;</span>, None<span class="o">)]</span></span>
+<span class="code-line">    <span class="nv">language</span> <span class="o">=</span> c</span>
+<span class="code-line">lapack_mkl_info:</span>
+<span class="code-line">  NOT AVAILABLE</span>
+<span class="code-line">blas_mkl_info:</span>
+<span class="code-line">  NOT AVAILABLE</span>
+<span class="code-line">None</span>
+</pre></div>
+
+
+<p><a href="https://qiita.com/unnonouno/items/8ab453a1868d77a93679">Qiita の記事</a>によると openblas から <a href="https://software.intel.com/en-us/articles/getting-started-with-intel-optimized-theano">intel の mkl</a> へと変更することで Chainer の性能が約 1.5 になるらしいのでこれを blas として利用することにした。</p>
+<h3>install mkl (and setting new environment)</h3>
+<p><a href="https://software.intel.com/en-us/mkl">intel のダウンロードサイト</a>の Free Download から簡単に個人情報登録し、mkl をダウンロードした。<br>
+私の場合は l_mkl_2018.0.128.tgz というファイルがダウンロードされ、これを Ubuntu 上で展開した。<br>
+後は l_mkl_2018.0.128/install.sh を走らせると対話型のインストールが行えるため、流れに沿っていれば良い。</p>
+<p>なお、ユーザアカウントでこれを行った場合、root ユーザとしてインストールをする (システム上の全ユーザが使えるようにする) かローカル環境にダウンロードするか選べるが、前者の場合は /opt/ 以下に、後者の場合は ~/ 以下にそれぞれ intel/ というディレクトリが作られ、その下にインストールが行われる。</p>
+<p>...と、ここまで mkl インストールしてきたが、<a href="http://deeplearning.net/software/theano/install_ubuntu.html">Theanoの公式</a>に mkl を使う場合 conda を使って環境設定を行えば良いと書いてあるので、今まで pip を使用して作っていた環境を conda を利用して作ることにした。 </p>
+<p>conda を用い、以下のコマンドを入力。</p>
+<div class="highlight"><pre><span class="code-line"><span></span>$ conda install numpy scipy mkl</span>
+</pre></div>
+
+
+<p>すると以下のエラーが出た。</p>
+<div class="highlight"><pre><span class="code-line"><span></span>ERROR conda.core.link:_execute_actions<span class="o">(</span><span class="m">337</span><span class="o">)</span>: An error occurred <span class="k">while</span> installing package <span class="s1">&#39;defaults::numpy-1.13.3-py27hbcc08e0_0&#39;</span>.</span>
+<span class="code-line">CondaError: Cannot link a <span class="nb">source</span> that does not exist. /home/guchio/miniconda2/pkgs/numpy-1.13.3-py27hbcc08e0_0/bin/f2py</span>
+<span class="code-line">Attempting to roll back.</span>
+<span class="code-line"></span>
+<span class="code-line"></span>
+<span class="code-line">CondaError: Cannot link a <span class="nb">source</span> that does not exist. /home/guchio/miniconda2/pkgs/numpy-1.13.3-py27hbcc08e0_0/bin/f2py</span>
+</pre></div>
+
+
+<p>そこで<a href="https://github.com/conda/conda/issues/6078">ここ</a>を参考に、以下を行ったところ解決。</p>
+<div class="highlight"><pre><span class="code-line"><span></span>$ conda clean --all</span>
+<span class="code-line">$ conda update conda</span>
+<span class="code-line">$ conda update --all</span>
+</pre></div>
+
+
+<p>これで以下のように conda 上に mkl を利用する numpy の実行環境が完成。  </p>
+<div class="highlight"><pre><span class="code-line"><span></span>$ python -c <span class="s2">&quot;import numpy as np; print(np.__config__.show())&quot;</span></span>
+<span class="code-line">lapack_opt_info:</span>
+<span class="code-line">    <span class="nv">libraries</span> <span class="o">=</span> <span class="o">[</span><span class="s1">&#39;mkl_rt&#39;</span>, <span class="s1">&#39;pthread&#39;</span><span class="o">]</span></span>
+<span class="code-line">    <span class="nv">library_dirs</span> <span class="o">=</span> <span class="o">[</span><span class="s1">&#39;/home/guchio/miniconda2/envs/ntmenv-owl/lib&#39;</span><span class="o">]</span></span>
+<span class="code-line">    <span class="nv">define_macros</span> <span class="o">=</span> <span class="o">[(</span><span class="s1">&#39;SCIPY_MKL_H&#39;</span>, None<span class="o">)</span>, <span class="o">(</span><span class="s1">&#39;HAVE_CBLAS&#39;</span>, None<span class="o">)]</span></span>
+<span class="code-line">    <span class="nv">include_dirs</span> <span class="o">=</span> <span class="o">[</span><span class="s1">&#39;/home/guchio/miniconda2/envs/ntmenv-owl/include&#39;</span><span class="o">]</span></span>
+<span class="code-line">blas_opt_info:</span>
+<span class="code-line">    <span class="nv">libraries</span> <span class="o">=</span> <span class="o">[</span><span class="s1">&#39;mkl_rt&#39;</span>, <span class="s1">&#39;pthread&#39;</span><span class="o">]</span></span>
+<span class="code-line">    <span class="nv">library_dirs</span> <span class="o">=</span> <span class="o">[</span><span class="s1">&#39;/home/guchio/miniconda2/envs/ntmenv-owl/lib&#39;</span><span class="o">]</span></span>
+<span class="code-line">    <span class="nv">define_macros</span> <span class="o">=</span> <span class="o">[(</span><span class="s1">&#39;SCIPY_MKL_H&#39;</span>, None<span class="o">)</span>, <span class="o">(</span><span class="s1">&#39;HAVE_CBLAS&#39;</span>, None<span class="o">)]</span></span>
+<span class="code-line">    <span class="nv">include_dirs</span> <span class="o">=</span> <span class="o">[</span><span class="s1">&#39;/home/guchio/miniconda2/envs/ntmenv-owl/include&#39;</span><span class="o">]</span></span>
+<span class="code-line">lapack_mkl_info:</span>
+<span class="code-line">    <span class="nv">libraries</span> <span class="o">=</span> <span class="o">[</span><span class="s1">&#39;mkl_rt&#39;</span>, <span class="s1">&#39;pthread&#39;</span><span class="o">]</span></span>
+<span class="code-line">    <span class="nv">library_dirs</span> <span class="o">=</span> <span class="o">[</span><span class="s1">&#39;/home/guchio/miniconda2/envs/ntmenv-owl/lib&#39;</span><span class="o">]</span></span>
+<span class="code-line">    <span class="nv">define_macros</span> <span class="o">=</span> <span class="o">[(</span><span class="s1">&#39;SCIPY_MKL_H&#39;</span>, None<span class="o">)</span>, <span class="o">(</span><span class="s1">&#39;HAVE_CBLAS&#39;</span>, None<span class="o">)]</span></span>
+<span class="code-line">    <span class="nv">include_dirs</span> <span class="o">=</span> <span class="o">[</span><span class="s1">&#39;/home/guchio/miniconda2/envs/ntmenv-owl/include&#39;</span><span class="o">]</span></span>
+<span class="code-line">blas_mkl_info:</span>
+<span class="code-line">    <span class="nv">libraries</span> <span class="o">=</span> <span class="o">[</span><span class="s1">&#39;mkl_rt&#39;</span>, <span class="s1">&#39;pthread&#39;</span><span class="o">]</span></span>
+<span class="code-line">    <span class="nv">library_dirs</span> <span class="o">=</span> <span class="o">[</span><span class="s1">&#39;/home/guchio/miniconda2/envs/ntmenv-owl/lib&#39;</span><span class="o">]</span></span>
+<span class="code-line">    <span class="nv">define_macros</span> <span class="o">=</span> <span class="o">[(</span><span class="s1">&#39;SCIPY_MKL_H&#39;</span>, None<span class="o">)</span>, <span class="o">(</span><span class="s1">&#39;HAVE_CBLAS&#39;</span>, None<span class="o">)]</span></span>
+<span class="code-line">    <span class="nv">include_dirs</span> <span class="o">=</span> <span class="o">[</span><span class="s1">&#39;/home/guchio/miniconda2/envs/ntmenv-owl/include&#39;</span><span class="o">]</span></span>
+<span class="code-line">None</span>
+</pre></div>
+
+
+<p>そこで、openblas を利用した場合と mkl を利用した場合の速度テストを以下のコードによって行ってみた。</p>
+<div class="highlight"><pre><span class="code-line"><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span></span>
+<span class="code-line"><span class="kn">import</span> <span class="nn">time</span></span>
+<span class="code-line"></span>
+<span class="code-line"><span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">4000000</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">2000</span><span class="p">,</span> <span class="mi">2000</span><span class="p">))</span></span>
+<span class="code-line"><span class="n">b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">4000000</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">2000</span><span class="p">,</span> <span class="mi">2000</span><span class="p">))</span></span>
+<span class="code-line"></span>
+<span class="code-line"><span class="n">before_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">clock</span><span class="p">()</span></span>
+<span class="code-line"><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span></span>
+<span class="code-line"><span class="n">after_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">clock</span><span class="p">()</span></span>
+<span class="code-line"><span class="k">print</span><span class="p">(</span><span class="n">after_time</span> <span class="o">-</span> <span class="n">before_time</span><span class="p">)</span></span>
+</pre></div>
+
+
+<p>結果は openblas を利用するものが 25.502314、mkl を利用するものが 21.625779 となった。</p>
+<p>次に Theano も以下のように入れ直し、無事成功。</p>
+<div class="highlight"><pre><span class="code-line"><span></span>$ conda install <span class="nv">theano</span><span class="o">=</span><span class="m">0</span>.8.2</span>
+<span class="code-line">$ python -c <span class="s2">&quot;import theano; print(theano.config.blas.ldflags)&quot;</span></span>
+<span class="code-line">-L/home/guchio/miniconda2/envs/ntmenv-owl/lib -lmkl_rt -lpthread -lm -lm</span>
+</pre></div>
+
+
+<p>Theano の速度テストをしてみる。</p>
+<div class="highlight"><pre><span class="code-line"><span></span>$ python <span class="sb">`</span>python -c <span class="s2">&quot;import os, theano; print(os.path.dirname(theano.__file__))&quot;</span><span class="sb">`</span>/misc/check_blas.py</span>
+</pre></div>
+
+
+<p>結果は numpy 経由で openblas を利用するものが 11.99s、mkl を利用するものが 11.32s となった。<br>
+正直あまり変わらない...</p>
+<h3>Result</h3>
+<p>環境も整ったので profiling してみた。以下が結果。</p>
+<h1>aa</h1>
+<p><a href="http://developer.amd.com/amd-cpu-libraries/amd-math-library-libm/">ここ</a>からダウンロード
+<a href="https://hvasbath.github.io/beat/installation.html">ここ</a>を参考にインストールした。</p>
+                </div>
+                <footer class="text-right">
+                    <p>- guchio3</p>
+                </footer>
+            </div>
+        </div>
+    </article>
+</section>
+<footer>
+    <hr>
+    <div class="row">
+        <div class="col-lg-9 text-center">
+            <p><small>
+                Built by <a href="http://docs.getpelican.com/en/latest">Pelican</a> / <a href="https://github.com/ingwinlu/pelican-twitchy">pelican-twitchy</a>
+                &middot;                    &copy; 2017 guchio3
+            </small></p>
+        </div>
+    </div>
+</footer>            </div>
+        </div>
+        <!-- /#page-content-wrapper -->
+    </div>
+    <!-- /#wrapper -->
+    <!-- jQuery Version 1.11.2 -->
+    <script src="/theme/js/jquery-1.11.2.min.js"></script>
+    <!-- Bootstrap Core JavaScript -->
+    <script src="/theme/js/bootstrap.min.js"></script>
+    <!-- twitchy Script -->
+    <script src="/theme/js/pelican_twitchy.min.js"></script>
+
+</body>
+</html>

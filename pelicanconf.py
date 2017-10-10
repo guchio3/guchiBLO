@@ -6,11 +6,13 @@ import os
 AUTHOR = 'guchio3'
 SITENAME = 'guchiBLO'
 SITEURL = ''
+STATIC_PATHS = ['images']
 HOME_PATH = os.environ['HOME']
 PLUGIN_PATHS = [HOME_PATH+'/workspace/blog/pelican-plugins']
 PLUGINS = ['render_math']
-SITELOGO = '/images/siteBaseImages/guchiBLO.png'
-SITELOGO_SIZE = '200'
+
+#SITELOGO = '/images/siteBaseImages/guchiBLO.png'
+#SITELOGO_SIZE = '200'
 SITESUBTITLE = 'A JAPANESE BLOG by GUCHIO (<a href="/pages/About.html">about</a>)'
 FAVICON = SITEURL + '/images/siteBaseImages/favicon.ico'
 
@@ -54,7 +56,7 @@ SOCIAL = (
 DEFAULT_PAGINATION = 10
 
 # Settings only for pelican-twitchy
-HIDE_SITENAME = True
+HIDE_SITENAME = False
 
 
 # Uncomment following line if you want document-relative URLs when developing

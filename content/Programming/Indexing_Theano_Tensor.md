@@ -1,5 +1,5 @@
 Title: Indexing Theano Tensor
-Tags: Theano, Machine Learning, Distributed Representation, 
+Tags: Theano, Machine Learning,
 Date: 2017-10-08 0:00
 Modified: 2017-10-08 0:00
 Slug: Indexing_Theano_Tensor
