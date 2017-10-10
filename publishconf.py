@@ -13,7 +13,8 @@ from pelicanconf import *
 SITEURL = 'https://guchio3.github.io/guchiBLO'
 #SITELOGO = SITEURL + '/images/siteBaseImages/profile.png'
 #SITELOGO = SITEURL + '/images/siteBaseImages/guchiBLO.png'
-SITELOGO = '/images/siteBaseImages/guchiBLO.png'
+SITELOGO = '/images/siteBaseImages/guchiBLO_temp.png'
+SITELOGO_SIZE = 200
 FAVICON = SITEURL + '/images/siteBaseImages/favicon.ico'
 RELATIVE_URLS = False
 
