@@ -26,6 +26,9 @@ DEFAULT_DATE = 'fs'
 
 DEFAULT_LANG = 'ja'
 
+# Google analitics
+GOOGLE_ANALYTICS = 'UA-107917533-1'
+
 # theme
 THEME = 'pelican-twitchy' 
 #BOOTSTRAP_THEME = 'sandstone'
