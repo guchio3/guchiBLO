@@ -6,11 +6,11 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta name="author" content="guchio3" />
-        <meta name="keywords" content="Theano,Machine Learning" />
-        <meta name="description" content="Theano tensor を条件に基いて indexing する方法" />
+        <meta name="keywords" content="Paper,MANN,Few-Shot Learning,Machine Learning" />
+        <meta name="description" content="Memory-Augmented Neural Networks (MANN) を使った Few-shot learning の試み" />
 
 
-    <title>Indexing Theano Tensor - guchiBLO</title>
+    <title>Meta-Learning with Memory-Augmented Neural Networks - guchiBLO</title>
 
         <link rel="stylesheet" href="https://guchio3.github.io/guchiBLO/theme/css/bootstrap.min.css" type="text/css" />
 
@@ -133,14 +133,14 @@
                     </a>
                 </li>
                 <li class="panel anti-panel"><ul id="collapse-categories" class="sidebar_submenu collapse ">
-                    <li class="active">
+                    <li >
                         <a href="https://guchio3.github.io/guchiBLO/category/programming.html">
                             <i class="fa fa-folder-open padding-small"></i>
                             Programming
                             <span class="badge pull-right categorybadge">2</span>
                         </a>
                     </li>
-                    <li >
+                    <li class="active">
                         <a href="https://guchio3.github.io/guchiBLO/category/research.html">
                             <i class="fa fa-folder-open padding-small"></i>
                             Research
@@ -168,24 +168,24 @@
             <div class="col-lg-9">
                 <header class="page-header">
                     <h1>
-                        <a href="https://guchio3.github.io/guchiBLO/Indexing_Theano_Tensor.html"
+                        <a href="https://guchio3.github.io/guchiBLO/Meta-Learning_with_Memory-Augmented_Neural_Networks.html"
                            rel="bookmark"
-                           title="Permalink to Indexing Theano Tensor">
-                            Indexing Theano Tensor
+                           title="Permalink to Meta-Learning with Memory-Augmented Neural Networks">
+                            Meta-Learning with Memory-Augmented Neural Networks
                         </a>
                         <small>
 <div class="post-info">
     <div class="publish-info-block">
         <small>
             <span class="published">
-                <i class="fa fa-calendar padding-small"></i><time datetime="2017-10-08T00:00:00+09:00"> 日 08 10月 2017</time>
+                <i class="fa fa-calendar padding-small"></i><time datetime="2017-10-13T00:00:00+09:00"> 金 13 10月 2017</time>
             </span>
             <span class="category">
-                <i class="fa fa-folder-open padding-small"></i><a href="https://guchio3.github.io/guchiBLO/category/programming.html">Programming</a>
+                <i class="fa fa-folder-open padding-small"></i><a href="https://guchio3.github.io/guchiBLO/category/research.html">Research</a>
             </span>
             <span class="tags">
                 <i class="fa fa-tags padding-small"></i>
-                <a href="https://guchio3.github.io/guchiBLO/tag/theano.html">Theano</a> /                 <a href="https://guchio3.github.io/guchiBLO/tag/machine-learning.html">Machine Learning</a>            </span>
+                <a href="https://guchio3.github.io/guchiBLO/tag/paper.html">Paper</a> /                 <a href="https://guchio3.github.io/guchiBLO/tag/mann.html">MANN</a> /                 <a href="https://guchio3.github.io/guchiBLO/tag/few-shot-learning.html">Few-Shot Learning</a> /                 <a href="https://guchio3.github.io/guchiBLO/tag/machine-learning.html">Machine Learning</a>            </span>
         </small>
     </div>
 </div><!-- /.post-info -->                        </small>
@@ -197,57 +197,70 @@
             <div class="col-lg-9">
                 <div class="entry-content">
                     <h1>Outline</h1>
-<p>Thenao tensor の要素のうち条件を満たすものを抽出する方法。<br>
-私の場合は <a href="https://research.fb.com/downloads/babi/">bAbI task</a> という質問応答処理タスクを DL を使用して解く実装を行う際、 word の系列からモデルの応答に当たるものだけを抽出するのに用いたのでメモ。</p>
-<p>様々な実装があると思うが、今回は以下に示す方法により行った。<br>
-具体的には、theano.tensor.eq と .nonzero() を用いて抽出したい箇所のインデックスを示すマスクを生成し、これにより抽出を行う。</p>
+<p>ちょっと古いけど読めていなかった <a href="http://proceedings.mlr.press/v48/santoro16.pdf">Meta-Learning with Memory-Augmented Neural Networks</a> を読んだのでメモ。</p>
+<p>従来の gradient-based network は学習に大量のデータを必要とするため、新種のデータが入力された場合に対応するのが難しいが、Memory-Augmented Neural Networks (MANN) はこの状況に対応できそうだからやってみたという論文。</p>
+<p>タイトルにあるようにこの論文では Meta-Learning を行うことを軸に議論を展開している。<br>
+この論文において Meta-Learning は以下の用に解釈される。</p>
+<blockquote>
+<p>Although the term has been used in numerous senses, meta-learning generally refers to a scenario in which an agent learns at two levels, each associated with different time scales.</p>
+<p>Given its two-tiered organization, this form of meta- learning is often described as “learning to learn.”</p>
+</blockquote>
+<p>つまり、Meta-Learning では短期的な学習と長期的な学習の２種類の学習を組み合わせて学習が行われる。<br>
+短期的な学習では１つのタスクについての学習が行われ、長期的な学習ではこのような短期的な学習の仕方、つまりタスク一般についての学習の仕方が学習される。  </p>
+<p>現状、Meta-Learning は Recurrent Neural Networks (RNN) など記憶能力をもつ Neural Networks (NN) によりある程度行えるらしい。<br>
+しかし、Scalable な Meta-Learning を行うには以下の２つの制約を満たす必要がある。</p>
+<ul>
+<li>記憶される情報が静的に保存され、かつそれらの情報に個別にアクセスできる。</li>
+<li>パラメーターの数と記憶できる情報の量に依存関係が無い。</li>
+</ul>
+<p>これらの条件は通常の RNN などでは普通満たされないが、MANN はこれを満たすため、この論文では MANN の一種である <a href="https://arxiv.org/pdf/1410.5401.pdf">Neural Turing Machine</a> (NTM) を用いて Meta-Learning を行っている。</p>
+<p>以降、図は特に指定がない限り元論文から引用。</p>
 <hr>
-<h1>Details</h1>
-<p>次のような同じ系列長の２つの vector <span class="math">\(v_a\)</span>, <span class="math">\(v_b\)</span> があるとき、<span class="math">\(v_a\)</span> の要素が 0 となっている箇所に対応する <span class="math">\(v_b\)</span> の要素のみを抽出したい。</p>
-<div class="highlight"><pre><span></span><span class="n">v_a</span> <span class="o">=</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
-<span class="n">v_b</span> <span class="o">=</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
-</pre></div>
-
-
-<p>以下が Theano 実装の一例。</p>
-<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">theano</span>
-<span class="kn">import</span> <span class="nn">theano.tensor</span> <span class="kn">as</span> <span class="nn">T</span>
-
-<span class="n">v_a</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">vector</span><span class="p">(</span><span class="s1">&#39;v_a&#39;</span><span class="p">)</span>
-<span class="n">v_b</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">vector</span><span class="p">(</span><span class="s1">&#39;v_b&#39;</span><span class="p">)</span>
-<span class="n">ans_mask</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">eq</span><span class="p">(</span><span class="n">v_a</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">nonzero</span><span class="p">()</span>
-
-<span class="n">answers</span> <span class="o">=</span> <span class="n">v_b</span><span class="p">[</span><span class="n">ans_mask</span><span class="p">]</span>
-<span class="n">fn</span> <span class="o">=</span> <span class="n">theano</span><span class="o">.</span><span class="n">function</span><span class="p">([</span><span class="n">v_a</span><span class="p">,</span> <span class="n">v_b</span><span class="p">],</span> <span class="n">answers</span><span class="p">)</span>
-
-<span class="n">example_v_a</span> <span class="o">=</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
-<span class="n">example_v_b</span> <span class="o">=</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
-
-<span class="k">print</span><span class="p">(</span><span class="n">fn</span><span class="p">(</span><span class="n">example_v_a</span><span class="p">,</span> <span class="n">example_v_b</span><span class="p">))</span>
-<span class="c1"># [ 9.  7.  1.]</span>
-</pre></div>
-
-
-<p>ちなみに、T.eq を適用後および .nonzero() を適用後のベクトルは以下のようになっている。</p>
-<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">theano</span>
-<span class="kn">import</span> <span class="nn">theano.tensor</span> <span class="kn">as</span> <span class="nn">T</span>
-
-<span class="n">v_a</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">vector</span><span class="p">(</span><span class="s1">&#39;v_a&#39;</span><span class="p">)</span>
-
-<span class="n">eq_ans_mask</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">eq</span><span class="p">(</span><span class="n">v_a</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
-<span class="n">nonzero_ans_mask</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">eq</span><span class="p">(</span><span class="n">v_a</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">nonzero</span><span class="p">()</span>
-<span class="n">eq_fn</span> <span class="o">=</span> <span class="n">theano</span><span class="o">.</span><span class="n">function</span><span class="p">([</span><span class="n">v_a</span><span class="p">],</span> <span class="n">eq_ans_mask</span><span class="p">)</span>
-<span class="n">nonzero_fn</span> <span class="o">=</span> <span class="n">theano</span><span class="o">.</span><span class="n">function</span><span class="p">([</span><span class="n">v_a</span><span class="p">],</span> <span class="n">nonzero_ans_mask</span><span class="p">)</span>
-
-<span class="n">example_v_a</span> <span class="o">=</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
-
-<span class="k">print</span><span class="p">(</span><span class="n">eq_fn</span><span class="p">(</span><span class="n">example_v_a</span><span class="p">))</span>
-<span class="c1"># [0 0 0 0 1 0 0 0 1 0 0 0 1]</span>
-<span class="k">print</span><span class="p">(</span><span class="n">nonzero_fn</span><span class="p">(</span><span class="n">example_v_a</span><span class="p">))</span>
-<span class="c1"># [array([ 4,  8, 12])] ])]</span>
-</pre></div>
-
-
+<h1>Meta-Learning Task Methodology</h1>
+<h3>Optimization</h3>
+<p>Neural Network を使った機械学習においては通常、あるデータセット <span class="math">\(D\)</span> についてパラメータ <span class="math">\(\theta\)</span> を、学習コスト <span class="math">\(\cal L\)</span> を最小化するように調整する。</p>
+<p>一方 Meta-Learning では以下の式 (\ref{meta_learn_func}) のように、データセットの分布 <span class="math">\(p(D)\)</span> に対して同様の最適化を図る。</p>
+<div class="math">\begin{equation}
+\label{meta_learn_func}
+    \theta^{*} = argmin_{\theta}E_{D\sim p(D)}[{\cal L}(D;\theta)]
+\end{equation}</div>
+<h3>Tasks{#tasks}</h3>
+<p>またこの論文におけるタスクは、系列型のデータセット <span class="math">\(D = {d_t}^{T}_{t=1} = {({\bf x}_t, y_t)}^{T}_{t=1}\)</span> (<span class="math">\({\bf x_t}\)</span> は入力、<span class="math">\(y_t\)</span> は入力に対する適切な正解ラベル) について行われるが、Few-shot learning を行うため少しトリッキー (下の図参照)。<br>
+なお、下の図には Class Prediction と書かれているが分類だけでなく回帰も同様に扱う。</p>
+<p>すなわち、時間 <span class="math">\(t\)</span> においてモデルは <span class="math">\({\bf x_t}\)</span> および <span class="math">\(y_{t-1}\)</span> を入力として受け取り、<span class="math">\({\bf x_t}\)</span> に対応する正しいラベル <span class="math">\(y_t\)</span> を出力するように学習を行う。よって <span class="math">\(t = 0\)</span> での <span class="math">\(y_{t-1}\)</span> を <span class="math">\(null\)</span> としたとき、モデルが入力として受けとる系列データは <span class="math">\(({\bf x_1}, null), ({\bf x_2}, y_1), ..., ({\bf x_T}, y_{T-1})\)</span>、これに対してモデルが理想的に出力する系列データは <span class="math">\(y_1, y_2 , ..., y_t\)</span> である。</p>
+<p>なおこのタスクで扱うデータセットは一つではなく、モデルが大量のデータから各データセットの <span class="math">\({\bf x_t}\)</span> に対する <span class="math">\(y_t\)</span> を長期的な学習の中で憶えてしまって純粋な Few-shot learning が行えなくなるのを防ぐため、下の図のように <span class="math">\({\bf x_t}\)</span> に対する <span class="math">\(y_t\)</span> は各データセットの学習開始時に毎回シャッフルされる。<br>
+そのため、<span class="math">\(t = 1\)</span> における <span class="math">\(y_1\)</span> は正解しようのないラベルとなる。</p>
+<p><img alt="figure1_a" src="https://guchio3.github.io/guchiBLO/images/Research/Meta-Learning_with_Memory_Augmented_Neural_Networks/figure1_a.jpg" style="display:block;margin-left:auto;margin-right:auto;" width="500px"></p>
+<hr>
+<h1>Memory-Augmented Model</h1>
+<p>MANN は近年研究され始めたモデルであり、主に NTM と <a href="https://arxiv.org/pdf/1410.3916.pdf">Memory Networks</a> に基づくモデルが幾つか提案されている。</p>
+<p>この論文では NTM を用いて Few-shot learning を行っているが、オリジナルの NTM に対して Least Recently Used Access を認識できるよう改良を加えている。<br>
+詳細は時間の都合上省略。(時間のあるときに追記。)</p>
+<hr>
+<h1>Experimental Results</h1>
+<p>この論文では Few-shot learning に関して分類、回帰問題のそれぞれについて、<a href="https://github.com/brendenlake/omniglot">Omniglot</a> および sampled functions from a Gaussian process という２つのデータセットを用いて実験を行っている。<br>
+本記事では時間の都合上この内、Omniglot、つまり分類問題に関してのみ書く。</p>
+<p>Omniglot は以下の図に示すような手書き文字の画像データセット。 (Paper : <a href="http://web.mit.edu/cocosci/Papers/Science-2015-Lake-1332-8.pdf">Human-level concept learning through probabilistic program introduction</a> より引用。)<br>
+1600 以上のクラスがあり、各クラス毎に幾つかのサンプルがある。<br>
+この論文ではそれらを更に 90, 180, 270 度回転させて data augmentation を行っている。</p>
+<p><img alt="omniglot" src="https://guchio3.github.io/guchiBLO/images/Research/Meta-Learning_with_Memory_Augmented_Neural_Networks/omniglot.jpg" style="display:block;margin-left:auto;margin-right:auto;" width="700px"></p>
+<p>タスクは上の <a href="#tasks">Tasks</a> に書いたように行われる。<br>
+入力された画像がどのクラスのものかということも大事だが、どのクラスでないかを認識して消去法的にクラス分類も行うこともできる。</p>
+<p>学習は 100,000 データセットに対して行われ、各データセットは Omniglot からランダムに 5 つ選ばれたクラスに対してランダムなラベルを付与することで構成される。<br>
+その他詳細は論文参照。</p>
+<p>下の図が実際の動作イメージ。<br>
+前半でクラス２の画像が２であることが判明しており、Few-shot learning ができる場合後半で同じクラスの画像を正しく２と分類できている。</p>
+<p><img alt="figure1_b" src="https://guchio3.github.io/guchiBLO/images/Research/Meta-Learning_with_Memory_Augmented_Neural_Networks/figure1_b.jpg" style="display:block;margin-left:auto;margin-right:auto;" width="500px"></p>
+<p>そして下の表が実験結果。</p>
+<p>HUMAN, LSTM, MANN はデータ入力されるにつれて基本的には精度が上がっており、MANN が非常に良い性能を出している。 <br>
+なお、FEEDFORWARD は feed-forward RNN を指す。</p>
+<p>正直人間が 1st で 1/5 の確率でしか当たらないはずのラベルを 34.5% で当てているので懐疑的。<br>
+一応、これよりも高い精度で 1st を分類している MANN は educated guessing (学習により良いあてずっぽう推測ができるようになった？) と書かれているがよくわかっていない...<br>
+実験設定について何か勘違いしているのかも...</p>
+<p><img alt="result_table" src="https://guchio3.github.io/guchiBLO/images/Research/Meta-Learning_with_Memory_Augmented_Neural_Networks/result_table.jpg" style="display:block;margin-left:auto;margin-right:auto;" width="400px"></p>
+<p>下の図は LSTM および MANN の学習曲線。a, b は出力に onehot-vector を用いたもので、c, d は出力を文字列で行ったもの。文字列で行った場合、組み合わせによって大量のパターンを表現できるためクラス数が増えるに従いネットワークサイズが大きくなり学習が難しくなる onehot vector に比べてより多くのクラスを扱える。</p>
+<p><img alt="learning_curves" src="https://guchio3.github.io/guchiBLO/images/Research/Meta-Learning_with_Memory_Augmented_Neural_Networks/learning_curves.jpg" style="display:block;margin-left:auto;margin-right:auto;" width="900px"></p>
+<p>以上！</p>
 <script type="text/javascript">if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
     var align = "center",
         indent = "0em",
@@ -363,8 +376,8 @@
     /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
     var disqus_shortname = 'True'; // required: replace example with your forum shortname
 
-            var disqus_identifier = 'Indexing_Theano_Tensor';
-        var disqus_url = 'https://guchio3.github.io/guchiBLO/Indexing_Theano_Tensor.html';
+            var disqus_identifier = 'Meta-Learning_with_Memory-Augmented_Neural_Networks';
+        var disqus_url = 'https://guchio3.github.io/guchiBLO/Meta-Learning_with_Memory-Augmented_Neural_Networks.html';
 
     var disqus_config = function () {
         this.language = "ja";
