@@ -29,10 +29,15 @@ DEFAULT_LANG = 'ja'
 # Google analitics
 GOOGLE_ANALYTICS = 'UA-107917533-1'
 
-# theme
+# theme settings
 THEME = 'pelican-twitchy' 
 #BOOTSTRAP_THEME = 'sandstone'
 #PYGMENTS_STYLE = 'colorful'
+DISQUS_SITENAME = True
+DISQUS_LOAD_LATER = False
+#DISPLAY_TAGS_ON_MENU = True
+#DISPLAY_TAGS_INLINE = True
+#DISPLAY_RECENT_POSTS_ON_MENU = True
 
 # Feed generation is usually not desired when developing
 FEED_ALL_ATOM = None

@@ -5,11 +5,10 @@
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <meta name="author" content="guchio3" />
-        <meta name="description" content="A JAPANESE BLOG by GUCHIO! &lt;br&gt;About : &lt;a href=&#34;https://guchio3.github.io/guchiBLO/pages/AUTHOR.html&#34;&gt;AUTHOR&lt;/a&gt;, &lt;a href=&#34;https://guchio3.github.io/guchiBLO/pages/CONTENTS.html&#34;&gt;CONTENTS&lt;/a&gt;" />
+    <meta name="keywords" content="MANN" />
 
 
-    <title>guchiBLO - Authors</title>
+    <title>MANN - guchiBLO</title>
 
         <link rel="stylesheet" href="https://guchio3.github.io/guchiBLO/theme/css/bootstrap.min.css" type="text/css" />
 
@@ -161,10 +160,23 @@
         <!-- Page Content -->
         <div id="page-content-wrapper">
             <div class="container-fluid">
-    <h1>Authors on guchiBLO</h1>
-
-    <ul>        <li><a href="https://guchio3.github.io/guchiBLO/author/guchio3.html">guchio3</a> (3)</li>
-    </ul>
+<div class="row">
+    <div class="col-lg-9">
+        <header class="page-header">
+            <h1>Articles featuring MANN</h1>
+        </header>
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-9">
+            <article>
+                <h4>
+                    <time datetime="2017-10-13T00:00:00+09:00"> 金 13 10月 2017</time>
+                    <a href="https://guchio3.github.io/guchiBLO/Meta-Learning_with_Memory-Augmented_Neural_Networks.html">Meta-Learning with Memory-Augmented Neural Networks</a>
+                </h4>
+            </article>
+    </div>
+</div>
 <footer>
     <hr>
     <div class="row">
@@ -203,5 +215,24 @@
         })();
     </script>
     <!-- End Google Analytics Code -->
+<script>
+    function FadeInOnScroll(ObjectList){
+        ObjectList.each(function(i) {
+            var bottom_of_object = $(this).position().top + $(this).outerHeight();
+            var bottom_of_window = $(window).scrollTop() + $(window).height();
+
+            if( bottom_of_window > bottom_of_object ){
+                $(this).fadeTo(750,1);
+            }
+        });
+    }
+
+    articles = $("article").fadeTo(0, 0.05);
+    FadeInOnScroll(articles)
+
+    $(window).scroll(function() {
+        FadeInOnScroll(articles)
+    });
+</script>
 </body>
 </html>
