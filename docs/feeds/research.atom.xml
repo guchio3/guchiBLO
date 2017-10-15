@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom"><title>guchiBLO - Research</title><link href="https://guchio3.github.io/guchiBLO/" rel="alternate"></link><link href="https://guchio3.github.io/guchiBLO/feeds/research.atom.xml" rel="self"></link><id>https://guchio3.github.io/guchiBLO/</id><updated>2017-10-13T00:00:00+09:00</updated><entry><title>Meta-Learning with Memory-Augmented Neural Networks</title><link href="https://guchio3.github.io/guchiBLO/Meta-Learning_with_Memory-Augmented_Neural_Networks.html" rel="alternate"></link><published>2017-10-13T00:00:00+09:00</published><updated>2017-10-13T00:00:00+09:00</updated><author><name>guchio3</name></author><id>tag:guchio3.github.io,2017-10-13:/guchiBLO/Meta-Learning_with_Memory-Augmented_Neural_Networks.html</id><summary type="html">&lt;p&gt;Memory-Augmented Neural Networks (MANN) を使った Few-shot learning の試み&lt;/p&gt;</summary><content type="html">&lt;h1&gt;Outline&lt;/h1&gt;
+&lt;p&gt;ちょっと古いけど読めていなかった &lt;a href="http://proceedings.mlr.press/v48/santoro16.pdf"&gt;Meta-Learning with Memory-Augmented Neural Networks&lt;/a&gt; を読んだのでメモ。&lt;/p&gt;
+&lt;p&gt;従来の gradient-based network は学習に大量のデータを必要とするため、新種のデータが入力された場合に対応するのが難しいが、Memory-Augmented Neural Networks (MANN) はこの状況に対応できそうだからやってみたという論文。&lt;/p&gt;
+&lt;p&gt;タイトルにあるようにこの論文では Meta-Learning を行うことを軸に議論を展開している。&lt;br&gt;
+この論文において Meta-Learning は以下の用に解釈される。&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Although the term has been used in numerous senses, meta-learning generally refers to a scenario in which an agent learns at two levels, each associated with different time scales.&lt;/p&gt;
+&lt;p&gt;Given its two-tiered organization, this form of meta- learning is often described as “learning to learn.”&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;つまり、Meta-Learning では短期的な学習と長期的な学習の２種類の学習を組み合わせて学習が行われる。&lt;br&gt;
+短期的な学習では１つのタスクについての学習が行われ、長期的な学習ではこのような短期的な学習の仕方、つまりタスク一般についての学習の仕方が学習される。  &lt;/p&gt;
+&lt;p&gt;現状、Meta-Learning は Recurrent Neural Networks (RNN) など記憶能力をもつ Neural Networks (NN) によりある程度行えるらしい。&lt;br&gt;
+しかし、Scalable な Meta-Learning を行うには以下の２つの制約を満たす必要がある。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;記憶される情報が静的に保存され、かつそれらの情報に個別にアクセスできる。&lt;/li&gt;
+&lt;li&gt;パラメーターの数と記憶できる情報の量に依存関係が無い。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;これらの条件は通常の RNN などでは普通満たされないが、MANN はこれを満たすため、この論文では MANN の一種である &lt;a href="https://arxiv.org/pdf/1410.5401.pdf"&gt;Neural Turing Machine&lt;/a&gt; (NTM) を用いて Meta-Learning を行っている。&lt;/p&gt;
+&lt;p&gt;以降、図は特に指定がない限り元論文から引用。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h1&gt;Meta-Learning Task Methodology&lt;/h1&gt;
+&lt;h3&gt;Optimization&lt;/h3&gt;
+&lt;p&gt;Neural Network を使った機械学習においては通常、あるデータセット &lt;span class="math"&gt;\(D\)&lt;/span&gt; についてパラメータ &lt;span class="math"&gt;\(\theta\)&lt;/span&gt; を、学習コスト &lt;span class="math"&gt;\(\cal L\)&lt;/span&gt; を最小化するように調整する。&lt;/p&gt;
+&lt;p&gt;一方 Meta-Learning では以下の式 (\ref{meta_learn_func}) のように、データセットの分布 &lt;span class="math"&gt;\(p(D)\)&lt;/span&gt; に対して同様の最適化を図る。&lt;/p&gt;
+&lt;div class="math"&gt;\begin{equation}
+\label{meta_learn_func}
+    \theta^{*} = argmin_{\theta}E_{D\sim p(D)}[{\cal L}(D;\theta)]
+\end{equation}&lt;/div&gt;
+&lt;h3&gt;Tasks&lt;/h3&gt;
+&lt;p&gt;またこの論文におけるタスクは、系列型のデータセット &lt;span class="math"&gt;\(D = {d_t}^{T}_{t=1} = {({\bf x}_t, y_t)}^{T}_{t=1}\)&lt;/span&gt; (&lt;span class="math"&gt;\({\bf x_t}\)&lt;/span&gt; は入力、&lt;span class="math"&gt;\(y_t\)&lt;/span&gt; は入力に対する適切な正解ラベル) について行われるが、Few-shot learning を行うため少しトリッキー (下の図参照)。&lt;br&gt;
+なお、下の図には Class Prediction と書かれているが分類だけでなく回帰も同様に扱う。&lt;/p&gt;
+&lt;p&gt;すなわち、時間 &lt;span class="math"&gt;\(t\)&lt;/span&gt; においてモデルは &lt;span class="math"&gt;\({\bf x_t}\)&lt;/span&gt; および &lt;span class="math"&gt;\(y_{t-1}\)&lt;/span&gt; を入力として受け取り、&lt;span class="math"&gt;\({\bf x_t}\)&lt;/span&gt; に対応する正しいラベル &lt;span class="math"&gt;\(y_t\)&lt;/span&gt; を出力するように学習を行う。よって &lt;span class="math"&gt;\(t = 0\)&lt;/span&gt; での &lt;span class="math"&gt;\(y_{t-1}\)&lt;/span&gt; を &lt;span class="math"&gt;\(null\)&lt;/span&gt; としたとき、モデルが入力として受けとる系列データは &lt;span class="math"&gt;\(({\bf x_1}, null), ({\bf x_2}, y_1), ..., ({\bf x_T}, y_{T-1})\)&lt;/span&gt;、これに対してモデルが理想的に出力する系列データは &lt;span class="math"&gt;\(y_1, y_2 , ..., y_t\)&lt;/span&gt; である。&lt;/p&gt;
+&lt;p&gt;なおこのタスクで扱うデータセットは一つではなく、モデルが大量のデータから各データセットの &lt;span class="math"&gt;\({\bf x_t}\)&lt;/span&gt; に対する &lt;span class="math"&gt;\(y_t\)&lt;/span&gt; を長期的な学習の中で憶えてしまって純粋な Few-shot learning が行えなくなるのを防ぐため、下の図のように &lt;span class="math"&gt;\({\bf x_t}\)&lt;/span&gt; に対する &lt;span class="math"&gt;\(y_t\)&lt;/span&gt; は各データセットの学習開始時に毎回シャッフルされる。&lt;br&gt;
+そのため、&lt;span class="math"&gt;\(t = 1\)&lt;/span&gt; における &lt;span class="math"&gt;\(y_1\)&lt;/span&gt; は正解しようのないラベルとなる。&lt;/p&gt;
+&lt;p&gt;&lt;img alt="figure1_a" src="https://guchio3.github.io/guchiBLO/images/Research/Meta-Learning_with_Memory_Augmented_Neural_Networks/figure1_a.jpg" style="display:block;margin-left:auto;margin-right:auto;" width="500px"&gt;&lt;/p&gt;
+&lt;hr&gt;
+&lt;h1&gt;Memory-Augmented Model&lt;/h1&gt;
+&lt;p&gt;MANN は近年研究され始めたモデルであり、主に NTM と &lt;a href="https://arxiv.org/pdf/1410.3916.pdf"&gt;Memory Networks&lt;/a&gt; に基づくモデルが幾つか提案されている。&lt;/p&gt;
+&lt;p&gt;この論文では NTM を用いて Few-shot learning を行っているが、オリジナルの NTM に対して Least Recently Used Access を認識できるよう改良を加えている。&lt;br&gt;
+詳細は時間の都合上省略。(時間のあるときに追記。)&lt;/p&gt;
+&lt;hr&gt;
+&lt;h1&gt;Experimental Results&lt;/h1&gt;
+&lt;p&gt;この論文では Few-shot learning に関して分類、回帰問題のそれぞれについて、&lt;a href="https://github.com/brendenlake/omniglot"&gt;Omniglot&lt;/a&gt; および sampled functions from a Gaussian process という２つのデータセットを用いて実験を行っている。&lt;br&gt;
+本記事では時間の都合上この内、Omniglot、つまり分類問題に関してのみ書く。&lt;/p&gt;
+&lt;p&gt;Omniglot は以下の図に示すような手書き文字の画像データセット。 (Paper : &lt;a href="http://web.mit.edu/cocosci/Papers/Science-2015-Lake-1332-8.pdf"&gt;Human-level concept learning through probabilistic program introduction&lt;/a&gt; より引用。)&lt;br&gt;
+1600 以上のクラスがあり、各クラス毎に幾つかのサンプルがある。&lt;br&gt;
+この論文ではそれらを更に 90, 180, 270 度回転させて data augmentation を行っている。&lt;/p&gt;
+&lt;p&gt;&lt;img alt="omniglot" src="https://guchio3.github.io/guchiBLO/images/Research/Meta-Learning_with_Memory_Augmented_Neural_Networks/omniglot.jpg" style="display:block;margin-left:auto;margin-right:auto;" width="700px"&gt;&lt;/p&gt;
+&lt;p&gt;タスクは上の Tasks に書いたように行われる。&lt;br&gt;
+入力された画像がどのクラスのものかということも大事だが、どのクラスでないかを認識して消去法的にクラス分類も行うこともできる。&lt;/p&gt;
+&lt;p&gt;学習は 100,000 データセットに対して行われ、各データセットは Omniglot からランダムに 5 つ選ばれたクラスに対してランダムなラベルを付与することで構成される。&lt;br&gt;
+その他詳細は論文参照。&lt;/p&gt;
+&lt;p&gt;下の図が実際の動作イメージ。&lt;br&gt;
+前半でクラス２の画像が２であることが判明しており、Few-shot learning ができる場合後半で同じクラスの画像を正しく２と分類できている。&lt;/p&gt;
+&lt;p&gt;&lt;img alt="figure1_b" src="https://guchio3.github.io/guchiBLO/images/Research/Meta-Learning_with_Memory_Augmented_Neural_Networks/figure1_b.jpg" style="display:block;margin-left:auto;margin-right:auto;" width="500px"&gt;&lt;/p&gt;
+&lt;p&gt;そして下の表が実験結果。&lt;/p&gt;
+&lt;p&gt;HUMAN, LSTM, MANN はデータ入力されるにつれて基本的には精度が上がっており、MANN が非常に良い性能を出している。 &lt;br&gt;
+なお、FEEDFORWARD は feed-forward RNN を指す。&lt;/p&gt;
+&lt;p&gt;人間が 1st で 1/5 の確率でしか当たらないはずのラベルを 34.5% で当てているは懐疑的なのでもしかしたら実験設定について何か勘違いしているのかも...。&lt;br&gt;
+一応、これよりも高い精度で 1st を分類している MANN は educated guessing (学習により良いあてずっぽう推測ができるようになった？) と書かれているがラベルはデータセットごとに
+よくわかっていない...  &lt;/p&gt;
+&lt;p&gt;&lt;img alt="result_table" src="https://guchio3.github.io/guchiBLO/images/Research/Meta-Learning_with_Memory_Augmented_Neural_Networks/result_table.jpg" style="display:block;margin-left:auto;margin-right:auto;" width="400px"&gt;&lt;/p&gt;
+&lt;p&gt;下の図は LSTM および MANN の学習曲線。a, b は出力に onehot-vector を用いたもので、c, d は出力を文字列で行ったもの。文字列で行った場合、組み合わせによって大量のパターンを表現できるためクラス数が増えるに従いネットワークサイズが大きくなり学習が難しくなる onehot vector に比べてより多くのクラスを扱える。&lt;/p&gt;
+&lt;p&gt;&lt;img alt="learning_curves" src="https://guchio3.github.io/guchiBLO/images/Research/Meta-Learning_with_Memory_Augmented_Neural_Networks/learning_curves.jpg" style="display:block;margin-left:auto;margin-right:auto;" width="800px"&gt;&lt;/p&gt;
+&lt;p&gt;以上！&lt;/p&gt;
+&lt;script type="text/javascript"&gt;if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
+    var align = "center",
+        indent = "0em",
+        linebreak = "false";
+
+    if (false) {
+        align = (screen.width &lt; 768) ? "left" : align;
+        indent = (screen.width &lt; 768) ? "0em" : indent;
+        linebreak = (screen.width &lt; 768) ? 'true' : linebreak;
+    }
+
+    var mathjaxscript = document.createElement('script');
+    mathjaxscript.id = 'mathjaxscript_pelican_#%@#$@#';
+    mathjaxscript.type = 'text/javascript';
+    mathjaxscript.src = 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML';
+    mathjaxscript[(window.opera ? "innerHTML" : "text")] =
+        "MathJax.Hub.Config({" +
+        "    config: ['MMLorHTML.js']," +
+        "    TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js'], equationNumbers: { autoNumber: 'AMS' } }," +
+        "    jax: ['input/TeX','input/MathML','output/HTML-CSS']," +
+        "    extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']," +
+        "    displayAlign: '"+ align +"'," +
+        "    displayIndent: '"+ indent +"'," +
+        "    showMathMenu: true," +
+        "    messageStyle: 'normal'," +
+        "    tex2jax: { " +
+        "        inlineMath: [ ['\\\\(','\\\\)'] ], " +
+        "        displayMath: [ ['$$','$$'] ]," +
+        "        processEscapes: true," +
+        "        preview: 'TeX'," +
+        "    }, " +
+        "    'HTML-CSS': { " +
+        "        styles: { '.MathJax_Display, .MathJax .mo, .MathJax .mi, .MathJax .mn': {color: 'inherit ! important'} }," +
+        "        linebreaks: { automatic: "+ linebreak +", width: '90% container' }," +
+        "    }, " +
+        "}); " +
+        "if ('default' !== 'default') {" +
+            "MathJax.Hub.Register.StartupHook('HTML-CSS Jax Ready',function () {" +
+                "var VARIANT = MathJax.OutputJax['HTML-CSS'].FONTDATA.VARIANT;" +
+                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
+                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
+                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
+                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
+            "});" +
+            "MathJax.Hub.Register.StartupHook('SVG Jax Ready',function () {" +
+                "var VARIANT = MathJax.OutputJax.SVG.FONTDATA.VARIANT;" +
+                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
+                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
+                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
+                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
+            "});" +
+        "}";
+    (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
+}
+&lt;/script&gt;</content><category term="Paper"></category><category term="MANN"></category><category term="Few-Shot Learning"></category><category term="Machine Learning"></category></entry></feed>
