@@ -1,5 +1,145 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>guchiBLO - Programming</title><link href="https://guchio3.github.io/guchiBLO/" rel="alternate"></link><link href="https://guchio3.github.io/guchiBLO/feeds/programming.atom.xml" rel="self"></link><id>https://guchio3.github.io/guchiBLO/</id><updated>2017-10-10T19:00:00+09:00</updated><entry><title>Speeding Up Theano</title><link href="https://guchio3.github.io/guchiBLO/Speeding_Up_Theano.html" rel="alternate"></link><published>2017-10-10T19:00:00+09:00</published><updated>2017-10-10T19:00:00+09:00</updated><author><name>guchio3</name></author><id>tag:guchio3.github.io,2017-10-10:/guchiBLO/Speeding_Up_Theano.html</id><summary type="html">&lt;p&gt;Theano の速度を改良した際のメモ&lt;/p&gt;</summary><content type="html">&lt;h1&gt;Outline&lt;/h1&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>guchiBLO - Programming</title><link href="https://guchio3.github.io/guchiBLO/" rel="alternate"></link><link href="https://guchio3.github.io/guchiBLO/feeds/programming.atom.xml" rel="self"></link><id>https://guchio3.github.io/guchiBLO/</id><updated>2017-10-15T00:00:00+09:00</updated><entry><title>Libgpuarray For Theano 0.8.2</title><link href="https://guchio3.github.io/guchiBLO/Libgpuarray_For_Theano_0.8.2.html" rel="alternate"></link><published>2017-10-15T00:00:00+09:00</published><updated>2017-10-15T00:00:00+09:00</updated><author><name>guchio3</name></author><id>tag:guchio3.github.io,2017-10-15:/guchiBLO/Libgpuarray_For_Theano_0.8.2.html</id><summary type="html">&lt;p&gt;Theano 0.8.2 に適合する libgpuarray のインストール&lt;/p&gt;</summary><content type="html">&lt;p&gt;Theano (ver 0.8.2) から gpu を使用する際、以下のようなエラーが出たので対応した際のログ。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;ERROR &lt;span class="o"&gt;(&lt;/span&gt;theano.sandbox.gpuarray&lt;span class="o"&gt;)&lt;/span&gt;: Could not initialize pygpu, support disabled
+Traceback &lt;span class="o"&gt;(&lt;/span&gt;most recent call last&lt;span class="o"&gt;)&lt;/span&gt;:
+  File &lt;span class="s2"&gt;&amp;quot;/home/guchio/miniconda2/envs/ntmenv-owl/lib/python2.7/site-packages/theano/sandbox/gpuarray/__init__.py&amp;quot;&lt;/span&gt;, line &lt;span class="m"&gt;95&lt;/span&gt;, in &amp;lt;module&amp;gt;
+    init_dev&lt;span class="o"&gt;(&lt;/span&gt;config.device&lt;span class="o"&gt;)&lt;/span&gt;
+  File &lt;span class="s2"&gt;&amp;quot;/home/guchio/miniconda2/envs/ntmenv-owl/lib/python2.7/site-packages/theano/sandbox/gpuarray/__init__.py&amp;quot;&lt;/span&gt;, line &lt;span class="m"&gt;46&lt;/span&gt;, in init_dev
+    &lt;span class="s2"&gt;&amp;quot;Make sure Theano and libgpuarray/pygpu &amp;quot;&lt;/span&gt;
+RuntimeError: &lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;Wrong major API version for gpuarray:&amp;#39;&lt;/span&gt;, &lt;span class="m"&gt;1&lt;/span&gt;, &lt;span class="s1"&gt;&amp;#39;Make sure Theano and libgpuarray/pygpu are in sync.&amp;#39;&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;これは &lt;a href="https://github.com/Theano/libgpuarray/issues/183"&gt;Theano の issue&lt;/a&gt; を参照するに libgpuarray のバージョンと Theano のバージョンのミスマッチが原因ぽく、libgpuarray の tag v-9998 をインストールすることで解決できるぽい。&lt;/p&gt;
+&lt;p&gt;そこで&lt;a href="https://coderwall.com/p/-wbo5q/pip-install-a-specific-github-repo-tag-or-branch"&gt;ここ&lt;/a&gt;を参考に pip 経由で以下のように libgpuarray をインストールしたが、以下のエラーを確認。&lt;br&gt;
+ちなみに、#egg 以降は&lt;a href="https://stackoverflow.com/questions/21638929/how-to-determine-the-name-of-an-egg-for-a-python-package-on-github"&gt;ここ&lt;/a&gt;を参考に、libgpuarray の setup.py を参照した。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;$ pip install -e git://github.com/Theano/libgpuarray.git@v-9998#egg&lt;span class="o"&gt;=&lt;/span&gt;pygpu
+Obtaining pygpu from git+git://github.com/Theano/libgpuarray.git@v-9998#egg&lt;span class="o"&gt;=&lt;/span&gt;pygpu
+  Cloning git://github.com/Theano/libgpuarray.git &lt;span class="o"&gt;(&lt;/span&gt;to v-9998&lt;span class="o"&gt;)&lt;/span&gt; to ./src/pygpu
+    Complete output from &lt;span class="nb"&gt;command&lt;/span&gt; python setup.py egg_info:
+    Traceback &lt;span class="o"&gt;(&lt;/span&gt;most recent call last&lt;span class="o"&gt;)&lt;/span&gt;:
+      File &lt;span class="s2"&gt;&amp;quot;&amp;lt;string&amp;gt;&amp;quot;&lt;/span&gt;, line &lt;span class="m"&gt;1&lt;/span&gt;, in &amp;lt;module&amp;gt;
+      File &lt;span class="s2"&gt;&amp;quot;/home/guchio/src/pygpu/setup.py&amp;quot;&lt;/span&gt;, line &lt;span class="m"&gt;7&lt;/span&gt;, in &amp;lt;module&amp;gt;
+        import Cython
+    ImportError: No module named Cython
+
+    ----------------------------------------
+Command &lt;span class="s2"&gt;&amp;quot;python setup.py egg_info&amp;quot;&lt;/span&gt; failed with error code &lt;span class="m"&gt;1&lt;/span&gt; in /home/guchio/src/pygpu/
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;そこで cython をインストールして再度挑戦。&lt;br&gt;
+しかし以下のエラーを確認。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;$ pip install -e git://github.com/Theano/libgpuarray.git@v-9998#egg&lt;span class="o"&gt;=&lt;/span&gt;pygpu
+Obtaining pygpu from git+git://github.com/Theano/libgpuarray.git@v-9998#egg&lt;span class="o"&gt;=&lt;/span&gt;pygpu
+  Updating ./src/pygpu clone &lt;span class="o"&gt;(&lt;/span&gt;to v-9998&lt;span class="o"&gt;)&lt;/span&gt;
+Requirement already satisfied: mako&amp;gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="m"&gt;0&lt;/span&gt;.7 in ./miniconda2/envs/ntmenv-owl/lib/python2.7/site-packages/Mako-1.0.7-py2.7.egg &lt;span class="o"&gt;(&lt;/span&gt;from pygpu&lt;span class="o"&gt;)&lt;/span&gt;
+Requirement already satisfied: MarkupSafe&amp;gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="m"&gt;0&lt;/span&gt;.9.2 in ./miniconda2/envs/ntmenv-owl/lib/python2.7/site-packages &lt;span class="o"&gt;(&lt;/span&gt;from mako&amp;gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="m"&gt;0&lt;/span&gt;.7-&amp;gt;pygpu&lt;span class="o"&gt;)&lt;/span&gt;
+Installing collected packages: pygpu
+  Found existing installation: pygpu &lt;span class="m"&gt;0&lt;/span&gt;.6.9
+    Uninstalling pygpu-0.6.9:
+      Successfully uninstalled pygpu-0.6.9
+  Running setup.py develop &lt;span class="k"&gt;for&lt;/span&gt; pygpu
+Complete output from &lt;span class="nb"&gt;command&lt;/span&gt; /home/guchio/miniconda2/envs/ntmenv-owl/bin/python -c &lt;span class="s2"&gt;&amp;quot;import setuptools, tokenize;__file__=&amp;#39;/home/guchio/src/pygpu/setup.py&amp;#39;;f=getattr(tokenize, &amp;#39;o&lt;/span&gt;
+&lt;span class="s2"&gt;pen&amp;#39;, open)(__file__);code=f.read().replace(&amp;#39;\r\n&amp;#39;, &amp;#39;\n&amp;#39;);f.close();exec(compile(code, __file__, &amp;#39;exec&amp;#39;))&amp;quot;&lt;/span&gt; develop --no-deps:
+    running develop
+    running egg_info
+    writing requirements to pygpu.egg-info/requires.txt
+    writing pygpu.egg-info/PKG-INFO
+    writing top-level names to pygpu.egg-info/top_level.txt
+    writing dependency_links to pygpu.egg-info/dependency_links.txt
+    reading manifest file &lt;span class="s1"&gt;&amp;#39;pygpu.egg-info/SOURCES.txt&amp;#39;&lt;/span&gt;
+    writing manifest file &lt;span class="s1"&gt;&amp;#39;pygpu.egg-info/SOURCES.txt&amp;#39;&lt;/span&gt;
+    running build_ext
+    building &lt;span class="s1"&gt;&amp;#39;pygpu.gpuarray&amp;#39;&lt;/span&gt; extension
+    gcc -pthread -B /home/guchio/miniconda2/envs/ntmenv-owl/compiler_compat -DNDEBUG -g -fwrapv -O3 -Wall -Wstrict-prototypes -I/usr/local/cuda/include/ -fPIC -DGPUARRAY_SHARED -I/h
+ome/guchio/miniconda2/envs/ntmenv-owl/lib/python2.7/site-packages/numpy/core/include -I/home/guchio/miniconda2/envs/ntmenv-owl/include/python2.7 -c pygpu/gpuarray.c -o build/temp.li
+nux-x86_64-2.7/pygpu/gpuarray.o
+    In file included from /home/guchio/miniconda2/envs/ntmenv-owl/lib/python2.7/site-packages/numpy/core/include/numpy/ndarraytypes.h:1809:0,
+                     from /home/guchio/miniconda2/envs/ntmenv-owl/lib/python2.7/site-packages/numpy/core/include/numpy/ndarrayobject.h:18,
+                     from /home/guchio/miniconda2/envs/ntmenv-owl/lib/python2.7/site-packages/numpy/core/include/numpy/arrayobject.h:4,
+                     from pygpu/gpuarray.c:514:
+/home/guchio/miniconda2/envs/ntmenv-owl/lib/python2.7/site-packages/numpy/core/include/numpy/npy_1_7_deprecated_api.h:15:2: warning: &lt;span class="c1"&gt;#warning &amp;quot;Using deprecated NumPy API, disabl&lt;/span&gt;
+e it by &lt;span class="s2"&gt;&amp;quot; &amp;quot;&lt;/span&gt;&lt;span class="c1"&gt;#defining NPY_NO_DEPRECATED_API NPY_1_7_API_VERSION&amp;quot; [-Wcpp]&lt;/span&gt;
+     &lt;span class="c1"&gt;#warning &amp;quot;Using deprecated NumPy API, disable it by &amp;quot; \&lt;/span&gt;
+      ^
+    pygpu/gpuarray.c:516:28: fatal error: gpuarray/types.h: No such file or directory
+    compilation terminated.
+    error: &lt;span class="nb"&gt;command&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;gcc&amp;#39;&lt;/span&gt; failed with &lt;span class="nb"&gt;exit&lt;/span&gt; status &lt;span class="m"&gt;1&lt;/span&gt;
+
+    ----------------------------------------
+  Rolling back uninstall of pygpu
+Command &lt;span class="s2"&gt;&amp;quot;/home/guchio/miniconda2/envs/ntmenv-owl/bin/python -c &amp;quot;&lt;/span&gt;import setuptools, tokenize&lt;span class="p"&gt;;&lt;/span&gt;&lt;span class="nv"&gt;__file__&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;/home/guchio/src/pygpu/setup.py&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;&lt;span class="nv"&gt;f&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;getattr&lt;span class="o"&gt;(&lt;/span&gt;tokenize, &lt;span class="s1"&gt;&amp;#39;open&amp;#39;&lt;/span&gt;, open&lt;span class="o"&gt;)(&lt;/span&gt;__file__&lt;span class="o"&gt;)&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;co
+&lt;span class="nv"&gt;de&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;f.read&lt;span class="o"&gt;()&lt;/span&gt;.replace&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;\r\n&amp;#39;&lt;/span&gt;, &lt;span class="s1"&gt;&amp;#39;\n&amp;#39;&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;f.close&lt;span class="o"&gt;()&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;exec&lt;span class="o"&gt;(&lt;/span&gt;compile&lt;span class="o"&gt;(&lt;/span&gt;code, __file__, &lt;span class="s1"&gt;&amp;#39;exec&amp;#39;&lt;/span&gt;&lt;span class="o"&gt;))&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot; develop --no-deps&amp;quot;&lt;/span&gt; failed with error code &lt;span class="m"&gt;1&lt;/span&gt; in /home/guchio/src/pygpu/
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;その後いろいろ試したがうまく行かず、結局 Theano のバージョンを 0.8.2 から 0.9.0 に変更して解決した。&lt;br&gt;
+試しに gpu の速度を次のコードで図った。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;theano&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;function&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;config&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;shared&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;tensor&lt;/span&gt;
+&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;numpy&lt;/span&gt;
+&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;time&lt;/span&gt;
+
+&lt;span class="n"&gt;vlen&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;10&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="mi"&gt;30&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="mi"&gt;768&lt;/span&gt;  &lt;span class="c1"&gt;# 10 x #cores x # threads per core&lt;/span&gt;
+&lt;span class="n"&gt;iters&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;1000&lt;/span&gt;
+
+&lt;span class="n"&gt;rng&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;numpy&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;random&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;RandomState&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;22&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="n"&gt;x&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;shared&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;numpy&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;asarray&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;rng&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;rand&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;vlen&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt; &lt;span class="n"&gt;config&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;floatX&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+&lt;span class="n"&gt;f&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;function&lt;/span&gt;&lt;span class="p"&gt;([],&lt;/span&gt; &lt;span class="n"&gt;tensor&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;exp&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+&lt;span class="k"&gt;print&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;f&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;maker&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;fgraph&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;toposort&lt;/span&gt;&lt;span class="p"&gt;())&lt;/span&gt;
+&lt;span class="n"&gt;t0&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;time&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;time&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+&lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;i&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="nb"&gt;range&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;iters&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+    &lt;span class="n"&gt;r&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;f&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+&lt;span class="n"&gt;t1&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;time&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;time&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+&lt;span class="k"&gt;print&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;Looping &lt;/span&gt;&lt;span class="si"&gt;%d&lt;/span&gt;&lt;span class="s2"&gt; times took &lt;/span&gt;&lt;span class="si"&gt;%f&lt;/span&gt;&lt;span class="s2"&gt; seconds&amp;quot;&lt;/span&gt; &lt;span class="o"&gt;%&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;iters&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;t1&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="n"&gt;t0&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+&lt;span class="k"&gt;print&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;Result is &lt;/span&gt;&lt;span class="si"&gt;%s&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt; &lt;span class="o"&gt;%&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;r&lt;/span&gt;&lt;span class="p"&gt;,))&lt;/span&gt;
+&lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="n"&gt;numpy&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;any&lt;/span&gt;&lt;span class="p"&gt;([&lt;/span&gt;&lt;span class="nb"&gt;isinstance&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;op&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;tensor&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Elemwise&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="ow"&gt;and&lt;/span&gt;
+              &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;Gpu&amp;#39;&lt;/span&gt; &lt;span class="ow"&gt;not&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="nb"&gt;type&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;op&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="vm"&gt;__name__&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+              &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;x&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="n"&gt;f&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;maker&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;fgraph&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;toposort&lt;/span&gt;&lt;span class="p"&gt;()]):&lt;/span&gt;
+    &lt;span class="k"&gt;print&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;Used the cpu&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="k"&gt;else&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+    &lt;span class="k"&gt;print&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;Used the gpu&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;結果は以下。(cpu は 1 core のみ使用。)&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="c1"&gt;# GPU ver&lt;/span&gt;
+Using cuDNN version &lt;span class="m"&gt;5110&lt;/span&gt; on context None
+Mapped name None to device cuda0: Tesla K80 &lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="m"&gt;0000&lt;/span&gt;:83:00.0&lt;span class="o"&gt;)&lt;/span&gt;
+&lt;span class="o"&gt;[&lt;/span&gt;GpuElemwise&lt;span class="o"&gt;{&lt;/span&gt;exp,no_inplace&lt;span class="o"&gt;}(&lt;/span&gt;&amp;lt;GpuArrayType&amp;lt;None&amp;gt;&lt;span class="o"&gt;(&lt;/span&gt;float32, &lt;span class="o"&gt;(&lt;/span&gt;False,&lt;span class="o"&gt;))&lt;/span&gt;&amp;gt;&lt;span class="o"&gt;)&lt;/span&gt;, HostFromGpu&lt;span class="o"&gt;(&lt;/span&gt;gpuarray&lt;span class="o"&gt;)(&lt;/span&gt;GpuElemwise&lt;span class="o"&gt;{&lt;/span&gt;exp,no_inplace&lt;span class="o"&gt;}&lt;/span&gt;.0&lt;span class="o"&gt;)]&lt;/span&gt;
+Looping &lt;span class="m"&gt;1000&lt;/span&gt; &lt;span class="nb"&gt;times&lt;/span&gt; took &lt;span class="m"&gt;0&lt;/span&gt;.505921 seconds
+Result is &lt;span class="o"&gt;[&lt;/span&gt; &lt;span class="m"&gt;1&lt;/span&gt;.23178029  &lt;span class="m"&gt;1&lt;/span&gt;.61879349  &lt;span class="m"&gt;1&lt;/span&gt;.52278066 ...,  &lt;span class="m"&gt;2&lt;/span&gt;.20771813  &lt;span class="m"&gt;2&lt;/span&gt;.29967761  &lt;span class="m"&gt;1&lt;/span&gt;.62323296&lt;span class="o"&gt;]&lt;/span&gt;
+Used the gpu
+
+&lt;span class="c1"&gt;# CPU ver&lt;/span&gt;
+&lt;span class="o"&gt;[&lt;/span&gt;Elemwise&lt;span class="o"&gt;{&lt;/span&gt;exp,no_inplace&lt;span class="o"&gt;}(&lt;/span&gt;&amp;lt;TensorType&lt;span class="o"&gt;(&lt;/span&gt;float32, vector&lt;span class="o"&gt;)&lt;/span&gt;&amp;gt;&lt;span class="o"&gt;)]&lt;/span&gt;
+Looping &lt;span class="m"&gt;1000&lt;/span&gt; &lt;span class="nb"&gt;times&lt;/span&gt; took &lt;span class="m"&gt;32&lt;/span&gt;.001292 seconds
+Result is &lt;span class="o"&gt;[&lt;/span&gt; &lt;span class="m"&gt;1&lt;/span&gt;.23178029  &lt;span class="m"&gt;1&lt;/span&gt;.61879337  &lt;span class="m"&gt;1&lt;/span&gt;.52278066 ...,  &lt;span class="m"&gt;2&lt;/span&gt;.20771813  &lt;span class="m"&gt;2&lt;/span&gt;.29967761  &lt;span class="m"&gt;1&lt;/span&gt;.62323284&lt;span class="o"&gt;]&lt;/span&gt;
+Used the cpu
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;一方、&lt;a href="https://guchio3.github.io/guchiBLO/Speeding_Up_Theano.html"&gt;以前の記事&lt;/a&gt;で紹介した amdlibm を使用すると cpu でも以下のように良い結果となった。&lt;br&gt;
+今回の elementwise は amdlibm の効果が非常に出やすいものっぽい。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="c1"&gt;# CPU w/ amdlibm ver&lt;/span&gt;
+&lt;span class="o"&gt;[&lt;/span&gt;Elemwise&lt;span class="o"&gt;{&lt;/span&gt;exp,no_inplace&lt;span class="o"&gt;}(&lt;/span&gt;&amp;lt;TensorType&lt;span class="o"&gt;(&lt;/span&gt;float32, vector&lt;span class="o"&gt;)&lt;/span&gt;&amp;gt;&lt;span class="o"&gt;)]&lt;/span&gt;
+Looping &lt;span class="m"&gt;1000&lt;/span&gt; &lt;span class="nb"&gt;times&lt;/span&gt; took &lt;span class="m"&gt;1&lt;/span&gt;.445175 seconds
+Result is &lt;span class="o"&gt;[&lt;/span&gt; &lt;span class="m"&gt;1&lt;/span&gt;.23178029  &lt;span class="m"&gt;1&lt;/span&gt;.61879337  &lt;span class="m"&gt;1&lt;/span&gt;.52278066 ...,  &lt;span class="m"&gt;2&lt;/span&gt;.20771813  &lt;span class="m"&gt;2&lt;/span&gt;.29967761  &lt;span class="m"&gt;1&lt;/span&gt;.62323284&lt;span class="o"&gt;]&lt;/span&gt;
+Used the cpu
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;また、Theano 0.9.0 は今使っている Lasagne というライブラリの 0.1 との相性が悪く、lasagne/layers/pool.py に於いて&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;theano.tensor.signal&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;downsample&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;という行があるが、theano 0.9.0 は downsample をサポートから外しているため、ここで下のようなエラーが出る。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;ImportError: cannot import name downsample
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;一方 Lasagne 全体を bleeeding edge version にしてしまうと今書いているプログラムが動かなくなるため、あまり良い手ではないがこの pool.py だけ&lt;a href="https://github.com/Lasagne/Lasagne/blob/master/lasagne/layers/pool.py"&gt;最新のもの&lt;/a&gt;に手で書き換え解決。&lt;/p&gt;</content><category term="Theano"></category><category term="Lasagne"></category><category term="Machine Learning"></category></entry><entry><title>Speeding Up Theano</title><link href="https://guchio3.github.io/guchiBLO/Speeding_Up_Theano.html" rel="alternate"></link><published>2017-10-10T19:00:00+09:00</published><updated>2017-10-10T19:00:00+09:00</updated><author><name>guchio3</name></author><id>tag:guchio3.github.io,2017-10-10:/guchiBLO/Speeding_Up_Theano.html</id><summary type="html">&lt;p&gt;Theano の速度を改良した際のメモ&lt;/p&gt;</summary><content type="html">&lt;h1&gt;Outline&lt;/h1&gt;
 &lt;p&gt;Theano の速度向上のため行ったことをメモ。&lt;/p&gt;
 &lt;p&gt;なお、使用した Theano のバージョンは 0.8.2 であり、os 情報は以下の通り。&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;$ cat /proc/version

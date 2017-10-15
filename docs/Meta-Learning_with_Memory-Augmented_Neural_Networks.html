@@ -1,6 +1,6 @@
 
 <!DOCTYPE html>
-<html lang="ja">
+<html lang="en">
 <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -137,7 +137,7 @@
                         <a href="https://guchio3.github.io/guchiBLO/category/programming.html">
                             <i class="fa fa-folder-open padding-small"></i>
                             Programming
-                            <span class="badge pull-right categorybadge">2</span>
+                            <span class="badge pull-right categorybadge">3</span>
                         </a>
                     </li>
                     <li class="active">
@@ -224,7 +224,7 @@
 \label{meta_learn_func}
     \theta^{*} = argmin_{\theta}E_{D\sim p(D)}[{\cal L}(D;\theta)]
 \end{equation}</div>
-<h3>Tasks{#tasks}</h3>
+<h3>Tasks</h3>
 <p>またこの論文におけるタスクは、系列型のデータセット <span class="math">\(D = {d_t}^{T}_{t=1} = {({\bf x}_t, y_t)}^{T}_{t=1}\)</span> (<span class="math">\({\bf x_t}\)</span> は入力、<span class="math">\(y_t\)</span> は入力に対する適切な正解ラベル) について行われるが、Few-shot learning を行うため少しトリッキー (下の図参照)。<br>
 なお、下の図には Class Prediction と書かれているが分類だけでなく回帰も同様に扱う。</p>
 <p>すなわち、時間 <span class="math">\(t\)</span> においてモデルは <span class="math">\({\bf x_t}\)</span> および <span class="math">\(y_{t-1}\)</span> を入力として受け取り、<span class="math">\({\bf x_t}\)</span> に対応する正しいラベル <span class="math">\(y_t\)</span> を出力するように学習を行う。よって <span class="math">\(t = 0\)</span> での <span class="math">\(y_{t-1}\)</span> を <span class="math">\(null\)</span> としたとき、モデルが入力として受けとる系列データは <span class="math">\(({\bf x_1}, null), ({\bf x_2}, y_1), ..., ({\bf x_T}, y_{T-1})\)</span>、これに対してモデルが理想的に出力する系列データは <span class="math">\(y_1, y_2 , ..., y_t\)</span> である。</p>
@@ -244,7 +244,7 @@
 1600 以上のクラスがあり、各クラス毎に幾つかのサンプルがある。<br>
 この論文ではそれらを更に 90, 180, 270 度回転させて data augmentation を行っている。</p>
 <p><img alt="omniglot" src="https://guchio3.github.io/guchiBLO/images/Research/Meta-Learning_with_Memory_Augmented_Neural_Networks/omniglot.jpg" style="display:block;margin-left:auto;margin-right:auto;" width="700px"></p>
-<p>タスクは上の <a href="#tasks">Tasks</a> に書いたように行われる。<br>
+<p>タスクは上の Tasks に書いたように行われる。<br>
 入力された画像がどのクラスのものかということも大事だが、どのクラスでないかを認識して消去法的にクラス分類も行うこともできる。</p>
 <p>学習は 100,000 データセットに対して行われ、各データセットは Omniglot からランダムに 5 つ選ばれたクラスに対してランダムなラベルを付与することで構成される。<br>
 その他詳細は論文参照。</p>
@@ -254,12 +254,12 @@
 <p>そして下の表が実験結果。</p>
 <p>HUMAN, LSTM, MANN はデータ入力されるにつれて基本的には精度が上がっており、MANN が非常に良い性能を出している。 <br>
 なお、FEEDFORWARD は feed-forward RNN を指す。</p>
-<p>正直人間が 1st で 1/5 の確率でしか当たらないはずのラベルを 34.5% で当てているので懐疑的。<br>
-一応、これよりも高い精度で 1st を分類している MANN は educated guessing (学習により良いあてずっぽう推測ができるようになった？) と書かれているがよくわかっていない...<br>
-実験設定について何か勘違いしているのかも...</p>
+<p>人間が 1st で 1/5 の確率でしか当たらないはずのラベルを 34.5% で当てているは懐疑的なのでもしかしたら実験設定について何か勘違いしているのかも...。<br>
+一応、これよりも高い精度で 1st を分類している MANN は educated guessing (学習により良いあてずっぽう推測ができるようになった？) と書かれているがラベルはデータセットごとに
+よくわかっていない...  </p>
 <p><img alt="result_table" src="https://guchio3.github.io/guchiBLO/images/Research/Meta-Learning_with_Memory_Augmented_Neural_Networks/result_table.jpg" style="display:block;margin-left:auto;margin-right:auto;" width="400px"></p>
 <p>下の図は LSTM および MANN の学習曲線。a, b は出力に onehot-vector を用いたもので、c, d は出力を文字列で行ったもの。文字列で行った場合、組み合わせによって大量のパターンを表現できるためクラス数が増えるに従いネットワークサイズが大きくなり学習が難しくなる onehot vector に比べてより多くのクラスを扱える。</p>
-<p><img alt="learning_curves" src="https://guchio3.github.io/guchiBLO/images/Research/Meta-Learning_with_Memory_Augmented_Neural_Networks/learning_curves.jpg" style="display:block;margin-left:auto;margin-right:auto;" width="900px"></p>
+<p><img alt="learning_curves" src="https://guchio3.github.io/guchiBLO/images/Research/Meta-Learning_with_Memory_Augmented_Neural_Networks/learning_curves.jpg" style="display:block;margin-left:auto;margin-right:auto;" width="800px"></p>
 <p>以上！</p>
 <script type="text/javascript">if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
     var align = "center",
@@ -380,7 +380,7 @@
         var disqus_url = 'https://guchio3.github.io/guchiBLO/Meta-Learning_with_Memory-Augmented_Neural_Networks.html';
 
     var disqus_config = function () {
-        this.language = "ja";
+        this.language = "en";
     };
         /* * * DON'T EDIT BELOW THIS LINE * * */
     (function () {

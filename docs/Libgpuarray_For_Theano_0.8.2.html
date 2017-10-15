@@ -1,0 +1,417 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="author" content="guchio3" />
+        <meta name="keywords" content="Theano,Lasagne,Machine Learning" />
+        <meta name="description" content="Theano 0.8.2 に適合する libgpuarray のインストール" />
+
+
+    <title>Libgpuarray For Theano 0.8.2 - guchiBLO</title>
+
+        <link rel="stylesheet" href="https://guchio3.github.io/guchiBLO/theme/css/bootstrap.min.css" type="text/css" />
+
+    <link href="https://guchio3.github.io/guchiBLO/theme/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="https://guchio3.github.io/guchiBLO/theme/css/pygments/native.css" rel="stylesheet" />
+    
+    <link href="https://guchio3.github.io/guchiBLO/theme/css/pelican-twitchy.min.css" rel="stylesheet" />
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    
+    <!-- Feeds -->
+        <link href="https://guchio3.github.io/guchiBLO/feeds/all.atom.xml" type="application/atom+xml" rel="alternate"
+              title="guchiBLO ATOM Feed" />
+</head>
+<body data-spy="scroll" data-target="#scrollspy">
+    <div id="wrapper">
+        <!-- Sidebar -->
+        <div id="sidebar-wrapper-small" class="twitchy-background">
+            <ul id="accordion-small" class="sidebar-nav sidebar-nav-small">
+                <li>
+        <a href="https://guchio3.github.io/guchiBLO" title="guchiBLO" class="collapsed">
+            <span class="glyphicon glyphicon-home"></span>
+        </a>
+    </li>
+                <li class="nav-divider"></li>
+                <li>
+        <a href="https://guchio3.github.io/guchiBLO/archives.html" title="Recent Articles" class="collapsed">
+            <span class="glyphicon glyphicon-th-list"></span>
+        </a>
+    </li>
+                
+                <li class="nav-divider"></li>
+                <li>
+                    <a data-toggle="collapse" data-parent="#accordion-small" href="#collapse-social-small" title="Social" class="collapsed">
+                        <i class="fa fa-users padding-small"></i>
+                    </a>
+                </li>
+                <li class="panel anti-panel"><ul id="collapse-social-small" class="collapse ">
+                    <li>
+                        <a href="https://github.com/guchio3" title="github"><i class="fa fa-github-square fa-lg padding-small"></i></a>
+                    </li>
+                    <li>
+                        <a href="https://twitter.com/ihcgT_Ykchi" title="twitter"><i class="fa fa-twitter-square fa-lg padding-small"></i></a>
+                    </li>
+                </ul></li>
+                <li class="nav-divider"></li>
+                <li>
+        <a href="#" title="Back to top" class="collapsed">
+            <span class="fa fa-arrow-up"></span>
+        </a>
+    </li>
+            </ul>
+        </div>
+        <div id="sidebar-wrapper" class="twitchy-background">
+            <ul id="accordion" class="sidebar-nav">
+                <li class="sidebar-brand">
+                    <a href="https://guchio3.github.io/guchiBLO/">
+<img src="https://guchio3.github.io/guchiBLO//images/siteBaseImages/guchiBLO_temp.png" width="200" alt="Sitelogo"/>                     </a>
+                </li>
+                    <li>
+                        <a href="https://guchio3.github.io/guchiBLO/archives.html">
+                            <span class="glyphicon glyphicon-th-list padding-small"></span>
+                            Recent Articles
+                        </a>
+                    </li>
+                <li class="nav-divider"></li>
+                <li>
+                    <a data-toggle="collapse" data-parent="#accordion" href="#collapse-social">
+                        <i class="fa fa-users padding-small"></i>
+                        Contact
+                    </a>
+                </li>
+                <li class="panel anti-panel"><ul id="collapse-social" class="sidebar_submenu collapse ">
+                    <li>
+                        <a href="https://github.com/guchio3" title="github">
+                            <i class="fa fa-github-square fa-lg padding-small"></i>
+                            github
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://twitter.com/ihcgT_Ykchi" title="twitter">
+                            <i class="fa fa-twitter-square fa-lg padding-small"></i>
+                            twitter
+                        </a>
+                    </li>
+                </ul></li>
+                
+                <li class="nav-divider"></li>
+                <li>
+                    <a data-toggle="collapse" data-parent="#accordion" href="#collapse-pages">
+                        <i class="fa fa-folder-open padding-small"></i>
+                        Pages
+                    </a>
+                </li>
+                <li class="panel anti-panel"><ul id="collapse-pages" class="sidebar_submenu collapse ">
+                    <li>
+                        <a href="https://guchio3.github.io/guchiBLO/pages/AUTHOR.html">
+                            <i class="fa fa-file-text padding-small"></i>
+                            AUTHOR
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://guchio3.github.io/guchiBLO/pages/CONTENTS.html">
+                            <i class="fa fa-file-text padding-small"></i>
+                            CONTENTS
+                        </a>
+                    </li>
+                </ul></li>
+                
+                <li class="nav-divider"></li>
+                <li>
+                    <a data-toggle="collapse" data-parent="#accordion" href="#collapse-categories">
+                        <i class="fa fa-folder-open padding-small"></i>
+                        Categories
+                    </a>
+                </li>
+                <li class="panel anti-panel"><ul id="collapse-categories" class="sidebar_submenu collapse ">
+                    <li class="active">
+                        <a href="https://guchio3.github.io/guchiBLO/category/programming.html">
+                            <i class="fa fa-folder-open padding-small"></i>
+                            Programming
+                            <span class="badge pull-right categorybadge">3</span>
+                        </a>
+                    </li>
+                    <li >
+                        <a href="https://guchio3.github.io/guchiBLO/category/research.html">
+                            <i class="fa fa-folder-open padding-small"></i>
+                            Research
+                            <span class="badge pull-right categorybadge">1</span>
+                        </a>
+                    </li>
+                </ul></li>
+                
+            </ul>
+        </div>
+        <!-- /#sidebar-wrapper -->
+        <!-- open/close sidebar -->
+        <a href="#menu-toggle" class="btn btn-default" id="menu-toggle">
+            <span id="right-arrow" class="glyphicon glyphicon-chevron-right"  title="expand sidebar"></span>
+            <span id="left-arrow" class="glyphicon glyphicon-chevron-left" title="minimize sidebar"></span>
+        </a>
+       <!-- /open/close sidebar -->
+
+        <!-- Page Content -->
+        <div id="page-content-wrapper">
+            <div class="container-fluid">
+<section id="content">
+    <article>
+        <div class="row">
+            <div class="col-lg-9">
+                <header class="page-header">
+                    <h1>
+                        <a href="https://guchio3.github.io/guchiBLO/Libgpuarray_For_Theano_0.8.2.html"
+                           rel="bookmark"
+                           title="Permalink to Libgpuarray For Theano 0.8.2">
+                            Libgpuarray For Theano 0.8.2
+                        </a>
+                        <small>
+<div class="post-info">
+    <div class="publish-info-block">
+        <small>
+            <span class="published">
+                <i class="fa fa-calendar padding-small"></i><time datetime="2017-10-15T00:00:00+09:00"> 日 15 10月 2017</time>
+            </span>
+            <span class="category">
+                <i class="fa fa-folder-open padding-small"></i><a href="https://guchio3.github.io/guchiBLO/category/programming.html">Programming</a>
+            </span>
+            <span class="tags">
+                <i class="fa fa-tags padding-small"></i>
+                <a href="https://guchio3.github.io/guchiBLO/tag/theano.html">Theano</a> /                 <a href="https://guchio3.github.io/guchiBLO/tag/lasagne.html">Lasagne</a> /                 <a href="https://guchio3.github.io/guchiBLO/tag/machine-learning.html">Machine Learning</a>            </span>
+        </small>
+    </div>
+</div><!-- /.post-info -->                        </small>
+                    </h1>
+                </header>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-9">
+                <div class="entry-content">
+                    <p>Theano (ver 0.8.2) から gpu を使用する際、以下のようなエラーが出たので対応した際のログ。</p>
+<div class="highlight"><pre><span></span>ERROR <span class="o">(</span>theano.sandbox.gpuarray<span class="o">)</span>: Could not initialize pygpu, support disabled
+Traceback <span class="o">(</span>most recent call last<span class="o">)</span>:
+  File <span class="s2">&quot;/home/guchio/miniconda2/envs/ntmenv-owl/lib/python2.7/site-packages/theano/sandbox/gpuarray/__init__.py&quot;</span>, line <span class="m">95</span>, in &lt;module&gt;
+    init_dev<span class="o">(</span>config.device<span class="o">)</span>
+  File <span class="s2">&quot;/home/guchio/miniconda2/envs/ntmenv-owl/lib/python2.7/site-packages/theano/sandbox/gpuarray/__init__.py&quot;</span>, line <span class="m">46</span>, in init_dev
+    <span class="s2">&quot;Make sure Theano and libgpuarray/pygpu &quot;</span>
+RuntimeError: <span class="o">(</span><span class="s1">&#39;Wrong major API version for gpuarray:&#39;</span>, <span class="m">1</span>, <span class="s1">&#39;Make sure Theano and libgpuarray/pygpu are in sync.&#39;</span><span class="o">)</span>
+</pre></div>
+
+
+<p>これは <a href="https://github.com/Theano/libgpuarray/issues/183">Theano の issue</a> を参照するに libgpuarray のバージョンと Theano のバージョンのミスマッチが原因ぽく、libgpuarray の tag v-9998 をインストールすることで解決できるぽい。</p>
+<p>そこで<a href="https://coderwall.com/p/-wbo5q/pip-install-a-specific-github-repo-tag-or-branch">ここ</a>を参考に pip 経由で以下のように libgpuarray をインストールしたが、以下のエラーを確認。<br>
+ちなみに、#egg 以降は<a href="https://stackoverflow.com/questions/21638929/how-to-determine-the-name-of-an-egg-for-a-python-package-on-github">ここ</a>を参考に、libgpuarray の setup.py を参照した。</p>
+<div class="highlight"><pre><span></span>$ pip install -e git://github.com/Theano/libgpuarray.git@v-9998#egg<span class="o">=</span>pygpu
+Obtaining pygpu from git+git://github.com/Theano/libgpuarray.git@v-9998#egg<span class="o">=</span>pygpu
+  Cloning git://github.com/Theano/libgpuarray.git <span class="o">(</span>to v-9998<span class="o">)</span> to ./src/pygpu
+    Complete output from <span class="nb">command</span> python setup.py egg_info:
+    Traceback <span class="o">(</span>most recent call last<span class="o">)</span>:
+      File <span class="s2">&quot;&lt;string&gt;&quot;</span>, line <span class="m">1</span>, in &lt;module&gt;
+      File <span class="s2">&quot;/home/guchio/src/pygpu/setup.py&quot;</span>, line <span class="m">7</span>, in &lt;module&gt;
+        import Cython
+    ImportError: No module named Cython
+
+    ----------------------------------------
+Command <span class="s2">&quot;python setup.py egg_info&quot;</span> failed with error code <span class="m">1</span> in /home/guchio/src/pygpu/
+</pre></div>
+
+
+<p>そこで cython をインストールして再度挑戦。<br>
+しかし以下のエラーを確認。</p>
+<div class="highlight"><pre><span></span>$ pip install -e git://github.com/Theano/libgpuarray.git@v-9998#egg<span class="o">=</span>pygpu
+Obtaining pygpu from git+git://github.com/Theano/libgpuarray.git@v-9998#egg<span class="o">=</span>pygpu
+  Updating ./src/pygpu clone <span class="o">(</span>to v-9998<span class="o">)</span>
+Requirement already satisfied: mako&gt;<span class="o">=</span><span class="m">0</span>.7 in ./miniconda2/envs/ntmenv-owl/lib/python2.7/site-packages/Mako-1.0.7-py2.7.egg <span class="o">(</span>from pygpu<span class="o">)</span>
+Requirement already satisfied: MarkupSafe&gt;<span class="o">=</span><span class="m">0</span>.9.2 in ./miniconda2/envs/ntmenv-owl/lib/python2.7/site-packages <span class="o">(</span>from mako&gt;<span class="o">=</span><span class="m">0</span>.7-&gt;pygpu<span class="o">)</span>
+Installing collected packages: pygpu
+  Found existing installation: pygpu <span class="m">0</span>.6.9
+    Uninstalling pygpu-0.6.9:
+      Successfully uninstalled pygpu-0.6.9
+  Running setup.py develop <span class="k">for</span> pygpu
+Complete output from <span class="nb">command</span> /home/guchio/miniconda2/envs/ntmenv-owl/bin/python -c <span class="s2">&quot;import setuptools, tokenize;__file__=&#39;/home/guchio/src/pygpu/setup.py&#39;;f=getattr(tokenize, &#39;o</span>
+<span class="s2">pen&#39;, open)(__file__);code=f.read().replace(&#39;\r\n&#39;, &#39;\n&#39;);f.close();exec(compile(code, __file__, &#39;exec&#39;))&quot;</span> develop --no-deps:
+    running develop
+    running egg_info
+    writing requirements to pygpu.egg-info/requires.txt
+    writing pygpu.egg-info/PKG-INFO
+    writing top-level names to pygpu.egg-info/top_level.txt
+    writing dependency_links to pygpu.egg-info/dependency_links.txt
+    reading manifest file <span class="s1">&#39;pygpu.egg-info/SOURCES.txt&#39;</span>
+    writing manifest file <span class="s1">&#39;pygpu.egg-info/SOURCES.txt&#39;</span>
+    running build_ext
+    building <span class="s1">&#39;pygpu.gpuarray&#39;</span> extension
+    gcc -pthread -B /home/guchio/miniconda2/envs/ntmenv-owl/compiler_compat -DNDEBUG -g -fwrapv -O3 -Wall -Wstrict-prototypes -I/usr/local/cuda/include/ -fPIC -DGPUARRAY_SHARED -I/h
+ome/guchio/miniconda2/envs/ntmenv-owl/lib/python2.7/site-packages/numpy/core/include -I/home/guchio/miniconda2/envs/ntmenv-owl/include/python2.7 -c pygpu/gpuarray.c -o build/temp.li
+nux-x86_64-2.7/pygpu/gpuarray.o
+    In file included from /home/guchio/miniconda2/envs/ntmenv-owl/lib/python2.7/site-packages/numpy/core/include/numpy/ndarraytypes.h:1809:0,
+                     from /home/guchio/miniconda2/envs/ntmenv-owl/lib/python2.7/site-packages/numpy/core/include/numpy/ndarrayobject.h:18,
+                     from /home/guchio/miniconda2/envs/ntmenv-owl/lib/python2.7/site-packages/numpy/core/include/numpy/arrayobject.h:4,
+                     from pygpu/gpuarray.c:514:
+/home/guchio/miniconda2/envs/ntmenv-owl/lib/python2.7/site-packages/numpy/core/include/numpy/npy_1_7_deprecated_api.h:15:2: warning: <span class="c1">#warning &quot;Using deprecated NumPy API, disabl</span>
+e it by <span class="s2">&quot; &quot;</span><span class="c1">#defining NPY_NO_DEPRECATED_API NPY_1_7_API_VERSION&quot; [-Wcpp]</span>
+     <span class="c1">#warning &quot;Using deprecated NumPy API, disable it by &quot; \</span>
+      ^
+    pygpu/gpuarray.c:516:28: fatal error: gpuarray/types.h: No such file or directory
+    compilation terminated.
+    error: <span class="nb">command</span> <span class="s1">&#39;gcc&#39;</span> failed with <span class="nb">exit</span> status <span class="m">1</span>
+
+    ----------------------------------------
+  Rolling back uninstall of pygpu
+Command <span class="s2">&quot;/home/guchio/miniconda2/envs/ntmenv-owl/bin/python -c &quot;</span>import setuptools, tokenize<span class="p">;</span><span class="nv">__file__</span><span class="o">=</span><span class="s1">&#39;/home/guchio/src/pygpu/setup.py&#39;</span><span class="p">;</span><span class="nv">f</span><span class="o">=</span>getattr<span class="o">(</span>tokenize, <span class="s1">&#39;open&#39;</span>, open<span class="o">)(</span>__file__<span class="o">)</span><span class="p">;</span>co
+<span class="nv">de</span><span class="o">=</span>f.read<span class="o">()</span>.replace<span class="o">(</span><span class="s1">&#39;\r\n&#39;</span>, <span class="s1">&#39;\n&#39;</span><span class="o">)</span><span class="p">;</span>f.close<span class="o">()</span><span class="p">;</span>exec<span class="o">(</span>compile<span class="o">(</span>code, __file__, <span class="s1">&#39;exec&#39;</span><span class="o">))</span><span class="s2">&quot; develop --no-deps&quot;</span> failed with error code <span class="m">1</span> in /home/guchio/src/pygpu/
+</pre></div>
+
+
+<p>その後いろいろ試したがうまく行かず、結局 Theano のバージョンを 0.8.2 から 0.9.0 に変更して解決した。<br>
+試しに gpu の速度を次のコードで図った。</p>
+<div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">theano</span> <span class="kn">import</span> <span class="n">function</span><span class="p">,</span> <span class="n">config</span><span class="p">,</span> <span class="n">shared</span><span class="p">,</span> <span class="n">tensor</span>
+<span class="kn">import</span> <span class="nn">numpy</span>
+<span class="kn">import</span> <span class="nn">time</span>
+
+<span class="n">vlen</span> <span class="o">=</span> <span class="mi">10</span> <span class="o">*</span> <span class="mi">30</span> <span class="o">*</span> <span class="mi">768</span>  <span class="c1"># 10 x #cores x # threads per core</span>
+<span class="n">iters</span> <span class="o">=</span> <span class="mi">1000</span>
+
+<span class="n">rng</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">RandomState</span><span class="p">(</span><span class="mi">22</span><span class="p">)</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">shared</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">rng</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="n">vlen</span><span class="p">),</span> <span class="n">config</span><span class="o">.</span><span class="n">floatX</span><span class="p">))</span>
+<span class="n">f</span> <span class="o">=</span> <span class="n">function</span><span class="p">([],</span> <span class="n">tensor</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+<span class="k">print</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">maker</span><span class="o">.</span><span class="n">fgraph</span><span class="o">.</span><span class="n">toposort</span><span class="p">())</span>
+<span class="n">t0</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">iters</span><span class="p">):</span>
+    <span class="n">r</span> <span class="o">=</span> <span class="n">f</span><span class="p">()</span>
+<span class="n">t1</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+<span class="k">print</span><span class="p">(</span><span class="s2">&quot;Looping </span><span class="si">%d</span><span class="s2"> times took </span><span class="si">%f</span><span class="s2"> seconds&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">iters</span><span class="p">,</span> <span class="n">t1</span> <span class="o">-</span> <span class="n">t0</span><span class="p">))</span>
+<span class="k">print</span><span class="p">(</span><span class="s2">&quot;Result is </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">r</span><span class="p">,))</span>
+<span class="k">if</span> <span class="n">numpy</span><span class="o">.</span><span class="n">any</span><span class="p">([</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">op</span><span class="p">,</span> <span class="n">tensor</span><span class="o">.</span><span class="n">Elemwise</span><span class="p">)</span> <span class="ow">and</span>
+              <span class="p">(</span><span class="s1">&#39;Gpu&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="nb">type</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">op</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="p">)</span>
+              <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">f</span><span class="o">.</span><span class="n">maker</span><span class="o">.</span><span class="n">fgraph</span><span class="o">.</span><span class="n">toposort</span><span class="p">()]):</span>
+    <span class="k">print</span><span class="p">(</span><span class="s1">&#39;Used the cpu&#39;</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="k">print</span><span class="p">(</span><span class="s1">&#39;Used the gpu&#39;</span><span class="p">)</span>
+</pre></div>
+
+
+<p>結果は以下。(cpu は 1 core のみ使用。)</p>
+<div class="highlight"><pre><span></span><span class="c1"># GPU ver</span>
+Using cuDNN version <span class="m">5110</span> on context None
+Mapped name None to device cuda0: Tesla K80 <span class="o">(</span><span class="m">0000</span>:83:00.0<span class="o">)</span>
+<span class="o">[</span>GpuElemwise<span class="o">{</span>exp,no_inplace<span class="o">}(</span>&lt;GpuArrayType&lt;None&gt;<span class="o">(</span>float32, <span class="o">(</span>False,<span class="o">))</span>&gt;<span class="o">)</span>, HostFromGpu<span class="o">(</span>gpuarray<span class="o">)(</span>GpuElemwise<span class="o">{</span>exp,no_inplace<span class="o">}</span>.0<span class="o">)]</span>
+Looping <span class="m">1000</span> <span class="nb">times</span> took <span class="m">0</span>.505921 seconds
+Result is <span class="o">[</span> <span class="m">1</span>.23178029  <span class="m">1</span>.61879349  <span class="m">1</span>.52278066 ...,  <span class="m">2</span>.20771813  <span class="m">2</span>.29967761  <span class="m">1</span>.62323296<span class="o">]</span>
+Used the gpu
+
+<span class="c1"># CPU ver</span>
+<span class="o">[</span>Elemwise<span class="o">{</span>exp,no_inplace<span class="o">}(</span>&lt;TensorType<span class="o">(</span>float32, vector<span class="o">)</span>&gt;<span class="o">)]</span>
+Looping <span class="m">1000</span> <span class="nb">times</span> took <span class="m">32</span>.001292 seconds
+Result is <span class="o">[</span> <span class="m">1</span>.23178029  <span class="m">1</span>.61879337  <span class="m">1</span>.52278066 ...,  <span class="m">2</span>.20771813  <span class="m">2</span>.29967761  <span class="m">1</span>.62323284<span class="o">]</span>
+Used the cpu
+</pre></div>
+
+
+<p>一方、<a href="https://guchio3.github.io/guchiBLO/Speeding_Up_Theano.html">以前の記事</a>で紹介した amdlibm を使用すると cpu でも以下のように良い結果となった。<br>
+今回の elementwise は amdlibm の効果が非常に出やすいものっぽい。</p>
+<div class="highlight"><pre><span></span><span class="c1"># CPU w/ amdlibm ver</span>
+<span class="o">[</span>Elemwise<span class="o">{</span>exp,no_inplace<span class="o">}(</span>&lt;TensorType<span class="o">(</span>float32, vector<span class="o">)</span>&gt;<span class="o">)]</span>
+Looping <span class="m">1000</span> <span class="nb">times</span> took <span class="m">1</span>.445175 seconds
+Result is <span class="o">[</span> <span class="m">1</span>.23178029  <span class="m">1</span>.61879337  <span class="m">1</span>.52278066 ...,  <span class="m">2</span>.20771813  <span class="m">2</span>.29967761  <span class="m">1</span>.62323284<span class="o">]</span>
+Used the cpu
+</pre></div>
+
+
+<p>また、Theano 0.9.0 は今使っている Lasagne というライブラリの 0.1 との相性が悪く、lasagne/layers/pool.py に於いて</p>
+<div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">theano.tensor.signal</span> <span class="kn">import</span> <span class="n">downsample</span>
+</pre></div>
+
+
+<p>という行があるが、theano 0.9.0 は downsample をサポートから外しているため、ここで下のようなエラーが出る。</p>
+<div class="highlight"><pre><span></span>ImportError: cannot import name downsample
+</pre></div>
+
+
+<p>一方 Lasagne 全体を bleeeding edge version にしてしまうと今書いているプログラムが動かなくなるため、あまり良い手ではないがこの pool.py だけ<a href="https://github.com/Lasagne/Lasagne/blob/master/lasagne/layers/pool.py">最新のもの</a>に手で書き換え解決。</p>
+                </div>
+                <footer class="text-right">
+                    <p>- guchio3</p>
+                </footer>
+    <section id="comments" class="comments ">
+        <hr/>
+        <h2>Comments</h2>
+        <div id="disqus_thread"></div>
+        <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by
+            Disqus.</a></noscript>
+        <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+    </section>
+            </div>
+        </div>
+    </article>
+</section>
+<footer>
+    <hr>
+    <div class="row">
+        <div class="col-lg-9 text-center">
+            <p><small>
+                Built by <a href="http://docs.getpelican.com/en/latest">Pelican</a> / <a href="https://github.com/ingwinlu/pelican-twitchy">pelican-twitchy</a>
+                &middot;                    &copy; 2017 guchio3
+            </small></p>
+        </div>
+    </div>
+</footer>            </div>
+        </div>
+        <!-- /#page-content-wrapper -->
+    </div>
+    <!-- /#wrapper -->
+    <!-- jQuery Version 1.11.2 -->
+    <script src="https://guchio3.github.io/guchiBLO/theme/js/jquery-1.11.2.min.js"></script>
+    <!-- Bootstrap Core JavaScript -->
+    <script src="https://guchio3.github.io/guchiBLO/theme/js/bootstrap.min.js"></script>
+    <!-- twitchy Script -->
+    <script src="https://guchio3.github.io/guchiBLO/theme/js/pelican_twitchy.min.js"></script>
+    <!-- Google Analytics -->
+    <script type="text/javascript">
+
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', 'UA-107917533-1']);
+        _gaq.push(['_trackPageview']);
+
+        (function () {
+            var ga = document.createElement('script');
+            ga.type = 'text/javascript';
+            ga.async = true;
+            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(ga, s);
+        })();
+    </script>
+    <!-- End Google Analytics Code -->
+
+<!-- disqus -->
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'True'; // required: replace example with your forum shortname
+
+            var disqus_identifier = 'Libgpuarray_For_Theano_0.8.2';
+        var disqus_url = 'https://guchio3.github.io/guchiBLO/Libgpuarray_For_Theano_0.8.2.html';
+
+    var disqus_config = function () {
+        this.language = "en";
+    };
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function () {
+        var dsq = document.createElement('script');
+        dsq.type = 'text/javascript';
+        dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<!-- /disqus -->
+</body>
+</html>

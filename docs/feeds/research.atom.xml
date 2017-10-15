@@ -27,7 +27,7 @@
 \label{meta_learn_func}
     \theta^{*} = argmin_{\theta}E_{D\sim p(D)}[{\cal L}(D;\theta)]
 \end{equation}&lt;/div&gt;
-&lt;h3&gt;Tasks{#tasks}&lt;/h3&gt;
+&lt;h3&gt;Tasks&lt;/h3&gt;
 &lt;p&gt;またこの論文におけるタスクは、系列型のデータセット &lt;span class="math"&gt;\(D = {d_t}^{T}_{t=1} = {({\bf x}_t, y_t)}^{T}_{t=1}\)&lt;/span&gt; (&lt;span class="math"&gt;\({\bf x_t}\)&lt;/span&gt; は入力、&lt;span class="math"&gt;\(y_t\)&lt;/span&gt; は入力に対する適切な正解ラベル) について行われるが、Few-shot learning を行うため少しトリッキー (下の図参照)。&lt;br&gt;
 なお、下の図には Class Prediction と書かれているが分類だけでなく回帰も同様に扱う。&lt;/p&gt;
 &lt;p&gt;すなわち、時間 &lt;span class="math"&gt;\(t\)&lt;/span&gt; においてモデルは &lt;span class="math"&gt;\({\bf x_t}\)&lt;/span&gt; および &lt;span class="math"&gt;\(y_{t-1}\)&lt;/span&gt; を入力として受け取り、&lt;span class="math"&gt;\({\bf x_t}\)&lt;/span&gt; に対応する正しいラベル &lt;span class="math"&gt;\(y_t\)&lt;/span&gt; を出力するように学習を行う。よって &lt;span class="math"&gt;\(t = 0\)&lt;/span&gt; での &lt;span class="math"&gt;\(y_{t-1}\)&lt;/span&gt; を &lt;span class="math"&gt;\(null\)&lt;/span&gt; としたとき、モデルが入力として受けとる系列データは &lt;span class="math"&gt;\(({\bf x_1}, null), ({\bf x_2}, y_1), ..., ({\bf x_T}, y_{T-1})\)&lt;/span&gt;、これに対してモデルが理想的に出力する系列データは &lt;span class="math"&gt;\(y_1, y_2 , ..., y_t\)&lt;/span&gt; である。&lt;/p&gt;
@@ -47,7 +47,7 @@
 1600 以上のクラスがあり、各クラス毎に幾つかのサンプルがある。&lt;br&gt;
 この論文ではそれらを更に 90, 180, 270 度回転させて data augmentation を行っている。&lt;/p&gt;
 &lt;p&gt;&lt;img alt="omniglot" src="https://guchio3.github.io/guchiBLO/images/Research/Meta-Learning_with_Memory_Augmented_Neural_Networks/omniglot.jpg" style="display:block;margin-left:auto;margin-right:auto;" width="700px"&gt;&lt;/p&gt;
-&lt;p&gt;タスクは上の &lt;a href="#tasks"&gt;Tasks&lt;/a&gt; に書いたように行われる。&lt;br&gt;
+&lt;p&gt;タスクは上の Tasks に書いたように行われる。&lt;br&gt;
 入力された画像がどのクラスのものかということも大事だが、どのクラスでないかを認識して消去法的にクラス分類も行うこともできる。&lt;/p&gt;
 &lt;p&gt;学習は 100,000 データセットに対して行われ、各データセットは Omniglot からランダムに 5 つ選ばれたクラスに対してランダムなラベルを付与することで構成される。&lt;br&gt;
 その他詳細は論文参照。&lt;/p&gt;
@@ -57,12 +57,12 @@
 &lt;p&gt;そして下の表が実験結果。&lt;/p&gt;
 &lt;p&gt;HUMAN, LSTM, MANN はデータ入力されるにつれて基本的には精度が上がっており、MANN が非常に良い性能を出している。 &lt;br&gt;
 なお、FEEDFORWARD は feed-forward RNN を指す。&lt;/p&gt;
-&lt;p&gt;正直人間が 1st で 1/5 の確率でしか当たらないはずのラベルを 34.5% で当てているので懐疑的。&lt;br&gt;
-一応、これよりも高い精度で 1st を分類している MANN は educated guessing (学習により良いあてずっぽう推測ができるようになった？) と書かれているがよくわかっていない...&lt;br&gt;
-実験設定について何か勘違いしているのかも...&lt;/p&gt;
+&lt;p&gt;人間が 1st で 1/5 の確率でしか当たらないはずのラベルを 34.5% で当てているは懐疑的なのでもしかしたら実験設定について何か勘違いしているのかも...。&lt;br&gt;
+一応、これよりも高い精度で 1st を分類している MANN は educated guessing (学習により良いあてずっぽう推測ができるようになった？) と書かれているがラベルはデータセットごとに
+よくわかっていない...  &lt;/p&gt;
 &lt;p&gt;&lt;img alt="result_table" src="https://guchio3.github.io/guchiBLO/images/Research/Meta-Learning_with_Memory_Augmented_Neural_Networks/result_table.jpg" style="display:block;margin-left:auto;margin-right:auto;" width="400px"&gt;&lt;/p&gt;
 &lt;p&gt;下の図は LSTM および MANN の学習曲線。a, b は出力に onehot-vector を用いたもので、c, d は出力を文字列で行ったもの。文字列で行った場合、組み合わせによって大量のパターンを表現できるためクラス数が増えるに従いネットワークサイズが大きくなり学習が難しくなる onehot vector に比べてより多くのクラスを扱える。&lt;/p&gt;
-&lt;p&gt;&lt;img alt="learning_curves" src="https://guchio3.github.io/guchiBLO/images/Research/Meta-Learning_with_Memory_Augmented_Neural_Networks/learning_curves.jpg" style="display:block;margin-left:auto;margin-right:auto;" width="900px"&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img alt="learning_curves" src="https://guchio3.github.io/guchiBLO/images/Research/Meta-Learning_with_Memory_Augmented_Neural_Networks/learning_curves.jpg" style="display:block;margin-left:auto;margin-right:auto;" width="800px"&gt;&lt;/p&gt;
 &lt;p&gt;以上！&lt;/p&gt;
 &lt;script type="text/javascript"&gt;if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
     var align = "center",

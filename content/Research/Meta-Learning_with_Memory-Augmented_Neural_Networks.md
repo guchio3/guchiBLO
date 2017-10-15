@@ -44,7 +44,7 @@ Neural Network を使った機械学習においては通常、あるデータ�
     \theta^{*} = argmin_{\theta}E_{D\sim p(D)}[{\cal L}(D;\theta)]
 \end{equation}
 
-### Tasks{#tasks}
+### Tasks
 またこの論文におけるタスクは、系列型のデータセット $D = {d_t}^{T}_{t=1} = {({\bf x}_t, y_t)}^{T}_{t=1}$ (${\bf x_t}$ は入力、$y_t$ は入力に対する適切な正解ラベル) について行われるが、Few-shot learning を行うため少しトリッキー (下の図参照)。  
 なお、下の図には Class Prediction と書かれているが分類だけでなく回帰も同様に扱う。
 
@@ -75,7 +75,7 @@ Omniglot は以下の図に示すような手書き文字の画像データセ�
 
 ![omniglot]({filename}/images/Research/Meta-Learning_with_Memory_Augmented_Neural_Networks/omniglot.jpg){:width="700px" style="display:block;margin-left:auto;margin-right:auto;"}
 
-タスクは上の [Tasks](#tasks) に書いたように行われる。  
+タスクは上の Tasks に書いたように行われる。  
 入力された画像がどのクラスのものかということも大事だが、どのクラスでないかを認識して消去法的にクラス分類も行うこともできる。
 
 学習は 100,000 データセットに対して行われ、各データセットは Omniglot からランダムに 5 つ選ばれたクラスに対してランダムなラベルを付与することで構成される。  
@@ -91,15 +91,16 @@ Omniglot は以下の図に示すような手書き文字の画像データセ�
 HUMAN, LSTM, MANN はデータ入力されるにつれて基本的には精度が上がっており、MANN が非常に良い性能を出している。   
 なお、FEEDFORWARD は feed-forward RNN を指す。
 
-正直人間が 1st で 1/5 の確率でしか当たらないはずのラベルを 34.5% で当てているので懐疑的。  
-一応、これよりも高い精度で 1st を分類している MANN は educated guessing (学習により良いあてずっぽう推測ができるようになった？) と書かれているがよくわかっていない...  
-実験設定について何か勘違いしているのかも...
+人間が 1st で 1/5 の確率でしか当たらないはずのラベルを 34.5% で当てているは懐疑的なのでもしかしたら実験設定について何か勘違いしているのかも...。  
+一応、これよりも高い精度で 1st を分類している MANN は educated guessing (学習により良いあてずっぽう推測ができるようになった？) と書かれているがラベルはデータセットごとに
+よくわかっていない...  
+
 
 ![result_table]({filename}/images/Research/Meta-Learning_with_Memory_Augmented_Neural_Networks/result_table.jpg){:width="400px" style="display:block;margin-left:auto;margin-right:auto;"}
 
 下の図は LSTM および MANN の学習曲線。a, b は出力に onehot-vector を用いたもので、c, d は出力を文字列で行ったもの。文字列で行った場合、組み合わせによって大量のパターンを表現できるためクラス数が増えるに従いネットワークサイズが大きくなり学習が難しくなる onehot vector に比べてより多くのクラスを扱える。
 
-![learning_curves]({filename}/images/Research/Meta-Learning_with_Memory_Augmented_Neural_Networks/learning_curves.jpg){:width="900px" style="display:block;margin-left:auto;margin-right:auto;"}
+![learning_curves]({filename}/images/Research/Meta-Learning_with_Memory_Augmented_Neural_Networks/learning_curves.jpg){:width="800px" style="display:block;margin-left:auto;margin-right:auto;"}
 
 
 以上！
