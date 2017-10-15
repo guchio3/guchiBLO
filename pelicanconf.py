@@ -24,7 +24,8 @@ OUTPUT_PATH = 'docs'
 TIMEZONE = 'Asia/Tokyo'
 DEFAULT_DATE = 'fs'
 
-DEFAULT_LANG = 'ja'
+#DEFAULT_LANG = 'ja'
+DEFAULT_LANG = 'en'
 
 # Google analitics
 GOOGLE_ANALYTICS = 'UA-107917533-1'
