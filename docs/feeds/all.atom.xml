@@ -1,5 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>guchiBLO</title><link href="https://guchio3.github.io/guchiBLO/" rel="alternate"></link><link href="https://guchio3.github.io/guchiBLO/feeds/all.atom.xml" rel="self"></link><id>https://guchio3.github.io/guchiBLO/</id><updated>2017-10-15T00:00:00+09:00</updated><entry><title>Libgpuarray For Theano 0.8.2</title><link href="https://guchio3.github.io/guchiBLO/Libgpuarray_For_Theano_0.8.2.html" rel="alternate"></link><published>2017-10-15T00:00:00+09:00</published><updated>2017-10-15T00:00:00+09:00</updated><author><name>guchio3</name></author><id>tag:guchio3.github.io,2017-10-15:/guchiBLO/Libgpuarray_For_Theano_0.8.2.html</id><summary type="html">&lt;p&gt;Theano 0.8.2 に適合する libgpuarray のインストール&lt;/p&gt;</summary><content type="html">&lt;p&gt;Theano (ver 0.8.2) から gpu を使用する際、以下のようなエラーが出たので対応した際のログ。&lt;/p&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>guchiBLO</title><link href="https://guchio3.github.io/guchiBLO/" rel="alternate"></link><link href="https://guchio3.github.io/guchiBLO/feeds/all.atom.xml" rel="self"></link><id>https://guchio3.github.io/guchiBLO/</id><updated>2017-10-16T19:00:00+09:00</updated><entry><title>Lasagne_Segmentation_Fault.md</title><link href="https://guchio3.github.io/guchiBLO/Lasagne_Segmentation_Fault.html" rel="alternate"></link><published>2017-10-16T19:00:00+09:00</published><updated>2017-10-16T19:00:00+09:00</updated><author><name>guchio3</name></author><id>tag:guchio3.github.io,2017-10-16:/guchiBLO/Lasagne_Segmentation_Fault.html</id><summary type="html">&lt;p&gt;Lasagne を GPU 上で使用した際に出る Segmentation Fault への対策&lt;/p&gt;</summary><content type="html">&lt;h1&gt;Outline&lt;/h1&gt;
+&lt;p&gt;Theano 上で動く Deep Learning Library である &lt;a href="https://lasagne.readthedocs.io/en/latest/"&gt;Lasagne&lt;/a&gt; を使った&lt;a href="https://github.com/snipsco/ntm-lasagne"&gt;コード&lt;/a&gt; GPU 上で使用した際、以下のエラーが出たのでその対策をした。&lt;br&gt;
+このエラーは非常に厄介で、最初は自分で書いた別のプログラムで GPU を使用して際に起こったが、その時はエラーメッセージなしで勝手にプログラムが止まったので原因究明が非常に大変だった。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;$ &lt;span class="nv"&gt;PYTHONPATH&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;. python examples/copy-task.py 
+Using cuDNN version &lt;span class="m"&gt;5110&lt;/span&gt; on context None
+Mapped name None to device cuda0: Tesla K80 &lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="m"&gt;0000&lt;/span&gt;:83:00.0&lt;span class="o"&gt;)&lt;/span&gt;
+Segmentation fault &lt;span class="o"&gt;(&lt;/span&gt;core dumped&lt;span class="o"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;まずは&lt;a href="https://github.com/Theano/Theano/issues/6141"&gt;ここ&lt;/a&gt;を参考に、conda を使った際にインストールされる pygpu の version が悪いことを疑って以下を試した。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;$ conda install &lt;span class="nv"&gt;pygpu&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="m"&gt;0&lt;/span&gt;.6.2
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;しかし結果は変わらず対策を探していると、&lt;a href="https://github.com/Theano/Theano/issues/4760"&gt;ここ&lt;/a&gt;に ~/.theanorc の device を gpu から cuda するとセグフォると書いてあったので device を cuda から gpu にしてみた。&lt;br&gt;
+結果うまく行ったが、gpu にした場合バグが多く効率が悪くまた cuda で使える float64 が使えないとの情報もあるのでよりいい方法があれば追記予定。&lt;/p&gt;</content><category term="Theano"></category><category term="Lasagne"></category><category term="Machine Learning"></category></entry><entry><title>Libgpuarray For Theano 0.8.2</title><link href="https://guchio3.github.io/guchiBLO/Libgpuarray_For_Theano_0.8.2.html" rel="alternate"></link><published>2017-10-15T00:00:00+09:00</published><updated>2017-10-15T00:00:00+09:00</updated><author><name>guchio3</name></author><id>tag:guchio3.github.io,2017-10-15:/guchiBLO/Libgpuarray_For_Theano_0.8.2.html</id><summary type="html">&lt;p&gt;Theano 0.8.2 に適合する libgpuarray のインストール&lt;/p&gt;</summary><content type="html">&lt;p&gt;Theano (ver 0.8.2) から gpu を使用する際、以下のようなエラーが出たので対応した際のログ。&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;ERROR &lt;span class="o"&gt;(&lt;/span&gt;theano.sandbox.gpuarray&lt;span class="o"&gt;)&lt;/span&gt;: Could not initialize pygpu, support disabled
 Traceback &lt;span class="o"&gt;(&lt;/span&gt;most recent call last&lt;span class="o"&gt;)&lt;/span&gt;:
   File &lt;span class="s2"&gt;&amp;quot;/home/guchio/miniconda2/envs/ntmenv-owl/lib/python2.7/site-packages/theano/sandbox/gpuarray/__init__.py&amp;quot;&lt;/span&gt;, line &lt;span class="m"&gt;95&lt;/span&gt;, in &amp;lt;module&amp;gt;
@@ -202,7 +218,7 @@ Used the cpu
 よくわかっていない...  &lt;/p&gt;
 &lt;p&gt;&lt;img alt="result_table" src="https://guchio3.github.io/guchiBLO/images/Research/Meta-Learning_with_Memory_Augmented_Neural_Networks/result_table.jpg" style="display:block;margin-left:auto;margin-right:auto;" width="400px"&gt;&lt;/p&gt;
 &lt;p&gt;下の図は LSTM および MANN の学習曲線。a, b は出力に onehot-vector を用いたもので、c, d は出力を文字列で行ったもの。文字列で行った場合、組み合わせによって大量のパターンを表現できるためクラス数が増えるに従いネットワークサイズが大きくなり学習が難しくなる onehot vector に比べてより多くのクラスを扱える。&lt;/p&gt;
-&lt;p&gt;&lt;img alt="learning_curves" src="https://guchio3.github.io/guchiBLO/images/Research/Meta-Learning_with_Memory_Augmented_Neural_Networks/learning_curves.jpg" style="display:block;margin-left:auto;margin-right:auto;" width="800px"&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img alt="learning_curves" src="https://guchio3.github.io/guchiBLO/images/Research/Meta-Learning_with_Memory_Augmented_Neural_Networks/learning_curves.jpg" style="display:block;margin-left:auto;margin-right:auto;" width="700px"&gt;&lt;/p&gt;
 &lt;p&gt;以上！&lt;/p&gt;
 &lt;script type="text/javascript"&gt;if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
     var align = "center",

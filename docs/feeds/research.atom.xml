@@ -62,7 +62,7 @@
 よくわかっていない...  &lt;/p&gt;
 &lt;p&gt;&lt;img alt="result_table" src="https://guchio3.github.io/guchiBLO/images/Research/Meta-Learning_with_Memory_Augmented_Neural_Networks/result_table.jpg" style="display:block;margin-left:auto;margin-right:auto;" width="400px"&gt;&lt;/p&gt;
 &lt;p&gt;下の図は LSTM および MANN の学習曲線。a, b は出力に onehot-vector を用いたもので、c, d は出力を文字列で行ったもの。文字列で行った場合、組み合わせによって大量のパターンを表現できるためクラス数が増えるに従いネットワークサイズが大きくなり学習が難しくなる onehot vector に比べてより多くのクラスを扱える。&lt;/p&gt;
-&lt;p&gt;&lt;img alt="learning_curves" src="https://guchio3.github.io/guchiBLO/images/Research/Meta-Learning_with_Memory_Augmented_Neural_Networks/learning_curves.jpg" style="display:block;margin-left:auto;margin-right:auto;" width="800px"&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img alt="learning_curves" src="https://guchio3.github.io/guchiBLO/images/Research/Meta-Learning_with_Memory_Augmented_Neural_Networks/learning_curves.jpg" style="display:block;margin-left:auto;margin-right:auto;" width="700px"&gt;&lt;/p&gt;
 &lt;p&gt;以上！&lt;/p&gt;
 &lt;script type="text/javascript"&gt;if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
     var align = "center",
