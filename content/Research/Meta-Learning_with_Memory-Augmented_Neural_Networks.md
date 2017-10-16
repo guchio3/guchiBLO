@@ -100,7 +100,7 @@ HUMAN, LSTM, MANN はデータ入力されるにつれて基本的には精度�
 
 下の図は LSTM および MANN の学習曲線。a, b は出力に onehot-vector を用いたもので、c, d は出力を文字列で行ったもの。文字列で行った場合、組み合わせによって大量のパターンを表現できるためクラス数が増えるに従いネットワークサイズが大きくなり学習が難しくなる onehot vector に比べてより多くのクラスを扱える。
 
-![learning_curves]({filename}/images/Research/Meta-Learning_with_Memory_Augmented_Neural_Networks/learning_curves.jpg){:width="800px" style="display:block;margin-left:auto;margin-right:auto;"}
+![learning_curves]({filename}/images/Research/Meta-Learning_with_Memory_Augmented_Neural_Networks/learning_curves.jpg){:width="700px" style="display:block;margin-left:auto;margin-right:auto;"}
 
 
 以上！

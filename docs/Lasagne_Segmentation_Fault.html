@@ -6,10 +6,11 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta name="author" content="guchio3" />
-        <meta name="description" content="A JAPANESE BLOG by GUCHIO! &lt;br&gt;About : &lt;a href=&#34;https://guchio3.github.io/guchiBLO/pages/AUTHOR.html&#34;&gt;AUTHOR&lt;/a&gt;, &lt;a href=&#34;https://guchio3.github.io/guchiBLO/pages/CONTENTS.html&#34;&gt;CONTENTS&lt;/a&gt;" />
+        <meta name="keywords" content="Theano,Lasagne,Machine Learning" />
+        <meta name="description" content="Lasagne を GPU 上で使用した際に出る Segmentation Fault への対策" />
 
 
-    <title>guchiBLO - Authors</title>
+    <title>Lasagne_Segmentation_Fault.md - guchiBLO</title>
 
         <link rel="stylesheet" href="https://guchio3.github.io/guchiBLO/theme/css/bootstrap.min.css" type="text/css" />
 
@@ -132,7 +133,7 @@
                     </a>
                 </li>
                 <li class="panel anti-panel"><ul id="collapse-categories" class="sidebar_submenu collapse ">
-                    <li >
+                    <li class="active">
                         <a href="https://guchio3.github.io/guchiBLO/category/programming.html">
                             <i class="fa fa-folder-open padding-small"></i>
                             Programming
@@ -161,10 +162,73 @@
         <!-- Page Content -->
         <div id="page-content-wrapper">
             <div class="container-fluid">
-    <h1>Authors on guchiBLO</h1>
+<section id="content">
+    <article>
+        <div class="row">
+            <div class="col-lg-9">
+                <header class="page-header">
+                    <h1>
+                        <a href="https://guchio3.github.io/guchiBLO/Lasagne_Segmentation_Fault.html"
+                           rel="bookmark"
+                           title="Permalink to Lasagne_Segmentation_Fault.md">
+                            Lasagne_Segmentation_Fault.md
+                        </a>
+                        <small>
+<div class="post-info">
+    <div class="publish-info-block">
+        <small>
+            <span class="published">
+                <i class="fa fa-calendar padding-small"></i><time datetime="2017-10-16T19:00:00+09:00"> 月 16 10月 2017</time>
+            </span>
+            <span class="category">
+                <i class="fa fa-folder-open padding-small"></i><a href="https://guchio3.github.io/guchiBLO/category/programming.html">Programming</a>
+            </span>
+            <span class="tags">
+                <i class="fa fa-tags padding-small"></i>
+                <a href="https://guchio3.github.io/guchiBLO/tag/theano.html">Theano</a> /                 <a href="https://guchio3.github.io/guchiBLO/tag/lasagne.html">Lasagne</a> /                 <a href="https://guchio3.github.io/guchiBLO/tag/machine-learning.html">Machine Learning</a>            </span>
+        </small>
+    </div>
+</div><!-- /.post-info -->                        </small>
+                    </h1>
+                </header>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-9">
+                <div class="entry-content">
+                    <h1>Outline</h1>
+<p>Theano 上で動く Deep Learning Library である <a href="https://lasagne.readthedocs.io/en/latest/">Lasagne</a> を使った<a href="https://github.com/snipsco/ntm-lasagne">コード</a> GPU 上で使用した際、以下のエラーが出たのでその対策をした。<br>
+このエラーは非常に厄介で、最初は自分で書いた別のプログラムで GPU を使用して際に起こったが、その時はエラーメッセージなしで勝手にプログラムが止まったので原因究明が非常に大変だった。</p>
+<div class="highlight"><pre><span></span>$ <span class="nv">PYTHONPATH</span><span class="o">=</span>. python examples/copy-task.py 
+Using cuDNN version <span class="m">5110</span> on context None
+Mapped name None to device cuda0: Tesla K80 <span class="o">(</span><span class="m">0000</span>:83:00.0<span class="o">)</span>
+Segmentation fault <span class="o">(</span>core dumped<span class="o">)</span>
+</pre></div>
 
-    <ul>        <li><a href="https://guchio3.github.io/guchiBLO/author/guchio3.html">guchio3</a> (5)</li>
-    </ul>
+
+<p>まずは<a href="https://github.com/Theano/Theano/issues/6141">ここ</a>を参考に、conda を使った際にインストールされる pygpu の version が悪いことを疑って以下を試した。</p>
+<div class="highlight"><pre><span></span>$ conda install <span class="nv">pygpu</span><span class="o">=</span><span class="m">0</span>.6.2
+</pre></div>
+
+
+<p>しかし結果は変わらず対策を探していると、<a href="https://github.com/Theano/Theano/issues/4760">ここ</a>に ~/.theanorc の device を gpu から cuda するとセグフォると書いてあったので device を cuda から gpu にしてみた。<br>
+結果うまく行ったが、gpu にした場合バグが多く効率が悪くまた cuda で使える float64 が使えないとの情報もあるのでよりいい方法があれば追記予定。</p>
+                </div>
+                <footer class="text-right">
+                    <p>- guchio3</p>
+                </footer>
+    <section id="comments" class="comments ">
+        <hr/>
+        <h2>Comments</h2>
+        <div id="disqus_thread"></div>
+        <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by
+            Disqus.</a></noscript>
+        <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+    </section>
+            </div>
+        </div>
+    </article>
+</section>
 <footer>
     <hr>
     <div class="row">
@@ -203,5 +267,27 @@
         })();
     </script>
     <!-- End Google Analytics Code -->
+
+<!-- disqus -->
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'True'; // required: replace example with your forum shortname
+
+            var disqus_identifier = 'Lasagne_Segmentation_Fault';
+        var disqus_url = 'https://guchio3.github.io/guchiBLO/Lasagne_Segmentation_Fault.html';
+
+    var disqus_config = function () {
+        this.language = "en";
+    };
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function () {
+        var dsq = document.createElement('script');
+        dsq.type = 'text/javascript';
+        dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<!-- /disqus -->
 </body>
 </html>
