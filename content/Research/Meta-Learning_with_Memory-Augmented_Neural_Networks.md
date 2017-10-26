@@ -1,5 +1,5 @@
 Title: Meta-Learning with Memory-Augmented Neural Networks
-Tags: Paper, MANN, Few-Shot Learning, Machine Learning,
+Tags: Paper, Memory Augmented Neural Network, Few-Shot Learning, Machine Learning,
 Date: 2017-10-13 0:00
 Modified: 2017-10-13 0:00
 Slug: Meta-Learning_with_Memory-Augmented_Neural_Networks

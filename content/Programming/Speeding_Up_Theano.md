@@ -1,7 +1,7 @@
 Title: Speeding Up Theano
 Tags: Theano, Machine Learning,
 Date: 2017-10-10 19:00
-Modified: 2017-10-10 19:00
+Modified: 2017-10-21 14:00
 Slug: Speeding_Up_Theano
 Authors: guchio3
 Summary: Theano の速度を改良した際のメモ
@@ -29,11 +29,6 @@ Theano には [profile 機能](http://deeplearning.net/software/theano_versions/
 
     :::bash
     $ python -c 'import theano; print(theano.config)' | less
-
-私の場合、**系列データを扱う Neural Network **を実装しており、これの学習を扱う theano.function である train_fn が計算量のボトルネックなことが明らかだったため、[Profiling Theano function](http://deeplearning.net/software/theano_versions/0.8.X/tutorial/profiling.html) を参考に theano.function の profile.print_summary() を利用して以下のように profiling を行った。
-
-    :::python
-    print(train_fn.profile.print_summary())
 
 以下が結果の一部。
 

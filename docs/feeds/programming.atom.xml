@@ -1,5 +1,68 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>guchiBLO - Programming</title><link href="https://guchio3.github.io/guchiBLO/" rel="alternate"></link><link href="https://guchio3.github.io/guchiBLO/feeds/programming.atom.xml" rel="self"></link><id>https://guchio3.github.io/guchiBLO/</id><updated>2017-10-16T19:00:00+09:00</updated><entry><title>Lasagne_Segmentation_Fault.md</title><link href="https://guchio3.github.io/guchiBLO/Lasagne_Segmentation_Fault.html" rel="alternate"></link><published>2017-10-16T19:00:00+09:00</published><updated>2017-10-16T19:00:00+09:00</updated><author><name>guchio3</name></author><id>tag:guchio3.github.io,2017-10-16:/guchiBLO/Lasagne_Segmentation_Fault.html</id><summary type="html">&lt;p&gt;Lasagne を GPU 上で使用した際に出る Segmentation Fault への対策&lt;/p&gt;</summary><content type="html">&lt;h1&gt;Outline&lt;/h1&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>guchiBLO - Programming</title><link href="https://guchio3.github.io/guchiBLO/" rel="alternate"></link><link href="https://guchio3.github.io/guchiBLO/feeds/programming.atom.xml" rel="self"></link><id>https://guchio3.github.io/guchiBLO/</id><updated>2017-10-26T00:00:00+09:00</updated><entry><title>Theano NaN Grad with Cumprod</title><link href="https://guchio3.github.io/guchiBLO/Theano_NaN_Grad_with_Cumprod.html" rel="alternate"></link><published>2017-10-26T00:00:00+09:00</published><updated>2017-10-26T00:00:00+09:00</updated><author><name>guchio3</name></author><id>tag:guchio3.github.io,2017-10-26:/guchiBLO/Theano_NaN_Grad_with_Cumprod.html</id><summary type="html">&lt;p&gt;Theano の cumprod を利用する際に gradient が NaN になるバグ&lt;/p&gt;</summary><content type="html">&lt;p&gt;以前 &lt;a href="https://www.nature.com/nature/journal/v538/n7626/full/nature20101.html"&gt;Differentiable neural computers&lt;/a&gt; を実装した際、&lt;/p&gt;
+&lt;div class="math"&gt;\begin{equation}
+\label{a_t_equation}
+    {\bf a}_t[\phi_t[j]] = (1 - {\bf u}_t[\phi_t[j]])\prod_{i=1}^{j-1}{\bf u}_t[\phi_t[i]])
+\end{equation}&lt;/div&gt;
+&lt;p&gt;という式を Theano で実装するため theano.tensor.extra_ops.cumprod を使用した際に遭遇したバグ共有。&lt;/p&gt;
+&lt;p&gt;症状としては gradient を計算をすると 1 iteration 目から NaN が現れるというものだったが &lt;a href="https://github.com/Theano/Theano/issues/5197"&gt;ここ&lt;/a&gt;をみて解決。&lt;br&gt;
+どうやら入力に 0 が入ると　gradien 計算において  0 割りがおこり、NaN が出現するらしい。&lt;/p&gt;
+&lt;p&gt;結果として行ったことは justheuristic さんが書いてくれているコードをそのまま使っただけだが、問題は解決した。&lt;/p&gt;
+&lt;script type="text/javascript"&gt;if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
+    var align = "center",
+        indent = "0em",
+        linebreak = "false";
+
+    if (false) {
+        align = (screen.width &lt; 768) ? "left" : align;
+        indent = (screen.width &lt; 768) ? "0em" : indent;
+        linebreak = (screen.width &lt; 768) ? 'true' : linebreak;
+    }
+
+    var mathjaxscript = document.createElement('script');
+    mathjaxscript.id = 'mathjaxscript_pelican_#%@#$@#';
+    mathjaxscript.type = 'text/javascript';
+    mathjaxscript.src = 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML';
+    mathjaxscript[(window.opera ? "innerHTML" : "text")] =
+        "MathJax.Hub.Config({" +
+        "    config: ['MMLorHTML.js']," +
+        "    TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js'], equationNumbers: { autoNumber: 'AMS' } }," +
+        "    jax: ['input/TeX','input/MathML','output/HTML-CSS']," +
+        "    extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']," +
+        "    displayAlign: '"+ align +"'," +
+        "    displayIndent: '"+ indent +"'," +
+        "    showMathMenu: true," +
+        "    messageStyle: 'normal'," +
+        "    tex2jax: { " +
+        "        inlineMath: [ ['\\\\(','\\\\)'] ], " +
+        "        displayMath: [ ['$$','$$'] ]," +
+        "        processEscapes: true," +
+        "        preview: 'TeX'," +
+        "    }, " +
+        "    'HTML-CSS': { " +
+        "        styles: { '.MathJax_Display, .MathJax .mo, .MathJax .mi, .MathJax .mn': {color: 'inherit ! important'} }," +
+        "        linebreaks: { automatic: "+ linebreak +", width: '90% container' }," +
+        "    }, " +
+        "}); " +
+        "if ('default' !== 'default') {" +
+            "MathJax.Hub.Register.StartupHook('HTML-CSS Jax Ready',function () {" +
+                "var VARIANT = MathJax.OutputJax['HTML-CSS'].FONTDATA.VARIANT;" +
+                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
+                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
+                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
+                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
+            "});" +
+            "MathJax.Hub.Register.StartupHook('SVG Jax Ready',function () {" +
+                "var VARIANT = MathJax.OutputJax.SVG.FONTDATA.VARIANT;" +
+                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
+                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
+                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
+                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
+            "});" +
+        "}";
+    (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
+}
+&lt;/script&gt;</content><category term="Theano"></category><category term="Machine Learning"></category></entry><entry><title>Lasagne Segmentation Fault</title><link href="https://guchio3.github.io/guchiBLO/Lasagne_Segmentation_Fault.html" rel="alternate"></link><published>2017-10-16T19:00:00+09:00</published><updated>2017-10-16T19:00:00+09:00</updated><author><name>guchio3</name></author><id>tag:guchio3.github.io,2017-10-16:/guchiBLO/Lasagne_Segmentation_Fault.html</id><summary type="html">&lt;p&gt;Lasagne を GPU 上で使用した際に出る Segmentation Fault への対策&lt;/p&gt;</summary><content type="html">&lt;h1&gt;Outline&lt;/h1&gt;
 &lt;p&gt;Theano 上で動く Deep Learning Library である &lt;a href="https://lasagne.readthedocs.io/en/latest/"&gt;Lasagne&lt;/a&gt; を使った&lt;a href="https://github.com/snipsco/ntm-lasagne"&gt;コード&lt;/a&gt; GPU 上で使用した際、以下のエラーが出たのでその対策をした。&lt;br&gt;
 このエラーは非常に厄介で、最初は自分で書いた別のプログラムで GPU を使用して際に起こったが、その時はエラーメッセージなしで勝手にプログラムが止まったので原因究明が非常に大変だった。&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;$ &lt;span class="nv"&gt;PYTHONPATH&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;. python examples/copy-task.py 
@@ -155,7 +218,7 @@ Used the cpu
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;一方 Lasagne 全体を bleeeding edge version にしてしまうと今書いているプログラムが動かなくなるため、あまり良い手ではないがこの pool.py だけ&lt;a href="https://github.com/Lasagne/Lasagne/blob/master/lasagne/layers/pool.py"&gt;最新のもの&lt;/a&gt;に手で書き換え解決。&lt;/p&gt;</content><category term="Theano"></category><category term="Lasagne"></category><category term="Machine Learning"></category></entry><entry><title>Speeding Up Theano</title><link href="https://guchio3.github.io/guchiBLO/Speeding_Up_Theano.html" rel="alternate"></link><published>2017-10-10T19:00:00+09:00</published><updated>2017-10-10T19:00:00+09:00</updated><author><name>guchio3</name></author><id>tag:guchio3.github.io,2017-10-10:/guchiBLO/Speeding_Up_Theano.html</id><summary type="html">&lt;p&gt;Theano の速度を改良した際のメモ&lt;/p&gt;</summary><content type="html">&lt;h1&gt;Outline&lt;/h1&gt;
+&lt;p&gt;一方 Lasagne 全体を bleeeding edge version にしてしまうと今書いているプログラムが動かなくなるため、あまり良い手ではないがこの pool.py だけ&lt;a href="https://github.com/Lasagne/Lasagne/blob/master/lasagne/layers/pool.py"&gt;最新のもの&lt;/a&gt;に手で書き換え解決。&lt;/p&gt;</content><category term="Theano"></category><category term="Lasagne"></category><category term="Machine Learning"></category></entry><entry><title>Speeding Up Theano</title><link href="https://guchio3.github.io/guchiBLO/Speeding_Up_Theano.html" rel="alternate"></link><published>2017-10-10T19:00:00+09:00</published><updated>2017-10-21T14:00:00+09:00</updated><author><name>guchio3</name></author><id>tag:guchio3.github.io,2017-10-10:/guchiBLO/Speeding_Up_Theano.html</id><summary type="html">&lt;p&gt;Theano の速度を改良した際のメモ&lt;/p&gt;</summary><content type="html">&lt;h1&gt;Outline&lt;/h1&gt;
 &lt;p&gt;Theano の速度向上のため行ったことをメモ。&lt;/p&gt;
 &lt;p&gt;なお、使用した Theano のバージョンは 0.8.2 であり、os 情報は以下の通り。&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;$ cat /proc/version
@@ -174,11 +237,6 @@ Linux version &lt;span class="m"&gt;4&lt;/span&gt;.4.0-93-generic &lt;span class
 
 &lt;p&gt;とする。これにより theano.config が設定できる。&lt;a href="http://deeplearning.net/software/theano_versions/0.8.X/library/config.html?highlight=profile#config.profile"&gt;なお theano.config の状態は以下のコマンドで確認すれば良い。&lt;/a&gt;&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;$ python -c &lt;span class="s1"&gt;&amp;#39;import theano; print(theano.config)&amp;#39;&lt;/span&gt; &lt;span class="p"&gt;|&lt;/span&gt; less
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p&gt;私の場合、&lt;strong&gt;系列データを扱う Neural Network &lt;/strong&gt;を実装しており、これの学習を扱う theano.function である train_fn が計算量のボトルネックなことが明らかだったため、&lt;a href="http://deeplearning.net/software/theano_versions/0.8.X/tutorial/profiling.html"&gt;Profiling Theano function&lt;/a&gt; を参考に theano.function の profile.print_summary() を利用して以下のように profiling を行った。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;print&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;train_fn&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;profile&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;print_summary&lt;/span&gt;&lt;span class="p"&gt;())&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 

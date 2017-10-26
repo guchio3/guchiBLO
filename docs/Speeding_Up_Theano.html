@@ -137,7 +137,7 @@
                         <a href="https://guchio3.github.io/guchiBLO/category/programming.html">
                             <i class="fa fa-folder-open padding-small"></i>
                             Programming
-                            <span class="badge pull-right categorybadge">4</span>
+                            <span class="badge pull-right categorybadge">5</span>
                         </a>
                     </li>
                     <li >
@@ -215,11 +215,6 @@ Linux version <span class="m">4</span>.4.0-93-generic <span class="o">(</span>bu
 
 <p>とする。これにより theano.config が設定できる。<a href="http://deeplearning.net/software/theano_versions/0.8.X/library/config.html?highlight=profile#config.profile">なお theano.config の状態は以下のコマンドで確認すれば良い。</a></p>
 <div class="highlight"><pre><span></span>$ python -c <span class="s1">&#39;import theano; print(theano.config)&#39;</span> <span class="p">|</span> less
-</pre></div>
-
-
-<p>私の場合、<strong>系列データを扱う Neural Network </strong>を実装しており、これの学習を扱う theano.function である train_fn が計算量のボトルネックなことが明らかだったため、<a href="http://deeplearning.net/software/theano_versions/0.8.X/tutorial/profiling.html">Profiling Theano function</a> を参考に theano.function の profile.print_summary() を利用して以下のように profiling を行った。</p>
-<div class="highlight"><pre><span></span><span class="k">print</span><span class="p">(</span><span class="n">train_fn</span><span class="o">.</span><span class="n">profile</span><span class="o">.</span><span class="n">print_summary</span><span class="p">())</span>
 </pre></div>
 
 

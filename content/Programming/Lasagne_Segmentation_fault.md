@@ -1,4 +1,4 @@
-Title: Lasagne_Segmentation_Fault.md
+Title: Lasagne Segmentation Fault
 Tags: Theano, Lasagne, Machine Learning,
 Date: 2017-10-16 19:00
 Modified: 2017-10-16 19:00

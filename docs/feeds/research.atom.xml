@@ -118,4 +118,4 @@
         "}";
     (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
 }
-&lt;/script&gt;</content><category term="Paper"></category><category term="MANN"></category><category term="Few-Shot Learning"></category><category term="Machine Learning"></category></entry></feed>
+&lt;/script&gt;</content><category term="Paper"></category><category term="Memory Augmented Neural Network"></category><category term="Few-Shot Learning"></category><category term="Machine Learning"></category></entry></feed>
