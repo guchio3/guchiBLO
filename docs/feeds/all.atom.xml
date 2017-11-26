@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>guchiBLO</title><link href="https://guchio3.github.io/guchiBLO/" rel="alternate"></link><link href="https://guchio3.github.io/guchiBLO/feeds/all.atom.xml" rel="self"></link><id>https://guchio3.github.io/guchiBLO/</id><updated>2017-11-26T00:00:00+09:00</updated><entry><title>Back Propagation For RNN</title><link href="https://guchio3.github.io/guchiBLO/Back-Propagation-For-RNN.html" rel="alternate"></link><published>2017-11-26T00:00:00+09:00</published><updated>2017-11-26T00:00:00+09:00</updated><author><name>guchio3</name></author><id>tag:guchio3.github.io,2017-11-26:/guchiBLO/Back-Propagation-For-RNN.html</id><summary type="html">&lt;p&gt;RNN における Back Probagation&lt;/p&gt;</summary><content type="html">&lt;h1&gt;Outline&lt;/h1&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>guchiBLO</title><link href="https://guchio3.github.io/guchiBLO/" rel="alternate"></link><link href="https://guchio3.github.io/guchiBLO/feeds/all.atom.xml" rel="self"></link><id>https://guchio3.github.io/guchiBLO/</id><updated>2017-11-27T00:00:00+09:00</updated><entry><title>Back Propagation For RNN</title><link href="https://guchio3.github.io/guchiBLO/Back-Propagation-For-RNN.html" rel="alternate"></link><published>2017-11-26T00:00:00+09:00</published><updated>2017-11-27T00:00:00+09:00</updated><author><name>guchio3</name></author><id>tag:guchio3.github.io,2017-11-26:/guchiBLO/Back-Propagation-For-RNN.html</id><summary type="html">&lt;p&gt;RNN における Back Probagation&lt;/p&gt;</summary><content type="html">&lt;h1&gt;Outline&lt;/h1&gt;
 &lt;p&gt;以下の様に Forward 方向の式が表される単純な Recurrent Neural Network (RNN) における誤差伝搬を数式をたどることにより理解する。&lt;br&gt;
 行列の計算は &lt;a href="https://www.math.uwaterloo.ca/~hwolkowi/matrixcookbook.pdf"&gt;matrix cookbook&lt;/a&gt; が非常に参考になった。&lt;br&gt;
 なお、バイアスは簡単のため無視し、また以下で偏微分でない分数形式の記述は要素毎の割り算を意味。&lt;/p&gt;
@@ -67,7 +67,7 @@
             -{\bf y}_{t1}{\bf y}_{tN} &amp;amp; -{\bf y}_{t2}{\bf y}_{tN} &amp;amp; \ldots &amp;amp; {\bf y}_{tN}(1 - {\bf y}_{tN})
             \end{array}
         \right) \\
-                                                          &amp;amp;= {\bf y}_t \cdot {\bf y}_t - ({\bf y}_t \odot {\bf I})
+                                                          &amp;amp;= - ({\bf y}_t \cdot {\bf y}_t - ({\bf y}_t \odot {\bf I}))
     \end{split}
 \end{equation}&lt;/div&gt;
 &lt;p&gt;よって簡単のため &lt;span class="math"&gt;\(t = T\)&lt;/span&gt; のときについて考えると、&lt;/p&gt;
