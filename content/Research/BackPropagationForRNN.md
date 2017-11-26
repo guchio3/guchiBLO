@@ -1,7 +1,7 @@
 Title: Back Propagation For RNN
 Tags: Recurrent Neural Network, Machine Learning,
 Date: 2017-11-26 0:00
-Modified: 2017-11-26 0:00
+Modified: 2017-11-27 0:00
 Slug: Back-Propagation-For-RNN
 Authors: guchio3
 Summary: RNN における Back Probagation 
@@ -79,7 +79,7 @@ $\frac{\partial E}{\partial \bar{\bf y}_t}$ は以下のように求められる
             -{\bf y}_{t1}{\bf y}_{tN} & -{\bf y}_{t2}{\bf y}_{tN} & \ldots & {\bf y}_{tN}(1 - {\bf y}_{tN})
             \end{array}
         \right) \\
-                                                          &= {\bf y}_t \cdot {\bf y}_t - ({\bf y}_t \odot {\bf I})
+                                                          &= - ({\bf y}_t \cdot {\bf y}_t - ({\bf y}_t \odot {\bf I}))
     \end{split}
 \end{equation}
 
