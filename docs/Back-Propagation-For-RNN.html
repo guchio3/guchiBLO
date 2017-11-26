@@ -6,11 +6,11 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta name="author" content="guchio3" />
-        <meta name="keywords" content="Theano,Machine Learning" />
-        <meta name="description" content="Theano tensor を条件に基いて indexing する方法" />
+        <meta name="keywords" content="Recurrent Neural Network,Machine Learning" />
+        <meta name="description" content="RNN における Back Probagation" />
 
 
-    <title>Indexing Theano Tensor - guchiBLO</title>
+    <title>Back Propagation For RNN - guchiBLO</title>
 
         <link rel="stylesheet" href="https://guchio3.github.io/guchiBLO/theme/css/bootstrap.min.css" type="text/css" />
 
@@ -133,14 +133,14 @@
                     </a>
                 </li>
                 <li class="panel anti-panel"><ul id="collapse-categories" class="sidebar_submenu collapse ">
-                    <li class="active">
+                    <li >
                         <a href="https://guchio3.github.io/guchiBLO/category/programming.html">
                             <i class="fa fa-folder-open padding-small"></i>
                             Programming
                             <span class="badge pull-right categorybadge">5</span>
                         </a>
                     </li>
-                    <li >
+                    <li class="active">
                         <a href="https://guchio3.github.io/guchiBLO/category/research.html">
                             <i class="fa fa-folder-open padding-small"></i>
                             Research
@@ -168,24 +168,24 @@
             <div class="col-lg-9">
                 <header class="page-header">
                     <h1>
-                        <a href="https://guchio3.github.io/guchiBLO/Indexing_Theano_Tensor.html"
+                        <a href="https://guchio3.github.io/guchiBLO/Back-Propagation-For-RNN.html"
                            rel="bookmark"
-                           title="Permalink to Indexing Theano Tensor">
-                            Indexing Theano Tensor
+                           title="Permalink to Back Propagation For RNN">
+                            Back Propagation For RNN
                         </a>
                         <small>
 <div class="post-info">
     <div class="publish-info-block">
         <small>
             <span class="published">
-                <i class="fa fa-calendar padding-small"></i><time datetime="2017-10-08T00:00:00+09:00"> 日 08 10月 2017</time>
+                <i class="fa fa-calendar padding-small"></i><time datetime="2017-11-26T00:00:00+09:00"> 日 26 11月 2017</time>
             </span>
             <span class="category">
-                <i class="fa fa-folder-open padding-small"></i><a href="https://guchio3.github.io/guchiBLO/category/programming.html">Programming</a>
+                <i class="fa fa-folder-open padding-small"></i><a href="https://guchio3.github.io/guchiBLO/category/research.html">Research</a>
             </span>
             <span class="tags">
                 <i class="fa fa-tags padding-small"></i>
-                <a href="https://guchio3.github.io/guchiBLO/tag/theano.html">Theano</a> /                 <a href="https://guchio3.github.io/guchiBLO/tag/machine-learning.html">Machine Learning</a>            </span>
+                <a href="https://guchio3.github.io/guchiBLO/tag/recurrent-neural-network.html">Recurrent Neural Network</a> /                 <a href="https://guchio3.github.io/guchiBLO/tag/machine-learning.html">Machine Learning</a>            </span>
         </small>
     </div>
 </div><!-- /.post-info -->                        </small>
@@ -197,57 +197,84 @@
             <div class="col-lg-9">
                 <div class="entry-content">
                     <h1>Outline</h1>
-<p>Thenao tensor の要素のうち条件を満たすものを抽出する方法。<br>
-私の場合は <a href="https://research.fb.com/downloads/babi/">bAbI task</a> という質問応答処理タスクを DL を使用して解く実装を行う際、 word の系列からモデルの応答に当たるものだけを抽出するのに用いたのでメモ。</p>
-<p>様々な実装があると思うが、今回は以下に示す方法により行った。<br>
-具体的には、theano.tensor.eq と .nonzero() を用いて抽出したい箇所のインデックスを示すマスクを生成し、これにより抽出を行う。</p>
-<hr>
-<h1>Details</h1>
-<p>次のような同じ系列長の２つの vector <span class="math">\(v_a\)</span>, <span class="math">\(v_b\)</span> があるとき、<span class="math">\(v_a\)</span> の要素が 0 となっている箇所に対応する <span class="math">\(v_b\)</span> の要素のみを抽出したい。</p>
-<div class="highlight"><pre><span></span><span class="n">v_a</span> <span class="o">=</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
-<span class="n">v_b</span> <span class="o">=</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
-</pre></div>
-
-
-<p>以下が Theano 実装の一例。</p>
-<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">theano</span>
-<span class="kn">import</span> <span class="nn">theano.tensor</span> <span class="kn">as</span> <span class="nn">T</span>
-
-<span class="n">v_a</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">vector</span><span class="p">(</span><span class="s1">&#39;v_a&#39;</span><span class="p">)</span>
-<span class="n">v_b</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">vector</span><span class="p">(</span><span class="s1">&#39;v_b&#39;</span><span class="p">)</span>
-<span class="n">ans_mask</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">eq</span><span class="p">(</span><span class="n">v_a</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">nonzero</span><span class="p">()</span>
-
-<span class="n">answers</span> <span class="o">=</span> <span class="n">v_b</span><span class="p">[</span><span class="n">ans_mask</span><span class="p">]</span>
-<span class="n">fn</span> <span class="o">=</span> <span class="n">theano</span><span class="o">.</span><span class="n">function</span><span class="p">([</span><span class="n">v_a</span><span class="p">,</span> <span class="n">v_b</span><span class="p">],</span> <span class="n">answers</span><span class="p">)</span>
-
-<span class="n">example_v_a</span> <span class="o">=</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
-<span class="n">example_v_b</span> <span class="o">=</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
-
-<span class="k">print</span><span class="p">(</span><span class="n">fn</span><span class="p">(</span><span class="n">example_v_a</span><span class="p">,</span> <span class="n">example_v_b</span><span class="p">))</span>
-<span class="c1"># [ 9.  7.  1.]</span>
-</pre></div>
-
-
-<p>ちなみに、T.eq を適用後および .nonzero() を適用後のベクトルは以下のようになっている。</p>
-<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">theano</span>
-<span class="kn">import</span> <span class="nn">theano.tensor</span> <span class="kn">as</span> <span class="nn">T</span>
-
-<span class="n">v_a</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">vector</span><span class="p">(</span><span class="s1">&#39;v_a&#39;</span><span class="p">)</span>
-
-<span class="n">eq_ans_mask</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">eq</span><span class="p">(</span><span class="n">v_a</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
-<span class="n">nonzero_ans_mask</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">eq</span><span class="p">(</span><span class="n">v_a</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">nonzero</span><span class="p">()</span>
-<span class="n">eq_fn</span> <span class="o">=</span> <span class="n">theano</span><span class="o">.</span><span class="n">function</span><span class="p">([</span><span class="n">v_a</span><span class="p">],</span> <span class="n">eq_ans_mask</span><span class="p">)</span>
-<span class="n">nonzero_fn</span> <span class="o">=</span> <span class="n">theano</span><span class="o">.</span><span class="n">function</span><span class="p">([</span><span class="n">v_a</span><span class="p">],</span> <span class="n">nonzero_ans_mask</span><span class="p">)</span>
-
-<span class="n">example_v_a</span> <span class="o">=</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
-
-<span class="k">print</span><span class="p">(</span><span class="n">eq_fn</span><span class="p">(</span><span class="n">example_v_a</span><span class="p">))</span>
-<span class="c1"># [0 0 0 0 1 0 0 0 1 0 0 0 1]</span>
-<span class="k">print</span><span class="p">(</span><span class="n">nonzero_fn</span><span class="p">(</span><span class="n">example_v_a</span><span class="p">))</span>
-<span class="c1"># [array([ 4,  8, 12])] ])]</span>
-</pre></div>
-
-
+<p>以下の様に Forward 方向の式が表される単純な Recurrent Neural Network (RNN) における誤差伝搬を数式をたどることにより理解する。<br>
+行列の計算は <a href="https://www.math.uwaterloo.ca/~hwolkowi/matrixcookbook.pdf">matrix cookbook</a> が非常に参考になった。<br>
+なお、バイアスは簡単のため無視し、また以下で偏微分でない分数形式の記述は要素毎の割り算を意味。</p>
+<div class="math">\begin{equation}
+    \begin{split}
+        \bar{\bf h}_t &amp;= W_i{\bf x_t} + W_h{\bf h_{t-1}} \\
+        {\bf h}_t &amp;= f_1(\bar{\bf h}_t) \\
+        \bar{\bf y}_t &amp;= W_o \cdot {\bf h}_t \\
+        {\bf y}_t &amp;= f_2(\bar{\bf y}_t)
+    \end{split}
+\end{equation}</div>
+<p>
+なお、以下のように活性化関数 <span class="math">\(f_2\)</span> には softmax 関数を用い、誤差関数にはクロスエントロピー関数を使用。
+</p>
+<div class="math">\begin{equation}
+    f_2({\bf v}_i) = \frac{exp({\bf v}_i)}{\sum_j exp({\bf v}_j)}
+\end{equation}</div>
+<div class="math">\begin{equation}
+\label{cross_entropy}
+    E = - \sum_{t'}{\bf l}_{t'}^T \cdot log({\bf y}_{t'})
+\end{equation}</div>
+<p>
+なお、<span class="math">\({\bf v}_i\)</span> は <span class="math">\({\bf v}\)</span> の <span class="math">\(i\)</span> 番目の要素を表し、<span class="math">\({\bf l}_t\)</span> は時間 <span class="math">\(t\)</span> における正解ラベルを表す。</p>
+<p>このとき、Back Probagation により <span class="math">\(W_o, W_i, W_h\)</span> を学習することを考える。<br>
+これは誤差関数 <span class="math">\(E\)</span> を各パラメータにより次のように偏微分することにより求められる。
+</p>
+<div class="math">\begin{equation}
+\label{target_round}
+    \begin{split}
+        \frac{\partial E}{\partial W_{o}} &amp;= \frac{\partial \bar{\bf y}_t}{\partial W_{o}} \cdot \frac{\partial E}{\partial \bar{\bf y}_t} = {\bf h}_t \cdot \frac{\partial E}{\partial \bar{\bf y}_t} \\
+        \frac{\partial E}{\partial W_{i}} &amp;= \frac{\partial \bar{\bf h}_t}{\partial W_{i}} \cdot \frac{\partial E}{\partial \bar{\bf h}_t} = {\bf x}_t \cdot \frac{\partial E}{\partial \bar{\bf h}_t} \\
+        \frac{\partial E}{\partial W_{h}} &amp;= \frac{\partial \bar{\bf h}_t}{\partial W_{h}} \cdot \frac{\partial E}{\partial \bar{\bf h}_t} = {\bf h}_{t-1} \cdot \frac{\partial E}{\partial \bar{\bf h}_t} 
+    \end{split}
+\end{equation}</div>
+<p>よって式 (\ref{target_round}) より、<span class="math">\(\frac{\partial E}{\partial \bar{\bf y}_t}\)</span> および <span class="math">\(\frac{\partial E}{\partial \bar{\bf h}_t}\)</span> を求めれば良いことになる。</p>
+<p><span class="math">\(\frac{\partial E}{\partial \bar{\bf y}_t}\)</span> は以下のように求められる。</p>
+<div class="math">\begin{equation}
+    \begin{split}
+        \frac{\partial E}{\partial \bar{\bf y}_t} &amp;= - \frac{\partial {\bf y}_t}{\partial \bar{\bf y}_t} \cdot \frac{\partial E}{\partial {\bf y}_t} \\
+                                                  &amp;= - \frac{\partial {\bf y}_t}{\partial \bar{\bf y}_t} \cdot \sum_{t'}\frac{\partial {\bf y}_{t'}}{\partial {\bf y}_t} \cdot \frac{{\bf l}_{t'}}{{\bf y}_{t'}}
+    \end{split}
+\end{equation}</div>
+<p>なお、<span class="math">\({\bf I}\)</span> は単位行列。<br>
+また、<span class="math">\(\frac{\partial E}{\partial {\bf y}_t}\)</span> の計算は要素毎に考えてみると分かりやすい。</p>
+<p>ここで、<span class="math">\(\frac{\partial {\bf y}_t}{\partial \bar{\bf y}_t}\)</span> は softmax の微分を考えれば良く、</p>
+<div class="math">\begin{equation}
+    \begin{split}
+         \frac{\partial f_2({\bf v}_{i})}{\partial {\bf v}_{k}} &amp;= \frac{\frac{\partial exp({\bf v}_i)}{\partial {\bf v}_k} \cdot \sum_j exp({\bf v}_{j}) - exp({\bf v}_i) \cdot exp({\bf v}_k)}{(\sum_j exp({\bf v}_{j}))^2} \\
+                                                                &amp;= \frac{\frac{\partial exp({\bf v}_i)}{\partial {\bf v}_k}}{\sum_j exp({\bf v}_{j})} - \frac{exp({\bf v}_i)}{\sum_j exp({\bf v}_{j})} \cdot \frac{exp({\bf v}_k)}{\sum_j exp({\bf v}_{j})} \\
+                                                                &amp;= \begin{cases}
+                                                                    f_2({\bf v}_{i})(1 - f_2({\bf v}_{k})) &amp; (i = k) \\
+                                                                    - f_2({\bf v}_{i}) \cdot f_2({\bf v}_{k}) &amp; (i \neq k)
+                                                                \end{cases}
+    \end{split}
+\end{equation}</div>
+<p>より、
+</p>
+<div class="math">\begin{equation}
+    \begin{split}
+        \frac{\partial {\bf y}_t}{\partial \bar{\bf y}_t} &amp;= \left(
+            \begin{array}{cccc}
+            {\bf y}_{t1}(1 - {\bf y}_{t1}) &amp; -{\bf y}_{t2}{\bf y}_{t1} &amp; \ldots &amp; -{\bf y}_{tN}{\bf y}_{t1} \\
+            -{\bf y}_{t1}{\bf y}_{t2} &amp; {\bf y}_{t2}(1 - {\bf y}_{t2}) &amp; \ldots &amp; -{\bf y}_{tN}{\bf y}_{t2} \\
+            \vdots &amp; \vdots &amp; \ddots &amp; \vdots \\
+            -{\bf y}_{t1}{\bf y}_{tN} &amp; -{\bf y}_{t2}{\bf y}_{tN} &amp; \ldots &amp; {\bf y}_{tN}(1 - {\bf y}_{tN})
+            \end{array}
+        \right) \\
+                                                          &amp;= {\bf y}_t \cdot {\bf y}_t - ({\bf y}_t \odot {\bf I})
+    \end{split}
+\end{equation}</div>
+<p>よって簡単のため <span class="math">\(t = T\)</span> のときについて考えると、</p>
+<div class="math">\begin{equation}
+    \begin{split}
+        \frac{\partial E}{\partial \bar{\bf y}_T} &amp;= ({\bf y}_T \cdot {\bf y}_T - {\bf y}_T \odot {\bf I}) \cdot \frac{{\bf l}_{T}}{{\bf y}_T} \\
+                                                  &amp;= {\bf y}_T - {\bf l}_T \;\; (\because \sum_i {\bf l}_{ti} = 1)
+    \end{split}
+\end{equation}</div>
+<p>以降は近いうちに追記予定。</p>
 <script type="text/javascript">if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
     var align = "center",
         indent = "0em",
@@ -363,8 +390,8 @@
     /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
     var disqus_shortname = 'True'; // required: replace example with your forum shortname
 
-            var disqus_identifier = 'Indexing_Theano_Tensor';
-        var disqus_url = 'https://guchio3.github.io/guchiBLO/Indexing_Theano_Tensor.html';
+            var disqus_identifier = 'Back-Propagation-For-RNN';
+        var disqus_url = 'https://guchio3.github.io/guchiBLO/Back-Propagation-For-RNN.html';
 
     var disqus_config = function () {
         this.language = "en";
