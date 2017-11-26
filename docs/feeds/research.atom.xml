@@ -1,5 +1,138 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>guchiBLO - Research</title><link href="https://guchio3.github.io/guchiBLO/" rel="alternate"></link><link href="https://guchio3.github.io/guchiBLO/feeds/research.atom.xml" rel="self"></link><id>https://guchio3.github.io/guchiBLO/</id><updated>2017-10-13T00:00:00+09:00</updated><entry><title>Meta-Learning with Memory-Augmented Neural Networks</title><link href="https://guchio3.github.io/guchiBLO/Meta-Learning_with_Memory-Augmented_Neural_Networks.html" rel="alternate"></link><published>2017-10-13T00:00:00+09:00</published><updated>2017-10-13T00:00:00+09:00</updated><author><name>guchio3</name></author><id>tag:guchio3.github.io,2017-10-13:/guchiBLO/Meta-Learning_with_Memory-Augmented_Neural_Networks.html</id><summary type="html">&lt;p&gt;Memory-Augmented Neural Networks (MANN) を使った Few-shot learning の試み&lt;/p&gt;</summary><content type="html">&lt;h1&gt;Outline&lt;/h1&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>guchiBLO - Research</title><link href="https://guchio3.github.io/guchiBLO/" rel="alternate"></link><link href="https://guchio3.github.io/guchiBLO/feeds/research.atom.xml" rel="self"></link><id>https://guchio3.github.io/guchiBLO/</id><updated>2017-11-26T00:00:00+09:00</updated><entry><title>Back Propagation For RNN</title><link href="https://guchio3.github.io/guchiBLO/Back-Propagation-For-RNN.html" rel="alternate"></link><published>2017-11-26T00:00:00+09:00</published><updated>2017-11-26T00:00:00+09:00</updated><author><name>guchio3</name></author><id>tag:guchio3.github.io,2017-11-26:/guchiBLO/Back-Propagation-For-RNN.html</id><summary type="html">&lt;p&gt;RNN における Back Probagation&lt;/p&gt;</summary><content type="html">&lt;h1&gt;Outline&lt;/h1&gt;
+&lt;p&gt;以下の様に Forward 方向の式が表される単純な Recurrent Neural Network (RNN) における誤差伝搬を数式をたどることにより理解する。&lt;br&gt;
+行列の計算は &lt;a href="https://www.math.uwaterloo.ca/~hwolkowi/matrixcookbook.pdf"&gt;matrix cookbook&lt;/a&gt; が非常に参考になった。&lt;br&gt;
+なお、バイアスは簡単のため無視し、また以下で偏微分でない分数形式の記述は要素毎の割り算を意味。&lt;/p&gt;
+&lt;div class="math"&gt;\begin{equation}
+    \begin{split}
+        \bar{\bf h}_t &amp;amp;= W_i{\bf x_t} + W_h{\bf h_{t-1}} \\
+        {\bf h}_t &amp;amp;= f_1(\bar{\bf h}_t) \\
+        \bar{\bf y}_t &amp;amp;= W_o \cdot {\bf h}_t \\
+        {\bf y}_t &amp;amp;= f_2(\bar{\bf y}_t)
+    \end{split}
+\end{equation}&lt;/div&gt;
+&lt;p&gt;
+なお、以下のように活性化関数 &lt;span class="math"&gt;\(f_2\)&lt;/span&gt; には softmax 関数を用い、誤差関数にはクロスエントロピー関数を使用。
+&lt;/p&gt;
+&lt;div class="math"&gt;\begin{equation}
+    f_2({\bf v}_i) = \frac{exp({\bf v}_i)}{\sum_j exp({\bf v}_j)}
+\end{equation}&lt;/div&gt;
+&lt;div class="math"&gt;\begin{equation}
+\label{cross_entropy}
+    E = - \sum_{t'}{\bf l}_{t'}^T \cdot log({\bf y}_{t'})
+\end{equation}&lt;/div&gt;
+&lt;p&gt;
+なお、&lt;span class="math"&gt;\({\bf v}_i\)&lt;/span&gt; は &lt;span class="math"&gt;\({\bf v}\)&lt;/span&gt; の &lt;span class="math"&gt;\(i\)&lt;/span&gt; 番目の要素を表し、&lt;span class="math"&gt;\({\bf l}_t\)&lt;/span&gt; は時間 &lt;span class="math"&gt;\(t\)&lt;/span&gt; における正解ラベルを表す。&lt;/p&gt;
+&lt;p&gt;このとき、Back Probagation により &lt;span class="math"&gt;\(W_o, W_i, W_h\)&lt;/span&gt; を学習することを考える。&lt;br&gt;
+これは誤差関数 &lt;span class="math"&gt;\(E\)&lt;/span&gt; を各パラメータにより次のように偏微分することにより求められる。
+&lt;/p&gt;
+&lt;div class="math"&gt;\begin{equation}
+\label{target_round}
+    \begin{split}
+        \frac{\partial E}{\partial W_{o}} &amp;amp;= \frac{\partial \bar{\bf y}_t}{\partial W_{o}} \cdot \frac{\partial E}{\partial \bar{\bf y}_t} = {\bf h}_t \cdot \frac{\partial E}{\partial \bar{\bf y}_t} \\
+        \frac{\partial E}{\partial W_{i}} &amp;amp;= \frac{\partial \bar{\bf h}_t}{\partial W_{i}} \cdot \frac{\partial E}{\partial \bar{\bf h}_t} = {\bf x}_t \cdot \frac{\partial E}{\partial \bar{\bf h}_t} \\
+        \frac{\partial E}{\partial W_{h}} &amp;amp;= \frac{\partial \bar{\bf h}_t}{\partial W_{h}} \cdot \frac{\partial E}{\partial \bar{\bf h}_t} = {\bf h}_{t-1} \cdot \frac{\partial E}{\partial \bar{\bf h}_t} 
+    \end{split}
+\end{equation}&lt;/div&gt;
+&lt;p&gt;よって式 (\ref{target_round}) より、&lt;span class="math"&gt;\(\frac{\partial E}{\partial \bar{\bf y}_t}\)&lt;/span&gt; および &lt;span class="math"&gt;\(\frac{\partial E}{\partial \bar{\bf h}_t}\)&lt;/span&gt; を求めれば良いことになる。&lt;/p&gt;
+&lt;p&gt;&lt;span class="math"&gt;\(\frac{\partial E}{\partial \bar{\bf y}_t}\)&lt;/span&gt; は以下のように求められる。&lt;/p&gt;
+&lt;div class="math"&gt;\begin{equation}
+    \begin{split}
+        \frac{\partial E}{\partial \bar{\bf y}_t} &amp;amp;= - \frac{\partial {\bf y}_t}{\partial \bar{\bf y}_t} \cdot \frac{\partial E}{\partial {\bf y}_t} \\
+                                                  &amp;amp;= - \frac{\partial {\bf y}_t}{\partial \bar{\bf y}_t} \cdot \sum_{t'}\frac{\partial {\bf y}_{t'}}{\partial {\bf y}_t} \cdot \frac{{\bf l}_{t'}}{{\bf y}_{t'}}
+    \end{split}
+\end{equation}&lt;/div&gt;
+&lt;p&gt;なお、&lt;span class="math"&gt;\({\bf I}\)&lt;/span&gt; は単位行列。&lt;br&gt;
+また、&lt;span class="math"&gt;\(\frac{\partial E}{\partial {\bf y}_t}\)&lt;/span&gt; の計算は要素毎に考えてみると分かりやすい。&lt;/p&gt;
+&lt;p&gt;ここで、&lt;span class="math"&gt;\(\frac{\partial {\bf y}_t}{\partial \bar{\bf y}_t}\)&lt;/span&gt; は softmax の微分を考えれば良く、&lt;/p&gt;
+&lt;div class="math"&gt;\begin{equation}
+    \begin{split}
+         \frac{\partial f_2({\bf v}_{i})}{\partial {\bf v}_{k}} &amp;amp;= \frac{\frac{\partial exp({\bf v}_i)}{\partial {\bf v}_k} \cdot \sum_j exp({\bf v}_{j}) - exp({\bf v}_i) \cdot exp({\bf v}_k)}{(\sum_j exp({\bf v}_{j}))^2} \\
+                                                                &amp;amp;= \frac{\frac{\partial exp({\bf v}_i)}{\partial {\bf v}_k}}{\sum_j exp({\bf v}_{j})} - \frac{exp({\bf v}_i)}{\sum_j exp({\bf v}_{j})} \cdot \frac{exp({\bf v}_k)}{\sum_j exp({\bf v}_{j})} \\
+                                                                &amp;amp;= \begin{cases}
+                                                                    f_2({\bf v}_{i})(1 - f_2({\bf v}_{k})) &amp;amp; (i = k) \\
+                                                                    - f_2({\bf v}_{i}) \cdot f_2({\bf v}_{k}) &amp;amp; (i \neq k)
+                                                                \end{cases}
+    \end{split}
+\end{equation}&lt;/div&gt;
+&lt;p&gt;より、
+&lt;/p&gt;
+&lt;div class="math"&gt;\begin{equation}
+    \begin{split}
+        \frac{\partial {\bf y}_t}{\partial \bar{\bf y}_t} &amp;amp;= \left(
+            \begin{array}{cccc}
+            {\bf y}_{t1}(1 - {\bf y}_{t1}) &amp;amp; -{\bf y}_{t2}{\bf y}_{t1} &amp;amp; \ldots &amp;amp; -{\bf y}_{tN}{\bf y}_{t1} \\
+            -{\bf y}_{t1}{\bf y}_{t2} &amp;amp; {\bf y}_{t2}(1 - {\bf y}_{t2}) &amp;amp; \ldots &amp;amp; -{\bf y}_{tN}{\bf y}_{t2} \\
+            \vdots &amp;amp; \vdots &amp;amp; \ddots &amp;amp; \vdots \\
+            -{\bf y}_{t1}{\bf y}_{tN} &amp;amp; -{\bf y}_{t2}{\bf y}_{tN} &amp;amp; \ldots &amp;amp; {\bf y}_{tN}(1 - {\bf y}_{tN})
+            \end{array}
+        \right) \\
+                                                          &amp;amp;= {\bf y}_t \cdot {\bf y}_t - ({\bf y}_t \odot {\bf I})
+    \end{split}
+\end{equation}&lt;/div&gt;
+&lt;p&gt;よって簡単のため &lt;span class="math"&gt;\(t = T\)&lt;/span&gt; のときについて考えると、&lt;/p&gt;
+&lt;div class="math"&gt;\begin{equation}
+    \begin{split}
+        \frac{\partial E}{\partial \bar{\bf y}_T} &amp;amp;= ({\bf y}_T \cdot {\bf y}_T - {\bf y}_T \odot {\bf I}) \cdot \frac{{\bf l}_{T}}{{\bf y}_T} \\
+                                                  &amp;amp;= {\bf y}_T - {\bf l}_T \;\; (\because \sum_i {\bf l}_{ti} = 1)
+    \end{split}
+\end{equation}&lt;/div&gt;
+&lt;p&gt;以降は近いうちに追記予定。&lt;/p&gt;
+&lt;script type="text/javascript"&gt;if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
+    var align = "center",
+        indent = "0em",
+        linebreak = "false";
+
+    if (false) {
+        align = (screen.width &lt; 768) ? "left" : align;
+        indent = (screen.width &lt; 768) ? "0em" : indent;
+        linebreak = (screen.width &lt; 768) ? 'true' : linebreak;
+    }
+
+    var mathjaxscript = document.createElement('script');
+    mathjaxscript.id = 'mathjaxscript_pelican_#%@#$@#';
+    mathjaxscript.type = 'text/javascript';
+    mathjaxscript.src = 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML';
+    mathjaxscript[(window.opera ? "innerHTML" : "text")] =
+        "MathJax.Hub.Config({" +
+        "    config: ['MMLorHTML.js']," +
+        "    TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js'], equationNumbers: { autoNumber: 'AMS' } }," +
+        "    jax: ['input/TeX','input/MathML','output/HTML-CSS']," +
+        "    extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']," +
+        "    displayAlign: '"+ align +"'," +
+        "    displayIndent: '"+ indent +"'," +
+        "    showMathMenu: true," +
+        "    messageStyle: 'normal'," +
+        "    tex2jax: { " +
+        "        inlineMath: [ ['\\\\(','\\\\)'] ], " +
+        "        displayMath: [ ['$$','$$'] ]," +
+        "        processEscapes: true," +
+        "        preview: 'TeX'," +
+        "    }, " +
+        "    'HTML-CSS': { " +
+        "        styles: { '.MathJax_Display, .MathJax .mo, .MathJax .mi, .MathJax .mn': {color: 'inherit ! important'} }," +
+        "        linebreaks: { automatic: "+ linebreak +", width: '90% container' }," +
+        "    }, " +
+        "}); " +
+        "if ('default' !== 'default') {" +
+            "MathJax.Hub.Register.StartupHook('HTML-CSS Jax Ready',function () {" +
+                "var VARIANT = MathJax.OutputJax['HTML-CSS'].FONTDATA.VARIANT;" +
+                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
+                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
+                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
+                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
+            "});" +
+            "MathJax.Hub.Register.StartupHook('SVG Jax Ready',function () {" +
+                "var VARIANT = MathJax.OutputJax.SVG.FONTDATA.VARIANT;" +
+                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
+                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
+                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
+                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
+            "});" +
+        "}";
+    (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
+}
+&lt;/script&gt;</content><category term="Recurrent Neural Network"></category><category term="Machine Learning"></category></entry><entry><title>Meta-Learning with Memory-Augmented Neural Networks</title><link href="https://guchio3.github.io/guchiBLO/Meta-Learning_with_Memory-Augmented_Neural_Networks.html" rel="alternate"></link><published>2017-10-13T00:00:00+09:00</published><updated>2017-10-13T00:00:00+09:00</updated><author><name>guchio3</name></author><id>tag:guchio3.github.io,2017-10-13:/guchiBLO/Meta-Learning_with_Memory-Augmented_Neural_Networks.html</id><summary type="html">&lt;p&gt;Memory-Augmented Neural Networks (MANN) を使った Few-shot learning の試み&lt;/p&gt;</summary><content type="html">&lt;h1&gt;Outline&lt;/h1&gt;
 &lt;p&gt;ちょっと古いけど読めていなかった &lt;a href="http://proceedings.mlr.press/v48/santoro16.pdf"&gt;Meta-Learning with Memory-Augmented Neural Networks&lt;/a&gt; を読んだのでメモ。&lt;/p&gt;
 &lt;p&gt;従来の gradient-based network は学習に大量のデータを必要とするため、新種のデータが入力された場合に対応するのが難しいが、Memory-Augmented Neural Networks (MANN) はこの状況に対応できそうだからやってみたという論文。&lt;/p&gt;
 &lt;p&gt;タイトルにあるようにこの論文では Meta-Learning を行うことを軸に議論を展開している。&lt;br&gt;

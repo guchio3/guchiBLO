@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>guchiBLO - Programming</title><link href="https://guchio3.github.io/guchiBLO/" rel="alternate"></link><link href="https://guchio3.github.io/guchiBLO/feeds/programming.atom.xml" rel="self"></link><id>https://guchio3.github.io/guchiBLO/</id><updated>2017-10-26T00:00:00+09:00</updated><entry><title>Theano NaN Grad with Cumprod</title><link href="https://guchio3.github.io/guchiBLO/Theano_NaN_Grad_with_Cumprod.html" rel="alternate"></link><published>2017-10-26T00:00:00+09:00</published><updated>2017-10-26T00:00:00+09:00</updated><author><name>guchio3</name></author><id>tag:guchio3.github.io,2017-10-26:/guchiBLO/Theano_NaN_Grad_with_Cumprod.html</id><summary type="html">&lt;p&gt;Theano の cumprod を利用する際に gradient が NaN になるバグ&lt;/p&gt;</summary><content type="html">&lt;p&gt;以前 &lt;a href="https://www.nature.com/nature/journal/v538/n7626/full/nature20101.html"&gt;Differentiable neural computers&lt;/a&gt; を実装した際、&lt;/p&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>guchiBLO - Programming</title><link href="https://guchio3.github.io/guchiBLO/" rel="alternate"></link><link href="https://guchio3.github.io/guchiBLO/feeds/programming.atom.xml" rel="self"></link><id>https://guchio3.github.io/guchiBLO/</id><updated>2017-10-26T00:00:00+09:00</updated><entry><title>Theano NaN Grad on Cumprod</title><link href="https://guchio3.github.io/guchiBLO/Theano_NaN_Grad_on_Cumprod.html" rel="alternate"></link><published>2017-10-26T00:00:00+09:00</published><updated>2017-10-26T00:00:00+09:00</updated><author><name>guchio3</name></author><id>tag:guchio3.github.io,2017-10-26:/guchiBLO/Theano_NaN_Grad_on_Cumprod.html</id><summary type="html">&lt;p&gt;Theano の cumprod を利用する際に gradient が NaN になるバグ&lt;/p&gt;</summary><content type="html">&lt;p&gt;以前 &lt;a href="https://www.nature.com/nature/journal/v538/n7626/full/nature20101.html"&gt;Differentiable neural computers&lt;/a&gt; を実装した際、&lt;/p&gt;
 &lt;div class="math"&gt;\begin{equation}
 \label{a_t_equation}
     {\bf a}_t[\phi_t[j]] = (1 - {\bf u}_t[\phi_t[j]])\prod_{i=1}^{j-1}{\bf u}_t[\phi_t[i]])
 \end{equation}&lt;/div&gt;
 &lt;p&gt;という式を Theano で実装するため theano.tensor.extra_ops.cumprod を使用した際に遭遇したバグ共有。&lt;/p&gt;
 &lt;p&gt;症状としては gradient を計算をすると 1 iteration 目から NaN が現れるというものだったが &lt;a href="https://github.com/Theano/Theano/issues/5197"&gt;ここ&lt;/a&gt;をみて解決。&lt;br&gt;
-どうやら入力に 0 が入ると　gradien 計算において  0 割りがおこり、NaN が出現するらしい。&lt;/p&gt;
+どうやら入力に 0 が入ると　gradien 計算において 0 割りがおこり、NaN が出現するらしい。&lt;/p&gt;
 &lt;p&gt;結果として行ったことは justheuristic さんが書いてくれているコードをそのまま使っただけだが、問題は解決した。&lt;/p&gt;
 &lt;script type="text/javascript"&gt;if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
     var align = "center",

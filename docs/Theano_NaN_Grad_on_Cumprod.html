@@ -7,10 +7,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta name="author" content="guchio3" />
         <meta name="keywords" content="Theano,Machine Learning" />
-        <meta name="description" content="Theano tensor を条件に基いて indexing する方法" />
+        <meta name="description" content="Theano の cumprod を利用する際に gradient が NaN になるバグ" />
 
 
-    <title>Indexing Theano Tensor - guchiBLO</title>
+    <title>Theano NaN Grad on Cumprod - guchiBLO</title>
 
         <link rel="stylesheet" href="https://guchio3.github.io/guchiBLO/theme/css/bootstrap.min.css" type="text/css" />
 
@@ -168,17 +168,17 @@
             <div class="col-lg-9">
                 <header class="page-header">
                     <h1>
-                        <a href="https://guchio3.github.io/guchiBLO/Indexing_Theano_Tensor.html"
+                        <a href="https://guchio3.github.io/guchiBLO/Theano_NaN_Grad_on_Cumprod.html"
                            rel="bookmark"
-                           title="Permalink to Indexing Theano Tensor">
-                            Indexing Theano Tensor
+                           title="Permalink to Theano NaN Grad on Cumprod">
+                            Theano NaN Grad on Cumprod
                         </a>
                         <small>
 <div class="post-info">
     <div class="publish-info-block">
         <small>
             <span class="published">
-                <i class="fa fa-calendar padding-small"></i><time datetime="2017-10-08T00:00:00+09:00"> 日 08 10月 2017</time>
+                <i class="fa fa-calendar padding-small"></i><time datetime="2017-10-26T00:00:00+09:00"> 木 26 10月 2017</time>
             </span>
             <span class="category">
                 <i class="fa fa-folder-open padding-small"></i><a href="https://guchio3.github.io/guchiBLO/category/programming.html">Programming</a>
@@ -196,58 +196,15 @@
         <div class="row">
             <div class="col-lg-9">
                 <div class="entry-content">
-                    <h1>Outline</h1>
-<p>Thenao tensor の要素のうち条件を満たすものを抽出する方法。<br>
-私の場合は <a href="https://research.fb.com/downloads/babi/">bAbI task</a> という質問応答処理タスクを DL を使用して解く実装を行う際、 word の系列からモデルの応答に当たるものだけを抽出するのに用いたのでメモ。</p>
-<p>様々な実装があると思うが、今回は以下に示す方法により行った。<br>
-具体的には、theano.tensor.eq と .nonzero() を用いて抽出したい箇所のインデックスを示すマスクを生成し、これにより抽出を行う。</p>
-<hr>
-<h1>Details</h1>
-<p>次のような同じ系列長の２つの vector <span class="math">\(v_a\)</span>, <span class="math">\(v_b\)</span> があるとき、<span class="math">\(v_a\)</span> の要素が 0 となっている箇所に対応する <span class="math">\(v_b\)</span> の要素のみを抽出したい。</p>
-<div class="highlight"><pre><span></span><span class="n">v_a</span> <span class="o">=</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
-<span class="n">v_b</span> <span class="o">=</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
-</pre></div>
-
-
-<p>以下が Theano 実装の一例。</p>
-<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">theano</span>
-<span class="kn">import</span> <span class="nn">theano.tensor</span> <span class="kn">as</span> <span class="nn">T</span>
-
-<span class="n">v_a</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">vector</span><span class="p">(</span><span class="s1">&#39;v_a&#39;</span><span class="p">)</span>
-<span class="n">v_b</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">vector</span><span class="p">(</span><span class="s1">&#39;v_b&#39;</span><span class="p">)</span>
-<span class="n">ans_mask</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">eq</span><span class="p">(</span><span class="n">v_a</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">nonzero</span><span class="p">()</span>
-
-<span class="n">answers</span> <span class="o">=</span> <span class="n">v_b</span><span class="p">[</span><span class="n">ans_mask</span><span class="p">]</span>
-<span class="n">fn</span> <span class="o">=</span> <span class="n">theano</span><span class="o">.</span><span class="n">function</span><span class="p">([</span><span class="n">v_a</span><span class="p">,</span> <span class="n">v_b</span><span class="p">],</span> <span class="n">answers</span><span class="p">)</span>
-
-<span class="n">example_v_a</span> <span class="o">=</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
-<span class="n">example_v_b</span> <span class="o">=</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
-
-<span class="k">print</span><span class="p">(</span><span class="n">fn</span><span class="p">(</span><span class="n">example_v_a</span><span class="p">,</span> <span class="n">example_v_b</span><span class="p">))</span>
-<span class="c1"># [ 9.  7.  1.]</span>
-</pre></div>
-
-
-<p>ちなみに、T.eq を適用後および .nonzero() を適用後のベクトルは以下のようになっている。</p>
-<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">theano</span>
-<span class="kn">import</span> <span class="nn">theano.tensor</span> <span class="kn">as</span> <span class="nn">T</span>
-
-<span class="n">v_a</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">vector</span><span class="p">(</span><span class="s1">&#39;v_a&#39;</span><span class="p">)</span>
-
-<span class="n">eq_ans_mask</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">eq</span><span class="p">(</span><span class="n">v_a</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
-<span class="n">nonzero_ans_mask</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">eq</span><span class="p">(</span><span class="n">v_a</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">nonzero</span><span class="p">()</span>
-<span class="n">eq_fn</span> <span class="o">=</span> <span class="n">theano</span><span class="o">.</span><span class="n">function</span><span class="p">([</span><span class="n">v_a</span><span class="p">],</span> <span class="n">eq_ans_mask</span><span class="p">)</span>
-<span class="n">nonzero_fn</span> <span class="o">=</span> <span class="n">theano</span><span class="o">.</span><span class="n">function</span><span class="p">([</span><span class="n">v_a</span><span class="p">],</span> <span class="n">nonzero_ans_mask</span><span class="p">)</span>
-
-<span class="n">example_v_a</span> <span class="o">=</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
-
-<span class="k">print</span><span class="p">(</span><span class="n">eq_fn</span><span class="p">(</span><span class="n">example_v_a</span><span class="p">))</span>
-<span class="c1"># [0 0 0 0 1 0 0 0 1 0 0 0 1]</span>
-<span class="k">print</span><span class="p">(</span><span class="n">nonzero_fn</span><span class="p">(</span><span class="n">example_v_a</span><span class="p">))</span>
-<span class="c1"># [array([ 4,  8, 12])] ])]</span>
-</pre></div>
-
-
+                    <p>以前 <a href="https://www.nature.com/nature/journal/v538/n7626/full/nature20101.html">Differentiable neural computers</a> を実装した際、</p>
+<div class="math">\begin{equation}
+\label{a_t_equation}
+    {\bf a}_t[\phi_t[j]] = (1 - {\bf u}_t[\phi_t[j]])\prod_{i=1}^{j-1}{\bf u}_t[\phi_t[i]])
+\end{equation}</div>
+<p>という式を Theano で実装するため theano.tensor.extra_ops.cumprod を使用した際に遭遇したバグ共有。</p>
+<p>症状としては gradient を計算をすると 1 iteration 目から NaN が現れるというものだったが <a href="https://github.com/Theano/Theano/issues/5197">ここ</a>をみて解決。<br>
+どうやら入力に 0 が入ると　gradien 計算において 0 割りがおこり、NaN が出現するらしい。</p>
+<p>結果として行ったことは justheuristic さんが書いてくれているコードをそのまま使っただけだが、問題は解決した。</p>
 <script type="text/javascript">if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
     var align = "center",
         indent = "0em",
@@ -363,8 +320,8 @@
     /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
     var disqus_shortname = 'True'; // required: replace example with your forum shortname
 
-            var disqus_identifier = 'Indexing_Theano_Tensor';
-        var disqus_url = 'https://guchio3.github.io/guchiBLO/Indexing_Theano_Tensor.html';
+            var disqus_identifier = 'Theano_NaN_Grad_on_Cumprod';
+        var disqus_url = 'https://guchio3.github.io/guchiBLO/Theano_NaN_Grad_on_Cumprod.html';
 
     var disqus_config = function () {
         this.language = "en";
