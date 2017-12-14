@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>guchiBLO - Research</title><link href="https://guchio3.github.io/guchiBLO/" rel="alternate"></link><link href="https://guchio3.github.io/guchiBLO/feeds/research.atom.xml" rel="self"></link><id>https://guchio3.github.io/guchiBLO/</id><updated>2017-11-27T00:00:00+09:00</updated><entry><title>Back Propagation For RNN</title><link href="https://guchio3.github.io/guchiBLO/Back-Propagation-For-RNN.html" rel="alternate"></link><published>2017-11-26T00:00:00+09:00</published><updated>2017-11-27T00:00:00+09:00</updated><author><name>guchio3</name></author><id>tag:guchio3.github.io,2017-11-26:/guchiBLO/Back-Propagation-For-RNN.html</id><summary type="html">&lt;p&gt;RNN における Back Probagation&lt;/p&gt;</summary><content type="html">&lt;h1&gt;Outline&lt;/h1&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>guchiBLO - Research</title><link href="https://guchio3.github.io/guchiBLO/" rel="alternate"></link><link href="https://guchio3.github.io/guchiBLO/feeds/research.atom.xml" rel="self"></link><id>https://guchio3.github.io/guchiBLO/</id><updated>2017-12-14T00:00:00+09:00</updated><entry><title>Memory Augmented Neural Networks with Wormhole Connection</title><link href="https://guchio3.github.io/guchiBLO/Memory_Augmented_Neural_lNetworks_with_Wormhole_Connection.html" rel="alternate"></link><published>2017-12-14T00:00:00+09:00</published><updated>2017-12-14T00:00:00+09:00</updated><author><name>guchio3</name></author><id>tag:guchio3.github.io,2017-12-14:/guchiBLO/Memory_Augmented_Neural_lNetworks_with_Wormhole_Connection.html</id><summary type="html">&lt;p&gt;系列情報の利用のされ方、および理論的勾配の解析に基づく新しい Memory Augmented Neural Networks の提案&lt;/p&gt;</summary><content type="html">&lt;h1&gt;Outline&lt;/h1&gt;
+&lt;p&gt;研究室のミーティングで使用したスライドの一部を抜粋してシェア。&lt;/p&gt;
+&lt;p&gt;Recurrent な情報の流れ、また MANN における勾配計算という理論的な背景に基づきより適切な MANN の設計を行っている。&lt;/p&gt;
+&lt;p&gt;&lt;a href="https://www.slideshare.net/taguchinaoya/memory-augmented-neural-networks-with-wormhole-connection"&gt;slide&lt;/a&gt;&lt;/p&gt;</content><category term="Paper"></category><category term="Memory Augmented Neural Network"></category><category term="Machine Learning"></category></entry><entry><title>Back Propagation For RNN</title><link href="https://guchio3.github.io/guchiBLO/Back-Propagation-For-RNN.html" rel="alternate"></link><published>2017-11-26T00:00:00+09:00</published><updated>2017-11-27T00:00:00+09:00</updated><author><name>guchio3</name></author><id>tag:guchio3.github.io,2017-11-26:/guchiBLO/Back-Propagation-For-RNN.html</id><summary type="html">&lt;p&gt;RNN における Back Probagation&lt;/p&gt;</summary><content type="html">&lt;h1&gt;Outline&lt;/h1&gt;
 &lt;p&gt;以下の様に Forward 方向の式が表される単純な Recurrent Neural Network (RNN) における誤差伝搬を数式をたどることにより理解する。&lt;br&gt;
 行列の計算は &lt;a href="https://www.math.uwaterloo.ca/~hwolkowi/matrixcookbook.pdf"&gt;matrix cookbook&lt;/a&gt; が非常に参考になった。&lt;br&gt;
 なお、バイアスは簡単のため無視し、また以下で偏微分でない分数形式の記述は要素毎の割り算を意味。&lt;/p&gt;
@@ -42,8 +45,7 @@
                                                   &amp;amp;= - \frac{\partial {\bf y}_t}{\partial \bar{\bf y}_t} \cdot \sum_{t'}\frac{\partial {\bf y}_{t'}}{\partial {\bf y}_t} \cdot \frac{{\bf l}_{t'}}{{\bf y}_{t'}}
     \end{split}
 \end{equation}&lt;/div&gt;
-&lt;p&gt;なお、&lt;span class="math"&gt;\({\bf I}\)&lt;/span&gt; は単位行列。&lt;br&gt;
-また、&lt;span class="math"&gt;\(\frac{\partial E}{\partial {\bf y}_t}\)&lt;/span&gt; の計算は要素毎に考えてみると分かりやすい。&lt;/p&gt;
+&lt;p&gt;&lt;span class="math"&gt;\(\frac{\partial E}{\partial {\bf y}_t}\)&lt;/span&gt; の計算は要素毎に考えてみると分かりやすい。&lt;/p&gt;
 &lt;p&gt;ここで、&lt;span class="math"&gt;\(\frac{\partial {\bf y}_t}{\partial \bar{\bf y}_t}\)&lt;/span&gt; は softmax の微分を考えれば良く、&lt;/p&gt;
 &lt;div class="math"&gt;\begin{equation}
     \begin{split}
@@ -70,6 +72,7 @@
                                                           &amp;amp;= - ({\bf y}_t \cdot {\bf y}_t - ({\bf y}_t \odot {\bf I}))
     \end{split}
 \end{equation}&lt;/div&gt;
+&lt;p&gt;なお、&lt;span class="math"&gt;\({\bf I}\)&lt;/span&gt; は単位行列。&lt;/p&gt;
 &lt;p&gt;よって簡単のため &lt;span class="math"&gt;\(t = T\)&lt;/span&gt; のときについて考えると、&lt;/p&gt;
 &lt;div class="math"&gt;\begin{equation}
     \begin{split}

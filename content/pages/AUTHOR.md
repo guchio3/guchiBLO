@@ -1,13 +1,13 @@
 Title: AUTHOR
 Tags: ABOUT
 Date: 2017-07-29 16:00
-Modified: 2017-10-10 19:00
+Modified: 2017-12-14 19:00
 Slug: AUTHOR
 Authors: guchio3
 Summary: 著者について
 
 ## Name
-#### guchio
+#### Naoya Taguchi
 ## Place
 #### 東京
 ## Job

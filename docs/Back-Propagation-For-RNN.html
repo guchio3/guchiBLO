@@ -144,7 +144,7 @@
                         <a href="https://guchio3.github.io/guchiBLO/category/research.html">
                             <i class="fa fa-folder-open padding-small"></i>
                             Research
-                            <span class="badge pull-right categorybadge">2</span>
+                            <span class="badge pull-right categorybadge">3</span>
                         </a>
                     </li>
                 </ul></li>
@@ -239,8 +239,7 @@
                                                   &amp;= - \frac{\partial {\bf y}_t}{\partial \bar{\bf y}_t} \cdot \sum_{t'}\frac{\partial {\bf y}_{t'}}{\partial {\bf y}_t} \cdot \frac{{\bf l}_{t'}}{{\bf y}_{t'}}
     \end{split}
 \end{equation}</div>
-<p>なお、<span class="math">\({\bf I}\)</span> は単位行列。<br>
-また、<span class="math">\(\frac{\partial E}{\partial {\bf y}_t}\)</span> の計算は要素毎に考えてみると分かりやすい。</p>
+<p><span class="math">\(\frac{\partial E}{\partial {\bf y}_t}\)</span> の計算は要素毎に考えてみると分かりやすい。</p>
 <p>ここで、<span class="math">\(\frac{\partial {\bf y}_t}{\partial \bar{\bf y}_t}\)</span> は softmax の微分を考えれば良く、</p>
 <div class="math">\begin{equation}
     \begin{split}
@@ -267,6 +266,7 @@
                                                           &amp;= - ({\bf y}_t \cdot {\bf y}_t - ({\bf y}_t \odot {\bf I}))
     \end{split}
 \end{equation}</div>
+<p>なお、<span class="math">\({\bf I}\)</span> は単位行列。</p>
 <p>よって簡単のため <span class="math">\(t = T\)</span> のときについて考えると、</p>
 <div class="math">\begin{equation}
     \begin{split}
