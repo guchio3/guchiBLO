@@ -52,8 +52,7 @@ $\frac{\partial E}{\partial \bar{\bf y}_t}$ は以下のように求められる
     \end{split}
 \end{equation}
 
-なお、${\bf I}$ は単位行列。  
-また、$\frac{\partial E}{\partial {\bf y}_t}$ の計算は要素毎に考えてみると分かりやすい。
+$\frac{\partial E}{\partial {\bf y}_t}$ の計算は要素毎に考えてみると分かりやすい。
 
 ここで、$\frac{\partial {\bf y}_t}{\partial \bar{\bf y}_t}$ は softmax の微分を考えれば良く、
 
@@ -82,6 +81,8 @@ $\frac{\partial E}{\partial \bar{\bf y}_t}$ は以下のように求められる
                                                           &= - ({\bf y}_t \cdot {\bf y}_t - ({\bf y}_t \odot {\bf I}))
     \end{split}
 \end{equation}
+
+なお、${\bf I}$ は単位行列。
 
 よって簡単のため $t = T$ のときについて考えると、
 
