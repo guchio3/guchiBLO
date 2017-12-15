@@ -13,7 +13,7 @@ PLUGINS = ['render_math']
 
 SITELOGO = '/images/siteBaseImages/guchiBLO_temp.png'
 SITELOGO_SIZE = '200'
-SITESUBTITLE = 'A JAPANESE BLOG by GUCHIO! <br>About : <a href="/pages/AUTHOR.html">AUTHOR</a>, <a href="/pages/CONTENTS.html">CONTENTS</a> <br> Interested in : <a href="/category/machinelearning.html">Machine Learning (機械学習)</a>, <a href="/category/cryptocurrency.html">Crypto Currency (仮想通貨)</a>, etc...'
+SITESUBTITLE = 'A JAPANESE BLOG by GUCHIO! <br>About : <a href="/pages/AUTHOR.html">AUTHOR</a>, <a href="/pages/CONTENTS.html">CONTENTS</a> <br>Categories : <a href="/category/machinelearning.html">Machine Learning</a>, <a href="/category/cryptocurrency.html">Crypto Currency</a>, etc...'
 FAVICON = SITEURL + '/images/siteBaseImages/favicon.ico'
 
 COPYRIGHT_YEAR = 2017
@@ -59,7 +59,7 @@ SOCIAL = (
          ('twitter', 'https://twitter.com/ihcgT_Ykchi'),
 #         ('facebook', 'https://www.facebook.com/taguchi.naoya?ref=bookmarks'),
          ('github', 'https://github.com/guchio3'),
-#         ('linkedin', 'https://www.linkedin.com/in/taguchi-naoya-545403121/'),
+         ('linkedin', 'https://www.linkedin.com/in/taguchi-naoya-545403121/'),
         )
 
 DEFAULT_PAGINATION = 10
