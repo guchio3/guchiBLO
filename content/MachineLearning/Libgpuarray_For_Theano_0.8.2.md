@@ -1,5 +1,5 @@
 Title: Libgpuarray For Theano 0.8.2
-Tags: Theano, Lasagne, Machine Learning,
+Tags: Programming, Theano, Lasagne,
 Date: 2017-10-15 0:00
 Modified: 2017-10-15 0:00
 Slug: Libgpuarray_For_Theano_0.8.2
