@@ -1,5 +1,5 @@
 Title: Theano NaN Grad on Cumprod
-Tags: Theano, Machine Learning,
+Tags: Programming, Theano, 
 Date: 2017-10-26 0:00
 Modified: 2017-10-26 0:00
 Slug: Theano_NaN_Grad_on_Cumprod

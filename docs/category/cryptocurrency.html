@@ -5,12 +5,11 @@
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <meta name="author" content="guchio3" />
-        <meta name="keywords" content="Programming,Theano" />
-        <meta name="description" content="Theano の cumprod を利用する際に gradient が NaN になるバグ" />
+    <meta name="author" content="guchio3" />
+    <meta name="keywords" content="CryptoCurrency" />
 
 
-    <title>Theano NaN Grad on Cumprod - guchiBLO</title>
+    <title>CryptoCurrency - guchiBLO</title>
 
         <link rel="stylesheet" href="https://guchio3.github.io/guchiBLO/theme/css/bootstrap.min.css" type="text/css" />
 
@@ -132,15 +131,15 @@
                         Categories
                     </a>
                 </li>
-                <li class="panel anti-panel"><ul id="collapse-categories" class="sidebar_submenu collapse ">
-                    <li >
+                <li class="panel anti-panel"><ul id="collapse-categories" class="sidebar_submenu collapse in">
+                    <li class="active">
                         <a href="https://guchio3.github.io/guchiBLO/category/cryptocurrency.html">
                             <i class="fa fa-folder-open padding-small"></i>
                             CryptoCurrency
                             <span class="badge pull-right categorybadge">1</span>
                         </a>
                     </li>
-                    <li class="active">
+                    <li >
                         <a href="https://guchio3.github.io/guchiBLO/category/machinelearning.html">
                             <i class="fa fa-folder-open padding-small"></i>
                             MachineLearning
@@ -162,120 +161,23 @@
         <!-- Page Content -->
         <div id="page-content-wrapper">
             <div class="container-fluid">
-<section id="content">
-    <article>
-        <div class="row">
-            <div class="col-lg-9">
-                <header class="page-header">
-                    <h1>
-                        <a href="https://guchio3.github.io/guchiBLO/Theano_NaN_Grad_on_Cumprod.html"
-                           rel="bookmark"
-                           title="Permalink to Theano NaN Grad on Cumprod">
-                            Theano NaN Grad on Cumprod
-                        </a>
-                        <small>
-<div class="post-info">
-    <div class="publish-info-block">
-        <small>
-            <span class="published">
-                <i class="fa fa-calendar padding-small"></i><time datetime="2017-10-26T00:00:00+09:00"> 木 26 10月 2017</time>
-            </span>
-            <span class="category">
-                <i class="fa fa-folder-open padding-small"></i><a href="https://guchio3.github.io/guchiBLO/category/machinelearning.html">MachineLearning</a>
-            </span>
-            <span class="tags">
-                <i class="fa fa-tags padding-small"></i>
-                <a href="https://guchio3.github.io/guchiBLO/tag/programming.html">Programming</a> /                 <a href="https://guchio3.github.io/guchiBLO/tag/theano.html">Theano</a>            </span>
-        </small>
+<div class="row">
+    <div class="col-lg-9">
+        <header class="page-header">
+            <h1>Articles in CryptoCurrency</h1>
+        </header>
     </div>
-</div><!-- /.post-info -->                        </small>
-                    </h1>
-                </header>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-lg-9">
-                <div class="entry-content">
-                    <p>以前 <a href="https://www.nature.com/nature/journal/v538/n7626/full/nature20101.html">Differentiable neural computers</a> を実装した際、</p>
-<div class="math">\begin{equation}
-\label{a_t_equation}
-    {\bf a}_t[\phi_t[j]] = (1 - {\bf u}_t[\phi_t[j]])\prod_{i=1}^{j-1}{\bf u}_t[\phi_t[i]])
-\end{equation}</div>
-<p>という式を Theano で実装するため theano.tensor.extra_ops.cumprod を使用した際に遭遇したバグ共有。</p>
-<p>症状としては gradient を計算をすると 1 iteration 目から NaN が現れるというものだったが <a href="https://github.com/Theano/Theano/issues/5197">ここ</a>をみて解決。<br>
-どうやら入力に 0 が入ると　gradien 計算において 0 割りがおこり、NaN が出現するらしい。</p>
-<p>結果として行ったことは justheuristic さんが書いてくれているコードをそのまま使っただけだが、問題は解決した。</p>
-<script type="text/javascript">if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
-    var align = "center",
-        indent = "0em",
-        linebreak = "false";
-
-    if (false) {
-        align = (screen.width < 768) ? "left" : align;
-        indent = (screen.width < 768) ? "0em" : indent;
-        linebreak = (screen.width < 768) ? 'true' : linebreak;
-    }
-
-    var mathjaxscript = document.createElement('script');
-    mathjaxscript.id = 'mathjaxscript_pelican_#%@#$@#';
-    mathjaxscript.type = 'text/javascript';
-    mathjaxscript.src = 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML';
-    mathjaxscript[(window.opera ? "innerHTML" : "text")] =
-        "MathJax.Hub.Config({" +
-        "    config: ['MMLorHTML.js']," +
-        "    TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js'], equationNumbers: { autoNumber: 'AMS' } }," +
-        "    jax: ['input/TeX','input/MathML','output/HTML-CSS']," +
-        "    extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']," +
-        "    displayAlign: '"+ align +"'," +
-        "    displayIndent: '"+ indent +"'," +
-        "    showMathMenu: true," +
-        "    messageStyle: 'normal'," +
-        "    tex2jax: { " +
-        "        inlineMath: [ ['\\\\(','\\\\)'] ], " +
-        "        displayMath: [ ['$$','$$'] ]," +
-        "        processEscapes: true," +
-        "        preview: 'TeX'," +
-        "    }, " +
-        "    'HTML-CSS': { " +
-        "        styles: { '.MathJax_Display, .MathJax .mo, .MathJax .mi, .MathJax .mn': {color: 'inherit ! important'} }," +
-        "        linebreaks: { automatic: "+ linebreak +", width: '90% container' }," +
-        "    }, " +
-        "}); " +
-        "if ('default' !== 'default') {" +
-            "MathJax.Hub.Register.StartupHook('HTML-CSS Jax Ready',function () {" +
-                "var VARIANT = MathJax.OutputJax['HTML-CSS'].FONTDATA.VARIANT;" +
-                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
-                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
-                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
-                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
-            "});" +
-            "MathJax.Hub.Register.StartupHook('SVG Jax Ready',function () {" +
-                "var VARIANT = MathJax.OutputJax.SVG.FONTDATA.VARIANT;" +
-                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
-                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
-                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
-                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
-            "});" +
-        "}";
-    (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
-}
-</script>
-                </div>
-                <footer class="text-right">
-                    <p>- guchio3</p>
-                </footer>
-    <section id="comments" class="comments ">
-        <hr/>
-        <h2>Comments</h2>
-        <div id="disqus_thread"></div>
-        <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by
-            Disqus.</a></noscript>
-        <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
-    </section>
-            </div>
-        </div>
-    </article>
-</section>
+</div>
+<div class="row">
+    <div class="col-lg-9">
+            <article>
+                <h4>
+                    <time datetime="2017-12-15T16:00:00+09:00"> 金 15 12月 2017</time>
+                    <a href="https://guchio3.github.io/guchiBLO/Init_Crypto_Currency.html">Init Crypto Currency</a>
+                </h4>
+            </article>
+    </div>
+</div>
 <footer>
     <hr>
     <div class="row">
@@ -314,27 +216,24 @@
         })();
     </script>
     <!-- End Google Analytics Code -->
+<script>
+    function FadeInOnScroll(ObjectList){
+        ObjectList.each(function(i) {
+            var bottom_of_object = $(this).position().top + $(this).outerHeight();
+            var bottom_of_window = $(window).scrollTop() + $(window).height();
 
-<!-- disqus -->
-<script type="text/javascript">
-    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
-    var disqus_shortname = 'True'; // required: replace example with your forum shortname
+            if( bottom_of_window > bottom_of_object ){
+                $(this).fadeTo(750,1);
+            }
+        });
+    }
 
-            var disqus_identifier = 'Theano_NaN_Grad_on_Cumprod';
-        var disqus_url = 'https://guchio3.github.io/guchiBLO/Theano_NaN_Grad_on_Cumprod.html';
+    articles = $("article").fadeTo(0, 0.05);
+    FadeInOnScroll(articles)
 
-    var disqus_config = function () {
-        this.language = "en";
-    };
-        /* * * DON'T EDIT BELOW THIS LINE * * */
-    (function () {
-        var dsq = document.createElement('script');
-        dsq.type = 'text/javascript';
-        dsq.async = true;
-        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
-        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-    })();
+    $(window).scroll(function() {
+        FadeInOnScroll(articles)
+    });
 </script>
-<!-- /disqus -->
 </body>
 </html>

@@ -1,5 +1,5 @@
 Title: Speeding Up Theano
-Tags: Theano, Machine Learning,
+Tags: Programming, Theano,
 Date: 2017-10-10 19:00
 Modified: 2017-10-21 14:00
 Slug: Speeding_Up_Theano

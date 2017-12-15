@@ -1,5 +1,5 @@
 Title: Back Propagation For RNN
-Tags: Recurrent Neural Network, Machine Learning,
+Tags: Research, Recurrent Neural Network,
 Date: 2017-11-26 0:00
 Modified: 2017-11-27 0:00
 Slug: Back-Propagation-For-RNN

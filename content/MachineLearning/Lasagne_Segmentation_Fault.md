@@ -1,5 +1,5 @@
 Title: Lasagne Segmentation Fault
-Tags: Theano, Lasagne, Machine Learning,
+Tags: Programming, Theano, Lasagne,
 Date: 2017-10-16 19:00
 Modified: 2017-10-16 19:00
 Slug: Lasagne_Segmentation_Fault

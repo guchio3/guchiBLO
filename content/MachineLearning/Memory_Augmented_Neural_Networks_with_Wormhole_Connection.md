@@ -1,5 +1,5 @@
 Title: Memory Augmented Neural Networks with Wormhole Connection
-Tags: Paper, Memory Augmented Neural Network, Machine Learning,
+Tags: Research, Paper, Memory Augmented Neural Network,
 Date: 2017-12-14 0:00
 Modified: 2017-12-14 0:00
 Slug: Memory_Augmented_Neural_lNetworks_with_Wormhole_Connection

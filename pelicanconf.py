@@ -13,7 +13,7 @@ PLUGINS = ['render_math']
 
 SITELOGO = '/images/siteBaseImages/guchiBLO_temp.png'
 SITELOGO_SIZE = '200'
-SITESUBTITLE = 'A JAPANESE BLOG by GUCHIO! <br>About : <a href="/pages/AUTHOR.html">AUTHOR</a>, <a href="/pages/CONTENTS.html">CONTENTS</a>'
+SITESUBTITLE = 'A JAPANESE BLOG by GUCHIO! <br>About : <a href="/pages/AUTHOR.html">AUTHOR</a>, <a href="/pages/CONTENTS.html">CONTENTS</a> <br> Interested in : <a href="/category/machinelearning.html">Machine Learning (機械学習)</a>, <a href="/category/cryptocurrency.html">Crypto Currency (仮想通貨)</a>, etc...'
 FAVICON = SITEURL + '/images/siteBaseImages/favicon.ico'
 
 COPYRIGHT_YEAR = 2017
