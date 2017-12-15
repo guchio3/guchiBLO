@@ -11,7 +11,7 @@ sys.path.append(os.curdir)
 from pelicanconf import *
 
 SITEURL = 'https://guchio3.github.io/guchiBLO'
-SITESUBTITLE = 'A JAPANESE BLOG by GUCHIO! <br>About : <a href="https://guchio3.github.io/guchiBLO/pages/AUTHOR.html">AUTHOR</a>, <a href="https://guchio3.github.io/guchiBLO/pages/CONTENTS.html">CONTENTS</a>'
+SITESUBTITLE = 'A JAPANESE BLOG by GUCHIO! <br>About : <a href="https://guchio3.github.io/guchiBLO/pages/AUTHOR.html">AUTHOR</a>, <a href="https://guchio3.github.io/guchiBLO/pages/CONTENTS.html">CONTENTS</a> <br>Categories : <a href="/category/machinelearning.html">Machine Learning</a>, <a href="/category/cryptocurrency.html">Crypto Currency</a>, etc..'
 SITELOGO = '/images/siteBaseImages/guchiBLO_temp.png'
 SITELOGO_SIZE = 200
 FAVICON = SITEURL + '/images/siteBaseImages/favicon.ico'
