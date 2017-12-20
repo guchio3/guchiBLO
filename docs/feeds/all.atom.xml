@@ -1,21 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>guchiBLO</title><link href="https://guchio3.github.io/guchiBLO/" rel="alternate"></link><link href="https://guchio3.github.io/guchiBLO/feeds/all.atom.xml" rel="self"></link><id>https://guchio3.github.io/guchiBLO/</id><updated>2017-12-15T16:00:00+09:00</updated><entry><title>Init Crypto Currency</title><link href="https://guchio3.github.io/guchiBLO/Init_Crypto_Currency.html" rel="alternate"></link><published>2017-12-15T16:00:00+09:00</published><updated>2017-12-15T16:00:00+09:00</updated><author><name>guchio3</name></author><id>tag:guchio3.github.io,2017-12-15:/guchiBLO/Init_Crypto_Currency.html</id><summary type="html">&lt;p&gt;仮想通貨 (暗号通貨) について記載開始の報告&lt;/p&gt;</summary><content type="html">&lt;p&gt;最近仮想通貨取引を開始したので、これを機に仮想通貨周りについて情報掲載していければと思います。&lt;/p&gt;</content><category term="Information"></category></entry><entry><title>Memory Augmented Neural Networks with Wormhole Connection</title><link href="https://guchio3.github.io/guchiBLO/Memory_Augmented_Neural_lNetworks_with_Wormhole_Connection.html" rel="alternate"></link><published>2017-12-14T00:00:00+09:00</published><updated>2017-12-14T00:00:00+09:00</updated><author><name>guchio3</name></author><id>tag:guchio3.github.io,2017-12-14:/guchiBLO/Memory_Augmented_Neural_lNetworks_with_Wormhole_Connection.html</id><summary type="html">&lt;p&gt;系列情報の利用のされ方、および理論的勾配の解析に基づく新しい Memory Augmented Neural Networks の提案&lt;/p&gt;</summary><content type="html">&lt;h1&gt;Outline&lt;/h1&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>guchiBLO</title><link href="https://guchio3.github.io/guchiBLO/" rel="alternate"></link><link href="https://guchio3.github.io/guchiBLO/feeds/all.atom.xml" rel="self"></link><id>https://guchio3.github.io/guchiBLO/</id><updated>2017-12-20T00:00:00+09:00</updated><entry><title>Init Crypto Currency</title><link href="https://guchio3.github.io/guchiBLO/Init_Crypto_Currency.html" rel="alternate"></link><published>2017-12-15T16:00:00+09:00</published><updated>2017-12-15T16:00:00+09:00</updated><author><name>guchio3</name></author><id>tag:guchio3.github.io,2017-12-15:/guchiBLO/Init_Crypto_Currency.html</id><summary type="html">&lt;p&gt;仮想通貨 (暗号通貨) について記載開始の報告&lt;/p&gt;</summary><content type="html">&lt;p&gt;最近仮想通貨取引を開始したので、これを機に仮想通貨周りについて情報掲載していければと思います。&lt;/p&gt;</content><category term="Information"></category></entry><entry><title>Memory Augmented Neural Networks with Wormhole Connection</title><link href="https://guchio3.github.io/guchiBLO/Memory_Augmented_Neural_lNetworks_with_Wormhole_Connection.html" rel="alternate"></link><published>2017-12-14T00:00:00+09:00</published><updated>2017-12-14T00:00:00+09:00</updated><author><name>guchio3</name></author><id>tag:guchio3.github.io,2017-12-14:/guchiBLO/Memory_Augmented_Neural_lNetworks_with_Wormhole_Connection.html</id><summary type="html">&lt;p&gt;系列情報の利用のされ方、および理論的勾配の解析に基づく新しい Memory Augmented Neural Networks の提案&lt;/p&gt;</summary><content type="html">&lt;h1&gt;Outline&lt;/h1&gt;
 &lt;p&gt;研究室のミーティングで使用したスライドの一部を抜粋してシェア。&lt;/p&gt;
 &lt;p&gt;Recurrent な情報の流れ、また MANN における勾配計算という理論的な背景に基づきより適切な MANN の設計を行っている。&lt;/p&gt;
-&lt;p&gt;&lt;a href="https://www.slideshare.net/taguchinaoya/memory-augmented-neural-networks-with-wormhole-connection"&gt;slide&lt;/a&gt;&lt;/p&gt;</content><category term="Research"></category><category term="Paper"></category><category term="Memory Augmented Neural Network"></category></entry><entry><title>Back Propagation For RNN</title><link href="https://guchio3.github.io/guchiBLO/Back-Propagation-For-RNN.html" rel="alternate"></link><published>2017-11-26T00:00:00+09:00</published><updated>2017-11-27T00:00:00+09:00</updated><author><name>guchio3</name></author><id>tag:guchio3.github.io,2017-11-26:/guchiBLO/Back-Propagation-For-RNN.html</id><summary type="html">&lt;p&gt;RNN における Back Probagation&lt;/p&gt;</summary><content type="html">&lt;h1&gt;Outline&lt;/h1&gt;
+&lt;p&gt;&lt;a href="https://www.slideshare.net/taguchinaoya/memory-augmented-neural-networks-with-wormhole-connection"&gt;slide&lt;/a&gt;&lt;/p&gt;</content><category term="Research"></category><category term="Paper"></category><category term="Memory Augmented Neural Network"></category></entry><entry><title>Back Propagation For RNN</title><link href="https://guchio3.github.io/guchiBLO/Back-Propagation-For-RNN.html" rel="alternate"></link><published>2017-11-26T00:00:00+09:00</published><updated>2017-12-20T00:00:00+09:00</updated><author><name>guchio3</name></author><id>tag:guchio3.github.io,2017-11-26:/guchiBLO/Back-Propagation-For-RNN.html</id><summary type="html">&lt;p&gt;RNN における Back Probagation&lt;/p&gt;</summary><content type="html">&lt;h1&gt;Outline&lt;/h1&gt;
+&lt;p&gt;※ &lt;strong&gt;間違っている点が多いので参考にしないで下さい。余裕ができ次第直します。&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;以下の様に Forward 方向の式が表される単純な Recurrent Neural Network (RNN) における誤差伝搬を数式をたどることにより理解する。&lt;br&gt;
 行列の計算は &lt;a href="https://www.math.uwaterloo.ca/~hwolkowi/matrixcookbook.pdf"&gt;matrix cookbook&lt;/a&gt; が非常に参考になった。&lt;br&gt;
 なお、バイアスは簡単のため無視し、また以下で偏微分でない分数形式の記述は要素毎の割り算を意味。&lt;/p&gt;
 &lt;div class="math"&gt;\begin{equation}
     \begin{split}
-        \bar{\bf h}_t &amp;amp;= W_i{\bf x_t} + W_h{\bf h_{t-1}} \\
+        \bar{\bf h}_t &amp;amp;= W_i \cdot {\bf x_t} + W_h \cdot {\bf h_{t-1}} \\
         {\bf h}_t &amp;amp;= f_1(\bar{\bf h}_t) \\
         \bar{\bf y}_t &amp;amp;= W_o \cdot {\bf h}_t \\
         {\bf y}_t &amp;amp;= f_2(\bar{\bf y}_t)
     \end{split}
 \end{equation}&lt;/div&gt;
 &lt;p&gt;
-なお、以下のように活性化関数 &lt;span class="math"&gt;\(f_2\)&lt;/span&gt; には softmax 関数を用い、誤差関数にはクロスエントロピー関数を使用。
+さらに、以下で活性化関数 &lt;span class="math"&gt;\(f_2\)&lt;/span&gt; には一般に下のように定義される softmax 関数を用い、誤差関数にはクロスエントロピー関数を使用。&lt;br&gt;
+これは言語モデルなどに利用される多クラス分類問題を想定しているため。
 &lt;/p&gt;
 &lt;div class="math"&gt;\begin{equation}
     f_2({\bf v}_i) = \frac{exp({\bf v}_i)}{\sum_j exp({\bf v}_j)}
@@ -25,28 +27,27 @@
     E = - \sum_{t'}{\bf l}_{t'}^T \cdot log({\bf y}_{t'})
 \end{equation}&lt;/div&gt;
 &lt;p&gt;
-なお、&lt;span class="math"&gt;\({\bf v}_i\)&lt;/span&gt; は &lt;span class="math"&gt;\({\bf v}\)&lt;/span&gt; の &lt;span class="math"&gt;\(i\)&lt;/span&gt; 番目の要素を表し、&lt;span class="math"&gt;\({\bf l}_t\)&lt;/span&gt; は時間 &lt;span class="math"&gt;\(t\)&lt;/span&gt; における正解ラベルを表す。&lt;/p&gt;
+なお、&lt;span class="math"&gt;\({\bf v}_i\)&lt;/span&gt; は任意のベクトル &lt;span class="math"&gt;\({\bf v}\)&lt;/span&gt; の &lt;span class="math"&gt;\(i\)&lt;/span&gt; 番目の要素を表し、&lt;span class="math"&gt;\({\bf l}_t\)&lt;/span&gt; は時間 &lt;span class="math"&gt;\(t\)&lt;/span&gt; における正解ラベルを表す。&lt;/p&gt;
 &lt;p&gt;このとき、Back Probagation により &lt;span class="math"&gt;\(W_o, W_i, W_h\)&lt;/span&gt; を学習することを考える。&lt;br&gt;
 これは誤差関数 &lt;span class="math"&gt;\(E\)&lt;/span&gt; を各パラメータにより次のように偏微分することにより求められる。
 &lt;/p&gt;
 &lt;div class="math"&gt;\begin{equation}
-\label{target_round}
     \begin{split}
-        \frac{\partial E}{\partial W_{o}} &amp;amp;= \frac{\partial \bar{\bf y}_t}{\partial W_{o}} \cdot \frac{\partial E}{\partial \bar{\bf y}_t} = {\bf h}_t \cdot \frac{\partial E}{\partial \bar{\bf y}_t} \\
-        \frac{\partial E}{\partial W_{i}} &amp;amp;= \frac{\partial \bar{\bf h}_t}{\partial W_{i}} \cdot \frac{\partial E}{\partial \bar{\bf h}_t} = {\bf x}_t \cdot \frac{\partial E}{\partial \bar{\bf h}_t} \\
+        \frac{\partial E}{\partial W_{o}} &amp;amp;= \frac{\partial \bar{\bf y}_t}{\partial W_{o}} \cdot \frac{\partial E}{\partial \bar{\bf y}_t} = \frac{\partial W_{o}}{\partial W_{o}} \cdot {\bf h}_t \cdot \frac{\partial E}{\partial \bar{\bf y}_t} \\
+        \frac{\partial E}{\partial W_{i}} &amp;amp;= \frac{\partial \bar{\bf h}_t}{\partial W_{i}} \cdot \frac{\partial E}{\partial \bar{\bf h}_t} = (\frac{\partial \bar{\bf h}_t}{\partial W_{i}} + ) \cdot \frac{\partial E}{\partial \bar{\bf h}_t} \\
         \frac{\partial E}{\partial W_{h}} &amp;amp;= \frac{\partial \bar{\bf h}_t}{\partial W_{h}} \cdot \frac{\partial E}{\partial \bar{\bf h}_t} = {\bf h}_{t-1} \cdot \frac{\partial E}{\partial \bar{\bf h}_t} 
-    \end{split}
+    \end{split} \label{target_round}
 \end{equation}&lt;/div&gt;
-&lt;p&gt;よって式 (\ref{target_round}) より、&lt;span class="math"&gt;\(\frac{\partial E}{\partial \bar{\bf y}_t}\)&lt;/span&gt; および &lt;span class="math"&gt;\(\frac{\partial E}{\partial \bar{\bf h}_t}\)&lt;/span&gt; を求めれば良いことになる。&lt;/p&gt;
+&lt;p&gt;よって式 (&lt;span class="math"&gt;\(\ref{target_round}\)&lt;/span&gt;) より、&lt;span class="math"&gt;\(\frac{\partial E}{\partial \bar{\bf y}_t}\)&lt;/span&gt; および &lt;span class="math"&gt;\(\frac{\partial E}{\partial \bar{\bf h}_t}\)&lt;/span&gt; を求めれば良いことになる。&lt;/p&gt;
 &lt;p&gt;&lt;span class="math"&gt;\(\frac{\partial E}{\partial \bar{\bf y}_t}\)&lt;/span&gt; は以下のように求められる。&lt;/p&gt;
 &lt;div class="math"&gt;\begin{equation}
     \begin{split}
         \frac{\partial E}{\partial \bar{\bf y}_t} &amp;amp;= - \frac{\partial {\bf y}_t}{\partial \bar{\bf y}_t} \cdot \frac{\partial E}{\partial {\bf y}_t} \\
                                                   &amp;amp;= - \frac{\partial {\bf y}_t}{\partial \bar{\bf y}_t} \cdot \sum_{t'}\frac{\partial {\bf y}_{t'}}{\partial {\bf y}_t} \cdot \frac{{\bf l}_{t'}}{{\bf y}_{t'}}
-    \end{split}
+    \end{split} \label{E_round_y_bar}
 \end{equation}&lt;/div&gt;
 &lt;p&gt;&lt;span class="math"&gt;\(\frac{\partial E}{\partial {\bf y}_t}\)&lt;/span&gt; の計算は要素毎に考えてみると分かりやすい。&lt;/p&gt;
-&lt;p&gt;ここで、&lt;span class="math"&gt;\(\frac{\partial {\bf y}_t}{\partial \bar{\bf y}_t}\)&lt;/span&gt; は softmax の微分を考えれば良く、&lt;/p&gt;
+&lt;p&gt;ここで、&lt;span class="math"&gt;\(\frac{\partial {\bf y}_t}{\partial \bar{\bf y}_t}\)&lt;/span&gt; は一般的な softmax の微分を基に考えれば良く、&lt;/p&gt;
 &lt;div class="math"&gt;\begin{equation}
     \begin{split}
          \frac{\partial f_2({\bf v}_{i})}{\partial {\bf v}_{k}} &amp;amp;= \frac{\frac{\partial exp({\bf v}_i)}{\partial {\bf v}_k} \cdot \sum_j exp({\bf v}_{j}) - exp({\bf v}_i) \cdot exp({\bf v}_k)}{(\sum_j exp({\bf v}_{j}))^2} \\
@@ -70,17 +71,29 @@
             \end{array}
         \right) \\
                                                           &amp;amp;= - ({\bf y}_t \cdot {\bf y}_t - ({\bf y}_t \odot {\bf I}))
-    \end{split}
+    \end{split} \label{y_round_y_bar}
 \end{equation}&lt;/div&gt;
 &lt;p&gt;なお、&lt;span class="math"&gt;\({\bf I}\)&lt;/span&gt; は単位行列。&lt;/p&gt;
-&lt;p&gt;よって簡単のため &lt;span class="math"&gt;\(t = T\)&lt;/span&gt; のときについて考えると、&lt;/p&gt;
+&lt;p&gt;従って式 (&lt;span class="math"&gt;\(\ref{E_round_y_bar}\)&lt;/span&gt;) および式 (&lt;span class="math"&gt;\(\ref{y_round_y_bar}\)&lt;/span&gt;) より、
+&lt;/p&gt;
 &lt;div class="math"&gt;\begin{equation}
     \begin{split}
-        \frac{\partial E}{\partial \bar{\bf y}_T} &amp;amp;= ({\bf y}_T \cdot {\bf y}_T - {\bf y}_T \odot {\bf I}) \cdot \frac{{\bf l}_{T}}{{\bf y}_T} \\
-                                                  &amp;amp;= {\bf y}_T - {\bf l}_T \;\; (\because \sum_i {\bf l}_{ti} = 1)
-    \end{split}
+        \frac{\partial E}{\partial \bar{\bf y}_t} &amp;amp;= - ({\bf y}_t \cdot {\bf y}_t - ({\bf y}_t \odot {\bf I})) \cdot \sum_{t'}\frac{\partial {\bf y}_{t'}}{\partial {\bf y}_t} \cdot \frac{{\bf l}_{t'}}{{\bf y}_{t'}}
+    \end{split} \label{res}
 \end{equation}&lt;/div&gt;
-&lt;p&gt;以降は近いうちに追記予定。&lt;/p&gt;
+&lt;!---
+
+よって簡単のため $t = T$ のときについて考えると、
+
+\begin{equation}
+    \begin{split}
+        \frac{\partial E}{\partial \bar{\bf y}_T} &amp;= ({\bf y}_T \cdot {\bf y}_T - {\bf y}_T \odot {\bf I}) \cdot \frac{{\bf l}_{T}}{{\bf y}_T} \\
+                                                  &amp;= {\bf y}_T - {\bf l}_T \;\; (\because \sum_i {\bf l}_{ti} = 1)
+    \end{split}
+\end{equation}
+--&gt;
+
+&lt;p&gt;近いうちに追記予定。&lt;/p&gt;
 &lt;script type="text/javascript"&gt;if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
     var align = "center",
         indent = "0em",
