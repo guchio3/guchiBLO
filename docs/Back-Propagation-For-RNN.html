@@ -206,19 +206,21 @@
             <div class="col-lg-9">
                 <div class="entry-content">
                     <h1>Outline</h1>
+<p>※ <strong>間違っている点が多いので参考にしないで下さい。余裕ができ次第直します。</strong></p>
 <p>以下の様に Forward 方向の式が表される単純な Recurrent Neural Network (RNN) における誤差伝搬を数式をたどることにより理解する。<br>
 行列の計算は <a href="https://www.math.uwaterloo.ca/~hwolkowi/matrixcookbook.pdf">matrix cookbook</a> が非常に参考になった。<br>
 なお、バイアスは簡単のため無視し、また以下で偏微分でない分数形式の記述は要素毎の割り算を意味。</p>
 <div class="math">\begin{equation}
     \begin{split}
-        \bar{\bf h}_t &amp;= W_i{\bf x_t} + W_h{\bf h_{t-1}} \\
+        \bar{\bf h}_t &amp;= W_i \cdot {\bf x_t} + W_h \cdot {\bf h_{t-1}} \\
         {\bf h}_t &amp;= f_1(\bar{\bf h}_t) \\
         \bar{\bf y}_t &amp;= W_o \cdot {\bf h}_t \\
         {\bf y}_t &amp;= f_2(\bar{\bf y}_t)
     \end{split}
 \end{equation}</div>
 <p>
-なお、以下のように活性化関数 <span class="math">\(f_2\)</span> には softmax 関数を用い、誤差関数にはクロスエントロピー関数を使用。
+さらに、以下で活性化関数 <span class="math">\(f_2\)</span> には一般に下のように定義される softmax 関数を用い、誤差関数にはクロスエントロピー関数を使用。<br>
+これは言語モデルなどに利用される多クラス分類問題を想定しているため。
 </p>
 <div class="math">\begin{equation}
     f_2({\bf v}_i) = \frac{exp({\bf v}_i)}{\sum_j exp({\bf v}_j)}
@@ -228,28 +230,27 @@
     E = - \sum_{t'}{\bf l}_{t'}^T \cdot log({\bf y}_{t'})
 \end{equation}</div>
 <p>
-なお、<span class="math">\({\bf v}_i\)</span> は <span class="math">\({\bf v}\)</span> の <span class="math">\(i\)</span> 番目の要素を表し、<span class="math">\({\bf l}_t\)</span> は時間 <span class="math">\(t\)</span> における正解ラベルを表す。</p>
+なお、<span class="math">\({\bf v}_i\)</span> は任意のベクトル <span class="math">\({\bf v}\)</span> の <span class="math">\(i\)</span> 番目の要素を表し、<span class="math">\({\bf l}_t\)</span> は時間 <span class="math">\(t\)</span> における正解ラベルを表す。</p>
 <p>このとき、Back Probagation により <span class="math">\(W_o, W_i, W_h\)</span> を学習することを考える。<br>
 これは誤差関数 <span class="math">\(E\)</span> を各パラメータにより次のように偏微分することにより求められる。
 </p>
 <div class="math">\begin{equation}
-\label{target_round}
     \begin{split}
-        \frac{\partial E}{\partial W_{o}} &amp;= \frac{\partial \bar{\bf y}_t}{\partial W_{o}} \cdot \frac{\partial E}{\partial \bar{\bf y}_t} = {\bf h}_t \cdot \frac{\partial E}{\partial \bar{\bf y}_t} \\
-        \frac{\partial E}{\partial W_{i}} &amp;= \frac{\partial \bar{\bf h}_t}{\partial W_{i}} \cdot \frac{\partial E}{\partial \bar{\bf h}_t} = {\bf x}_t \cdot \frac{\partial E}{\partial \bar{\bf h}_t} \\
+        \frac{\partial E}{\partial W_{o}} &amp;= \frac{\partial \bar{\bf y}_t}{\partial W_{o}} \cdot \frac{\partial E}{\partial \bar{\bf y}_t} = \frac{\partial W_{o}}{\partial W_{o}} \cdot {\bf h}_t \cdot \frac{\partial E}{\partial \bar{\bf y}_t} \\
+        \frac{\partial E}{\partial W_{i}} &amp;= \frac{\partial \bar{\bf h}_t}{\partial W_{i}} \cdot \frac{\partial E}{\partial \bar{\bf h}_t} = (\frac{\partial \bar{\bf h}_t}{\partial W_{i}} + ) \cdot \frac{\partial E}{\partial \bar{\bf h}_t} \\
         \frac{\partial E}{\partial W_{h}} &amp;= \frac{\partial \bar{\bf h}_t}{\partial W_{h}} \cdot \frac{\partial E}{\partial \bar{\bf h}_t} = {\bf h}_{t-1} \cdot \frac{\partial E}{\partial \bar{\bf h}_t} 
-    \end{split}
+    \end{split} \label{target_round}
 \end{equation}</div>
-<p>よって式 (\ref{target_round}) より、<span class="math">\(\frac{\partial E}{\partial \bar{\bf y}_t}\)</span> および <span class="math">\(\frac{\partial E}{\partial \bar{\bf h}_t}\)</span> を求めれば良いことになる。</p>
+<p>よって式 (<span class="math">\(\ref{target_round}\)</span>) より、<span class="math">\(\frac{\partial E}{\partial \bar{\bf y}_t}\)</span> および <span class="math">\(\frac{\partial E}{\partial \bar{\bf h}_t}\)</span> を求めれば良いことになる。</p>
 <p><span class="math">\(\frac{\partial E}{\partial \bar{\bf y}_t}\)</span> は以下のように求められる。</p>
 <div class="math">\begin{equation}
     \begin{split}
         \frac{\partial E}{\partial \bar{\bf y}_t} &amp;= - \frac{\partial {\bf y}_t}{\partial \bar{\bf y}_t} \cdot \frac{\partial E}{\partial {\bf y}_t} \\
                                                   &amp;= - \frac{\partial {\bf y}_t}{\partial \bar{\bf y}_t} \cdot \sum_{t'}\frac{\partial {\bf y}_{t'}}{\partial {\bf y}_t} \cdot \frac{{\bf l}_{t'}}{{\bf y}_{t'}}
-    \end{split}
+    \end{split} \label{E_round_y_bar}
 \end{equation}</div>
 <p><span class="math">\(\frac{\partial E}{\partial {\bf y}_t}\)</span> の計算は要素毎に考えてみると分かりやすい。</p>
-<p>ここで、<span class="math">\(\frac{\partial {\bf y}_t}{\partial \bar{\bf y}_t}\)</span> は softmax の微分を考えれば良く、</p>
+<p>ここで、<span class="math">\(\frac{\partial {\bf y}_t}{\partial \bar{\bf y}_t}\)</span> は一般的な softmax の微分を基に考えれば良く、</p>
 <div class="math">\begin{equation}
     \begin{split}
          \frac{\partial f_2({\bf v}_{i})}{\partial {\bf v}_{k}} &amp;= \frac{\frac{\partial exp({\bf v}_i)}{\partial {\bf v}_k} \cdot \sum_j exp({\bf v}_{j}) - exp({\bf v}_i) \cdot exp({\bf v}_k)}{(\sum_j exp({\bf v}_{j}))^2} \\
@@ -273,17 +274,29 @@
             \end{array}
         \right) \\
                                                           &amp;= - ({\bf y}_t \cdot {\bf y}_t - ({\bf y}_t \odot {\bf I}))
-    \end{split}
+    \end{split} \label{y_round_y_bar}
 \end{equation}</div>
 <p>なお、<span class="math">\({\bf I}\)</span> は単位行列。</p>
-<p>よって簡単のため <span class="math">\(t = T\)</span> のときについて考えると、</p>
+<p>従って式 (<span class="math">\(\ref{E_round_y_bar}\)</span>) および式 (<span class="math">\(\ref{y_round_y_bar}\)</span>) より、
+</p>
 <div class="math">\begin{equation}
     \begin{split}
-        \frac{\partial E}{\partial \bar{\bf y}_T} &amp;= ({\bf y}_T \cdot {\bf y}_T - {\bf y}_T \odot {\bf I}) \cdot \frac{{\bf l}_{T}}{{\bf y}_T} \\
-                                                  &amp;= {\bf y}_T - {\bf l}_T \;\; (\because \sum_i {\bf l}_{ti} = 1)
-    \end{split}
+        \frac{\partial E}{\partial \bar{\bf y}_t} &amp;= - ({\bf y}_t \cdot {\bf y}_t - ({\bf y}_t \odot {\bf I})) \cdot \sum_{t'}\frac{\partial {\bf y}_{t'}}{\partial {\bf y}_t} \cdot \frac{{\bf l}_{t'}}{{\bf y}_{t'}}
+    \end{split} \label{res}
 \end{equation}</div>
-<p>以降は近いうちに追記予定。</p>
+<!---
+
+よって簡単のため $t = T$ のときについて考えると、
+
+\begin{equation}
+    \begin{split}
+        \frac{\partial E}{\partial \bar{\bf y}_T} &= ({\bf y}_T \cdot {\bf y}_T - {\bf y}_T \odot {\bf I}) \cdot \frac{{\bf l}_{T}}{{\bf y}_T} \\
+                                                  &= {\bf y}_T - {\bf l}_T \;\; (\because \sum_i {\bf l}_{ti} = 1)
+    \end{split}
+\end{equation}
+-->
+
+<p>近いうちに追記予定。</p>
 <script type="text/javascript">if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
     var align = "center",
         indent = "0em",
