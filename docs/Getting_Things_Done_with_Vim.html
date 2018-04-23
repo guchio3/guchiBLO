@@ -6,11 +6,10 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta name="author" content="guchio3" />
-        <meta name="keywords" content="Programming,Theano,Lasagne" />
-        <meta name="description" content="Lasagne を GPU 上で使用した際に出る Segmentation Fault への対策" />
+        <meta name="keywords" content="Vim,Lifehack" />
 
 
-    <title>Lasagne Segmentation Fault - guchiBLO</title>
+    <title>Getting Things Done with Vim - guchiBLO</title>
 
         <link rel="stylesheet" href="https://guchio3.github.io/guchiBLO/theme/css/bootstrap.min.css" type="text/css" />
 
@@ -142,7 +141,7 @@
                     </a>
                 </li>
                 <li class="panel anti-panel"><ul id="collapse-categories" class="sidebar_submenu collapse ">
-                    <li >
+                    <li class="active">
                         <a href="https://guchio3.github.io/guchiBLO/category/author.html">
                             <i class="fa fa-folder-open padding-small"></i>
                             Author
@@ -156,7 +155,7 @@
                             <span class="badge pull-right categorybadge">1</span>
                         </a>
                     </li>
-                    <li class="active">
+                    <li >
                         <a href="https://guchio3.github.io/guchiBLO/category/machinelearning.html">
                             <i class="fa fa-folder-open padding-small"></i>
                             MachineLearning
@@ -184,24 +183,24 @@
             <div class="col-lg-9">
                 <header class="page-header">
                     <h1>
-                        <a href="https://guchio3.github.io/guchiBLO/Lasagne_Segmentation_Fault.html"
+                        <a href="https://guchio3.github.io/guchiBLO/Getting_Things_Done_with_Vim.html"
                            rel="bookmark"
-                           title="Permalink to Lasagne Segmentation Fault">
-                            Lasagne Segmentation Fault
+                           title="Permalink to Getting Things Done with Vim">
+                            Getting Things Done with Vim
                         </a>
                         <small>
 <div class="post-info">
     <div class="publish-info-block">
         <small>
             <span class="published">
-                <i class="fa fa-calendar padding-small"></i><time datetime="2017-10-16T19:00:00+09:00"> 月 16 10月 2017</time>
+                <i class="fa fa-calendar padding-small"></i><time datetime="2018-04-22T16:00:00+09:00"> 日 22 4月 2018</time>
             </span>
             <span class="category">
-                <i class="fa fa-folder-open padding-small"></i><a href="https://guchio3.github.io/guchiBLO/category/machinelearning.html">MachineLearning</a>
+                <i class="fa fa-folder-open padding-small"></i><a href="https://guchio3.github.io/guchiBLO/category/author.html">Author</a>
             </span>
             <span class="tags">
                 <i class="fa fa-tags padding-small"></i>
-                <a href="https://guchio3.github.io/guchiBLO/tag/programming.html">Programming</a> /                 <a href="https://guchio3.github.io/guchiBLO/tag/theano.html">Theano</a> /                 <a href="https://guchio3.github.io/guchiBLO/tag/lasagne.html">Lasagne</a>            </span>
+                <a href="https://guchio3.github.io/guchiBLO/tag/vim.html">Vim</a> /                 <a href="https://guchio3.github.io/guchiBLO/tag/lifehack.html">Lifehack</a>            </span>
         </small>
     </div>
 </div><!-- /.post-info -->                        </small>
@@ -212,23 +211,166 @@
         <div class="row">
             <div class="col-lg-9">
                 <div class="entry-content">
-                    <h1>Outline</h1>
-<p>Theano 上で動く Deep Learning Library である <a href="https://lasagne.readthedocs.io/en/latest/">Lasagne</a> を使った<a href="https://github.com/snipsco/ntm-lasagne">コード</a> GPU 上で使用した際、以下のエラーが出たのでその対策をした。<br>
-このエラーは非常に厄介で、最初は自分で書いた別のプログラムで GPU を使用して際に起こったが、その時はエラーメッセージなしで勝手にプログラムが止まったので原因究明が非常に大変だった。</p>
-<div class="highlight"><pre><span></span>$ <span class="nv">PYTHONPATH</span><span class="o">=</span>. python examples/copy-task.py 
-Using cuDNN version <span class="m">5110</span> on context None
-Mapped name None to device cuda0: Tesla K80 <span class="o">(</span><span class="m">0000</span>:83:00.0<span class="o">)</span>
-Segmentation fault <span class="o">(</span>core dumped<span class="o">)</span>
+                    <h1>概要</h1>
+<p>４月から社会人として働いているのですが、TODO 管理の方法として <a href="https://ja.wikipedia.org/wiki/Getting_Things_Done">GTD (Getting Things Done)</a> を教わったので Vim で運用してみようとした際のメモ。</p>
+<p>Vim で GTD を管理するプラグインとして <a href="https://github.com/phb1/gtd.vim">phb1/gtd.vim</a> が良さげだったので今回はこれを利用した。以下の記事は基本 <code>:help gtd.vim</code> を参考に記述。</p>
+<p>まず、私は NeoBundle で Vim のプラグイン管理をしているので、上記のサイトに紹介されている基本設定を参考に .vimrc を次のように設定した。<code>filetype plugin on</code> により、<code>.gtd</code> ファイルを Gtd filetype として認識してプラグインの挙動を制御できる。<code>.gtd</code> はデフォルトで vim に認識してもらえなかったので、<code>au ~</code> の部分でこれを指定しており、また <code>let g:gtd#dir</code> で GTD を管理するディレクトリを指定している。(<code>~/workspace/gtd/notes/</code> の部分は適宜変更してください。)</p>
+<div class="highlight"><pre><span></span><span class="s2">&quot;&quot;</span> GTD <span class="o">(</span>Getting Things Done<span class="o">)</span>
+NeoBundle <span class="s1">&#39;phb1/gtd.vim&#39;</span>
+au BufRead,BufNewFile *.gtd <span class="nb">set</span> <span class="nv">filetype</span><span class="o">=</span>Gtd
+filetype plugin on
+<span class="nb">let</span> g:gtd#dir <span class="o">=</span> <span class="s1">&#39;~/workspace/gtd/notes/&#39;</span>
 </pre></div>
 
 
-<p>まずは<a href="https://github.com/Theano/Theano/issues/6141">ここ</a>を参考に、conda を使った際にインストールされる pygpu の version が悪いことを疑って以下を試した。</p>
-<div class="highlight"><pre><span></span>$ conda install <span class="nv">pygpu</span><span class="o">=</span><span class="m">0</span>.6.2
+<p>次に、Vim 上で次のコマンドを利用し、<code>.gtd</code> ファイル を作成。</p>
+<div class="highlight"><pre><span></span>:GtdNew
 </pre></div>
 
 
-<p>しかし結果は変わらず対策を探していると、<a href="https://github.com/Theano/Theano/issues/4760">ここ</a>に ~/.theanorc の device を gpu から cuda するとセグフォると書いてあったので device を cuda から gpu にしてみた。<br>
-結果うまく行ったが、gpu にした場合バグが多く効率が悪くまた cuda で使える float64 が使えないとの情報もあるのでよりいい方法があれば追記予定。</p>
+<p>すると次のような <code>.gtd</code> ファイルが日時に応じて <code>~/workspace/gtd/notes/</code> 以下に自動生成される。</p>
+<div class="highlight"><pre><span></span><span class="o">=</span>
+@
+!
+</pre></div>
+
+
+<p><code>.gtd</code> ファイルにおいて、<code>=</code> が title、<code>@</code> が context、<code>!</code> が action、<code>#</code> (これは上記のファイルには存在しないが) が hashtag を示す。初期設定では <code>:GtdNew</code> により生成される <code>.gtd</code> ファイルは上記のように簡素なものだが、<code>let g:gtd#default_context = 'hogehoge'</code> や <code>let g:gtd#default_action = 'fugafuga'</code> などと .vimrc をいじることでテンプレートを作成できる。</p>
+<p><br>
+<br></p>
+<h1>GTD の運用を設計</h1>
+<p>GTD の運用には幾つものやり方があり、それぞれの個人にとって最適なやり方を見つける必要がある。今回は<a href="https://postd.cc/gtd-in-15-minutes/">このサイト</a>を参考に簡単な運用法を設計してみた。</p>
+<p>まず、今回使う context, action, hashtag を次のように設定した。</p>
+<h3>context (行動を起こす状況を定義)</h3>
+<ul>
+<li>@work<ul>
+<li>仕事でやること</li>
+</ul>
+</li>
+<li>@home<ul>
+<li>家でやること</li>
+</ul>
+</li>
+</ul>
+<h3>action (タスクを分類)</h3>
+<ul>
+<li>!inbox<ul>
+<li>アイデアやタスク</li>
+</ul>
+</li>
+<li>!todo<ul>
+<li>すぐに行うタスク</li>
+</ul>
+</li>
+<li>!scheduled-YYYYMMDD<ul>
+<li>ある特定の日行うタスク ("その日までにやる"ものは書いてはダメ。)</li>
+</ul>
+</li>
+<li>!someday<ul>
+<li>いつかやるタスク</li>
+</ul>
+</li>
+<li>!delegate<ul>
+<li>他者に委託したタスク</li>
+</ul>
+</li>
+<li>!archive<ul>
+<li>実行し終わったタスク</li>
+</ul>
+</li>
+<li>!trash<ul>
+<li>実行するのをやめたタスク (単純に <code>.gtd</code> ファイルを消しても良いが、この action を使っておいておくことが可能)</li>
+</ul>
+</li>
+</ul>
+<h3>hashtag (２つ以上のタスクにより構成される大枠のタスク)</h3>
+<ul>
+<li>場合によって様々</li>
+</ul>
+<p>上記の設定を用い、今回は次のワークフローでタスクを分類して GTD を実現する。</p>
+<hr>
+<ol>
+<li>思いつくアイデア、タスクを全て洗い出し、!inbox に分類</li>
+<li>実現可能か否かを判定<ul>
+<li>実現可能な場合 3. に進む</li>
+<li>実現不可能な場合 !trash に分類</li>
+</ul>
+</li>
+<li>2 分で消化可能なタスクかを判定<ul>
+<li>消化可能な場合、即座に消化して !archive に分類</li>
+<li>消化不可能な場合、4. に進む</li>
+</ul>
+</li>
+<li>他者に任せるか否かを判定<ul>
+<li>任せる場合、!delegate に分類</li>
+<li>任せない場合、5. に進む</li>
+</ul>
+</li>
+<li>実行する日を指定するか否かを判定<ul>
+<li>可能な場合、6. に進む</li>
+<li>不可能な場合、!someday に分類</li>
+</ul>
+</li>
+<li>実行する日が本日か否かを判定<ul>
+<li>本日の場合、!todo に分類</li>
+<li>本日でない場合、!scheduled-YYYYMMDD に分類 </li>
+</ul>
+</li>
+</ol>
+<hr>
+<!--GTD を運用する際、週次レビューをすることが推奨されます。週次レビューでは各プロジェクトに最低１つは-->
+
+<p>また、Inbox にいれるアイデア、タスクを想起させるために、トリガーリスト<a href="http://www.itmedia.co.jp/bizid/articles/0607/14/news064.html"> (例えばこれ)</a> が利用される場合がある。今後 GTD 運用していく上で利用したい。</p>
+<p><br>
+<br></p>
+<h1>phd1/gtd.vim を用いた運用例</h1>
+<p>まず、<code>GtdNew</code> で <code>.gtd</code> ファイルを生成する。この際に設定次第でデフォルトで context と action を埋めて置くことができる。私は次のように設定した。</p>
+<div class="highlight"><pre><span></span><span class="nb">let</span> g:gtd#default_context <span class="o">=</span> <span class="s1">&#39;work&#39;</span>
+<span class="nb">let</span> g:gtd#default_action <span class="o">=</span> <span class="s1">&#39;inbox&#39;</span>
+</pre></div>
+
+
+<p>まずはこの生成されるファイルに思いつくタスク、アイデアを記入するという動作を次のように行い、すべて出しつくすまでこれを繰り返す。</p>
+<div class="highlight"><pre><span></span><span class="o">=</span>MTG 設定する
+@work
+!inbox
+
+山田さんとの MTG を設定し、チームに招待メールを送る。
+</pre></div>
+
+
+<p>次に、<code>:Gtd !inbox</code> コマンドで検索を行う。<code>:Gtd {formula}</code> コマンドでは <code>{formula}</code> の部分には AND や OR で検索条件を指定可能であり (他にも NOT、日付、キーワードなど様々な条件を指定可能)、例えば !inbox AND !todo、!inbox OR !todo は <code>!inbox !todo</code>、<code>!inbox + !todo</code> のように表現される。() を用いてより複雑な条件を指定することも可能である。なお、検索結果に出てくる <code>[  ]</code> という記号はチェックボックスの様で紛らわしいが、<code>[*]</code> で添付ファイルが存在することを表現するための記号である。</p>
+<p>その後、検索結果画面でタスク一覧を確認し、各タスクを先程説明したワークフローに従って分類していく。分類は原始的で、!inbox を !todo に書き換えるなどして対応する。検索結果画面から各タスクには Enter で飛べる (キーは設定可能)。</p>
+<p>ちなみに、この検索は他にも <code>GtdReview</code> によっても可能であり、このコマンドは設定ファイルに指定された特定の検索条件で検索を行う。毎日のタスク管理に最適。私は次のように設定した。</p>
+<div class="highlight"><pre><span></span><span class="nb">let</span> g:gtd#review <span class="o">=</span> <span class="o">[</span>
+    <span class="se">\ </span><span class="s1">&#39;!inbox&#39;</span>,
+    <span class="se">\ </span><span class="s1">&#39;!todo&#39;</span>,
+    <span class="se">\ </span><span class="s1">&#39;!scheduled-&#39;</span>.strftime<span class="o">(</span><span class="s2">&quot;%Y%m%d&quot;</span><span class="o">)</span>,
+    <span class="se">\ </span><span class="s1">&#39;!someday&#39;</span>,
+    <span class="se">\ </span><span class="o">]</span>
+</pre></div>
+
+
+<p>検索、編集後、検索結果画面は自動で編集後の状態にならないため、<code>:GtdRefresh</code> コマンドを走らせ、うまく編集できたかどうかを確認。あとは TODO を消化しつつ、終わり次第 <code>!archive</code> に入れていく作業！</p>
+<p>なお、最終的に <code>.vimrc</code> の設定は次のとおりになった。
+他にも <code>let g:gtd#cache = 1</code> とすればキャッシュを活用して高速に処理をしてくれるなど色々と設定はあるが、詳細は <code>:help gtd.vim</code> を参照。</p>
+<div class="highlight"><pre><span></span><span class="s2">&quot;&quot;</span> GTD <span class="o">(</span>Getting Things Done<span class="o">)</span>
+NeoBundle <span class="s1">&#39;phb1/gtd.vim&#39;</span>
+au BufRead,BufNewFile *.gtd <span class="nb">set</span> <span class="nv">filetype</span><span class="o">=</span>Gtd
+filetype plugin on
+<span class="nb">let</span> g:gtd#dir <span class="o">=</span> <span class="s1">&#39;~/workspace/gtd/notes/&#39;</span>
+<span class="nb">let</span> g:gtd#default_context <span class="o">=</span> <span class="s1">&#39;work&#39;</span>
+<span class="nb">let</span> g:gtd#default_action <span class="o">=</span> <span class="s1">&#39;inbox&#39;</span>
+<span class="nb">let</span> g:gtd#review <span class="o">=</span> <span class="o">[</span>
+    <span class="se">\ </span><span class="s1">&#39;!inbox&#39;</span>,
+    <span class="se">\ </span><span class="s1">&#39;!todo&#39;</span>,
+    <span class="se">\ </span><span class="s1">&#39;!scheduled-&#39;</span>.strftime<span class="o">(</span><span class="s2">&quot;%Y%m%d&quot;</span><span class="o">)</span>,
+    <span class="se">\ </span><span class="s1">&#39;!someday&#39;</span>,
+    <span class="se">\ </span><span class="o">]</span>
+</pre></div>
+
+
+<p>以上！</p>
                 </div>
                 <footer class="text-right">
                     <p>- guchio3</p>
@@ -289,8 +431,8 @@ Segmentation fault <span class="o">(</span>core dumped<span class="o">)</span>
     /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
     var disqus_shortname = 'True'; // required: replace example with your forum shortname
 
-            var disqus_identifier = 'Lasagne_Segmentation_Fault';
-        var disqus_url = 'https://guchio3.github.io/guchiBLO/Lasagne_Segmentation_Fault.html';
+            var disqus_identifier = 'Getting_Things_Done_with_Vim';
+        var disqus_url = 'https://guchio3.github.io/guchiBLO/Getting_Things_Done_with_Vim.html';
 
     var disqus_config = function () {
         this.language = "en";

@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom"><title>guchiBLO - Author</title><link href="https://guchio3.github.io/guchiBLO/" rel="alternate"></link><link href="https://guchio3.github.io/guchiBLO/feeds/author.atom.xml" rel="self"></link><id>https://guchio3.github.io/guchiBLO/</id><updated>2018-04-22T16:00:00+09:00</updated><entry><title>Getting Things Done with Vim</title><link href="https://guchio3.github.io/guchiBLO/Getting_Things_Done_with_Vim.html" rel="alternate"></link><published>2018-04-22T16:00:00+09:00</published><updated>2018-04-22T16:00:00+09:00</updated><author><name>guchio3</name></author><id>tag:guchio3.github.io,2018-04-22:/guchiBLO/Getting_Things_Done_with_Vim.html</id><summary type="html"></summary><content type="html">&lt;h1&gt;概要&lt;/h1&gt;
+&lt;p&gt;４月から社会人として働いているのですが、TODO 管理の方法として &lt;a href="https://ja.wikipedia.org/wiki/Getting_Things_Done"&gt;GTD (Getting Things Done)&lt;/a&gt; を教わったので Vim で運用してみようとした際のメモ。&lt;/p&gt;
+&lt;p&gt;Vim で GTD を管理するプラグインとして &lt;a href="https://github.com/phb1/gtd.vim"&gt;phb1/gtd.vim&lt;/a&gt; が良さげだったので今回はこれを利用した。以下の記事は基本 &lt;code&gt;:help gtd.vim&lt;/code&gt; を参考に記述。&lt;/p&gt;
+&lt;p&gt;まず、私は NeoBundle で Vim のプラグイン管理をしているので、上記のサイトに紹介されている基本設定を参考に .vimrc を次のように設定した。&lt;code&gt;filetype plugin on&lt;/code&gt; により、&lt;code&gt;.gtd&lt;/code&gt; ファイルを Gtd filetype として認識してプラグインの挙動を制御できる。&lt;code&gt;.gtd&lt;/code&gt; はデフォルトで vim に認識してもらえなかったので、&lt;code&gt;au ~&lt;/code&gt; の部分でこれを指定しており、また &lt;code&gt;let g:gtd#dir&lt;/code&gt; で GTD を管理するディレクトリを指定している。(&lt;code&gt;~/workspace/gtd/notes/&lt;/code&gt; の部分は適宜変更してください。)&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&amp;quot;&lt;/span&gt; GTD &lt;span class="o"&gt;(&lt;/span&gt;Getting Things Done&lt;span class="o"&gt;)&lt;/span&gt;
+NeoBundle &lt;span class="s1"&gt;&amp;#39;phb1/gtd.vim&amp;#39;&lt;/span&gt;
+au BufRead,BufNewFile *.gtd &lt;span class="nb"&gt;set&lt;/span&gt; &lt;span class="nv"&gt;filetype&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;Gtd
+filetype plugin on
+&lt;span class="nb"&gt;let&lt;/span&gt; g:gtd#dir &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;~/workspace/gtd/notes/&amp;#39;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;次に、Vim 上で次のコマンドを利用し、&lt;code&gt;.gtd&lt;/code&gt; ファイル を作成。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;:GtdNew
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;すると次のような &lt;code&gt;.gtd&lt;/code&gt; ファイルが日時に応じて &lt;code&gt;~/workspace/gtd/notes/&lt;/code&gt; 以下に自動生成される。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;
+@
+!
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;&lt;code&gt;.gtd&lt;/code&gt; ファイルにおいて、&lt;code&gt;=&lt;/code&gt; が title、&lt;code&gt;@&lt;/code&gt; が context、&lt;code&gt;!&lt;/code&gt; が action、&lt;code&gt;#&lt;/code&gt; (これは上記のファイルには存在しないが) が hashtag を示す。初期設定では &lt;code&gt;:GtdNew&lt;/code&gt; により生成される &lt;code&gt;.gtd&lt;/code&gt; ファイルは上記のように簡素なものだが、&lt;code&gt;let g:gtd#default_context = 'hogehoge'&lt;/code&gt; や &lt;code&gt;let g:gtd#default_action = 'fugafuga'&lt;/code&gt; などと .vimrc をいじることでテンプレートを作成できる。&lt;/p&gt;
+&lt;p&gt;&lt;br&gt;
+&lt;br&gt;&lt;/p&gt;
+&lt;h1&gt;GTD の運用を設計&lt;/h1&gt;
+&lt;p&gt;GTD の運用には幾つものやり方があり、それぞれの個人にとって最適なやり方を見つける必要がある。今回は&lt;a href="https://postd.cc/gtd-in-15-minutes/"&gt;このサイト&lt;/a&gt;を参考に簡単な運用法を設計してみた。&lt;/p&gt;
+&lt;p&gt;まず、今回使う context, action, hashtag を次のように設定した。&lt;/p&gt;
+&lt;h3&gt;context (行動を起こす状況を定義)&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;@work&lt;ul&gt;
+&lt;li&gt;仕事でやること&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;@home&lt;ul&gt;
+&lt;li&gt;家でやること&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;action (タスクを分類)&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;!inbox&lt;ul&gt;
+&lt;li&gt;アイデアやタスク&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;!todo&lt;ul&gt;
+&lt;li&gt;すぐに行うタスク&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;!scheduled-YYYYMMDD&lt;ul&gt;
+&lt;li&gt;ある特定の日行うタスク ("その日までにやる"ものは書いてはダメ。)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;!someday&lt;ul&gt;
+&lt;li&gt;いつかやるタスク&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;!delegate&lt;ul&gt;
+&lt;li&gt;他者に委託したタスク&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;!archive&lt;ul&gt;
+&lt;li&gt;実行し終わったタスク&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;!trash&lt;ul&gt;
+&lt;li&gt;実行するのをやめたタスク (単純に &lt;code&gt;.gtd&lt;/code&gt; ファイルを消しても良いが、この action を使っておいておくことが可能)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;hashtag (２つ以上のタスクにより構成される大枠のタスク)&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;場合によって様々&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;上記の設定を用い、今回は次のワークフローでタスクを分類して GTD を実現する。&lt;/p&gt;
+&lt;hr&gt;
+&lt;ol&gt;
+&lt;li&gt;思いつくアイデア、タスクを全て洗い出し、!inbox に分類&lt;/li&gt;
+&lt;li&gt;実現可能か否かを判定&lt;ul&gt;
+&lt;li&gt;実現可能な場合 3. に進む&lt;/li&gt;
+&lt;li&gt;実現不可能な場合 !trash に分類&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;2 分で消化可能なタスクかを判定&lt;ul&gt;
+&lt;li&gt;消化可能な場合、即座に消化して !archive に分類&lt;/li&gt;
+&lt;li&gt;消化不可能な場合、4. に進む&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;他者に任せるか否かを判定&lt;ul&gt;
+&lt;li&gt;任せる場合、!delegate に分類&lt;/li&gt;
+&lt;li&gt;任せない場合、5. に進む&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;実行する日を指定するか否かを判定&lt;ul&gt;
+&lt;li&gt;可能な場合、6. に進む&lt;/li&gt;
+&lt;li&gt;不可能な場合、!someday に分類&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;実行する日が本日か否かを判定&lt;ul&gt;
+&lt;li&gt;本日の場合、!todo に分類&lt;/li&gt;
+&lt;li&gt;本日でない場合、!scheduled-YYYYMMDD に分類 &lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;hr&gt;
+&lt;!--GTD を運用する際、週次レビューをすることが推奨されます。週次レビューでは各プロジェクトに最低１つは--&gt;
+
+&lt;p&gt;また、Inbox にいれるアイデア、タスクを想起させるために、トリガーリスト&lt;a href="http://www.itmedia.co.jp/bizid/articles/0607/14/news064.html"&gt; (例えばこれ)&lt;/a&gt; が利用される場合がある。今後 GTD 運用していく上で利用したい。&lt;/p&gt;
+&lt;p&gt;&lt;br&gt;
+&lt;br&gt;&lt;/p&gt;
+&lt;h1&gt;phd1/gtd.vim を用いた運用例&lt;/h1&gt;
+&lt;p&gt;まず、&lt;code&gt;GtdNew&lt;/code&gt; で &lt;code&gt;.gtd&lt;/code&gt; ファイルを生成する。この際に設定次第でデフォルトで context と action を埋めて置くことができる。私は次のように設定した。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="nb"&gt;let&lt;/span&gt; g:gtd#default_context &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;work&amp;#39;&lt;/span&gt;
+&lt;span class="nb"&gt;let&lt;/span&gt; g:gtd#default_action &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;inbox&amp;#39;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;まずはこの生成されるファイルに思いつくタスク、アイデアを記入するという動作を次のように行い、すべて出しつくすまでこれを繰り返す。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;MTG 設定する
+@work
+!inbox
+
+山田さんとの MTG を設定し、チームに招待メールを送る。
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;次に、&lt;code&gt;:Gtd !inbox&lt;/code&gt; コマンドで検索を行う。&lt;code&gt;:Gtd {formula}&lt;/code&gt; コマンドでは &lt;code&gt;{formula}&lt;/code&gt; の部分には AND や OR で検索条件を指定可能であり (他にも NOT、日付、キーワードなど様々な条件を指定可能)、例えば !inbox AND !todo、!inbox OR !todo は &lt;code&gt;!inbox !todo&lt;/code&gt;、&lt;code&gt;!inbox + !todo&lt;/code&gt; のように表現される。() を用いてより複雑な条件を指定することも可能である。なお、検索結果に出てくる &lt;code&gt;[  ]&lt;/code&gt; という記号はチェックボックスの様で紛らわしいが、&lt;code&gt;[*]&lt;/code&gt; で添付ファイルが存在することを表現するための記号である。&lt;/p&gt;
+&lt;p&gt;その後、検索結果画面でタスク一覧を確認し、各タスクを先程説明したワークフローに従って分類していく。分類は原始的で、!inbox を !todo に書き換えるなどして対応する。検索結果画面から各タスクには Enter で飛べる (キーは設定可能)。&lt;/p&gt;
+&lt;p&gt;ちなみに、この検索は他にも &lt;code&gt;GtdReview&lt;/code&gt; によっても可能であり、このコマンドは設定ファイルに指定された特定の検索条件で検索を行う。毎日のタスク管理に最適。私は次のように設定した。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="nb"&gt;let&lt;/span&gt; g:gtd#review &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="o"&gt;[&lt;/span&gt;
+    &lt;span class="se"&gt;\ &lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;!inbox&amp;#39;&lt;/span&gt;,
+    &lt;span class="se"&gt;\ &lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;!todo&amp;#39;&lt;/span&gt;,
+    &lt;span class="se"&gt;\ &lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;!scheduled-&amp;#39;&lt;/span&gt;.strftime&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;%Y%m%d&amp;quot;&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt;,
+    &lt;span class="se"&gt;\ &lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;!someday&amp;#39;&lt;/span&gt;,
+    &lt;span class="se"&gt;\ &lt;/span&gt;&lt;span class="o"&gt;]&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;検索、編集後、検索結果画面は自動で編集後の状態にならないため、&lt;code&gt;:GtdRefresh&lt;/code&gt; コマンドを走らせ、うまく編集できたかどうかを確認。あとは TODO を消化しつつ、終わり次第 &lt;code&gt;!archive&lt;/code&gt; に入れていく作業！&lt;/p&gt;
+&lt;p&gt;なお、最終的に &lt;code&gt;.vimrc&lt;/code&gt; の設定は次のとおりになった。
+他にも &lt;code&gt;let g:gtd#cache = 1&lt;/code&gt; とすればキャッシュを活用して高速に処理をしてくれるなど色々と設定はあるが、詳細は &lt;code&gt;:help gtd.vim&lt;/code&gt; を参照。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&amp;quot;&lt;/span&gt; GTD &lt;span class="o"&gt;(&lt;/span&gt;Getting Things Done&lt;span class="o"&gt;)&lt;/span&gt;
+NeoBundle &lt;span class="s1"&gt;&amp;#39;phb1/gtd.vim&amp;#39;&lt;/span&gt;
+au BufRead,BufNewFile *.gtd &lt;span class="nb"&gt;set&lt;/span&gt; &lt;span class="nv"&gt;filetype&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;Gtd
+filetype plugin on
+&lt;span class="nb"&gt;let&lt;/span&gt; g:gtd#dir &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;~/workspace/gtd/notes/&amp;#39;&lt;/span&gt;
+&lt;span class="nb"&gt;let&lt;/span&gt; g:gtd#default_context &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;work&amp;#39;&lt;/span&gt;
+&lt;span class="nb"&gt;let&lt;/span&gt; g:gtd#default_action &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;inbox&amp;#39;&lt;/span&gt;
+&lt;span class="nb"&gt;let&lt;/span&gt; g:gtd#review &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="o"&gt;[&lt;/span&gt;
+    &lt;span class="se"&gt;\ &lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;!inbox&amp;#39;&lt;/span&gt;,
+    &lt;span class="se"&gt;\ &lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;!todo&amp;#39;&lt;/span&gt;,
+    &lt;span class="se"&gt;\ &lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;!scheduled-&amp;#39;&lt;/span&gt;.strftime&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;%Y%m%d&amp;quot;&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt;,
+    &lt;span class="se"&gt;\ &lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;!someday&amp;#39;&lt;/span&gt;,
+    &lt;span class="se"&gt;\ &lt;/span&gt;&lt;span class="o"&gt;]&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;以上！&lt;/p&gt;</content><category term="Vim"></category><category term="Lifehack"></category></entry></feed>

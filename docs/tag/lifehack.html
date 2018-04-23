@@ -5,11 +5,10 @@
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <meta name="author" content="guchio3" />
-        <meta name="description" content="著者について" />
+    <meta name="keywords" content="Lifehack" />
 
 
-    <title>AUTHOR - guchiBLO</title>
+    <title>Lifehack - guchiBLO</title>
 
         <link rel="stylesheet" href="https://guchio3.github.io/guchiBLO/theme/css/bootstrap.min.css" type="text/css" />
 
@@ -118,9 +117,8 @@
                         Pages
                     </a>
                 </li>
-                <li class="panel anti-panel"><ul id="collapse-pages" class="sidebar_submenu collapse         in
-">
-                    <li class="active">
+                <li class="panel anti-panel"><ul id="collapse-pages" class="sidebar_submenu collapse ">
+                    <li>
                         <a href="https://guchio3.github.io/guchiBLO/pages/AUTHOR.html">
                             <i class="fa fa-file-text padding-small"></i>
                             AUTHOR
@@ -180,19 +178,19 @@
             <div class="container-fluid">
 <div class="row">
     <div class="col-lg-9">
-        <section id="content" class="body">
-            <h1 class="page-header">AUTHOR</h1>
-            <div class="entry-content">
-                <h2>Name</h2>
-<h4>Naoya Taguchi</h4>
-<h2>Place</h2>
-<h4>東京</h4>
-<h2>Job</h2>
-<h4>大学院生 (情報検索、機械学習)</h4>
-<h2>Hobbies</h2>
-<h4>海外ドラマ、プログラミング、海外旅行、etc...</h4>
-            </div>
-        </section>
+        <header class="page-header">
+            <h1>Articles featuring Lifehack</h1>
+        </header>
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-9">
+            <article>
+                <h4>
+                    <time datetime="2018-04-22T16:00:00+09:00"> 日 22 4月 2018</time>
+                    <a href="https://guchio3.github.io/guchiBLO/Getting_Things_Done_with_Vim.html">Getting Things Done with Vim</a>
+                </h4>
+            </article>
     </div>
 </div>
 <footer>
@@ -233,5 +231,24 @@
         })();
     </script>
     <!-- End Google Analytics Code -->
+<script>
+    function FadeInOnScroll(ObjectList){
+        ObjectList.each(function(i) {
+            var bottom_of_object = $(this).position().top + $(this).outerHeight();
+            var bottom_of_window = $(window).scrollTop() + $(window).height();
+
+            if( bottom_of_window > bottom_of_object ){
+                $(this).fadeTo(750,1);
+            }
+        });
+    }
+
+    articles = $("article").fadeTo(0, 0.05);
+    FadeInOnScroll(articles)
+
+    $(window).scroll(function() {
+        FadeInOnScroll(articles)
+    });
+</script>
 </body>
 </html>
